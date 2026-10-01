@@ -2,20 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/models/user_role.dart';
 import '../../../widgets/form_randomizer.dart';
 import 'role_selection_screen.dart';
+import 'sender_setup_screen.dart';
+import 'rider_setup_screen.dart';
+import 'hub_setup_screen.dart';
 
 /// Screen 5: 4-Digit Security PIN Setup (Onboarding-6.png).
 class PinSetupScreen extends StatefulWidget {
   final String phoneNumber;
   final String firstName;
   final String lastName;
+  final UserRole? targetRole;
 
   const PinSetupScreen({
     super.key,
     required this.phoneNumber,
     required this.firstName,
     required this.lastName,
+    this.targetRole,
   });
 
   @override
@@ -60,7 +66,51 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
     } else {
       // Confirmation entry
       if (_enteredPin == _firstPin) {
-        // PINs match -> proceed to role selection
+        // PINs match -> if role was already pre-selected at Welcome screen, skip role picker
+        if (widget.targetRole != null) {
+          switch (widget.targetRole!) {
+            case UserRole.sender:
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => SenderSetupScreen(
+                    phoneNumber: widget.phoneNumber,
+                    firstName: widget.firstName,
+                    lastName: widget.lastName,
+                    pin: _enteredPin,
+                  ),
+                ),
+              );
+              return;
+            case UserRole.rider:
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => RiderSetupScreen(
+                    phoneNumber: widget.phoneNumber,
+                    firstName: widget.firstName,
+                    lastName: widget.lastName,
+                    pin: _enteredPin,
+                  ),
+                ),
+              );
+              return;
+            case UserRole.hub:
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => HubSetupScreen(
+                    phoneNumber: widget.phoneNumber,
+                    firstName: widget.firstName,
+                    lastName: widget.lastName,
+                    pin: _enteredPin,
+                  ),
+                ),
+              );
+              return;
+            case UserRole.receiver:
+              break;
+          }
+        }
+
+        // Default or unselected role -> proceed to role selection
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => RoleSelectionScreen(

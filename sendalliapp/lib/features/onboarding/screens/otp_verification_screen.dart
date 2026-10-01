@@ -17,6 +17,7 @@ class OtpVerificationScreen extends StatefulWidget {
   final String? firstName;
   final String? lastName;
   final bool isReturningLogin;
+  final UserRole? targetRole;
 
   const OtpVerificationScreen({
     super.key,
@@ -24,6 +25,7 @@ class OtpVerificationScreen extends StatefulWidget {
     this.firstName,
     this.lastName,
     this.isReturningLogin = false,
+    this.targetRole,
   });
 
   @override
@@ -128,6 +130,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           phoneNumber: widget.phoneNumber,
           firstName: widget.firstName ?? 'Sendalli',
           lastName: widget.lastName ?? 'User',
+          targetRole: widget.targetRole,
         ),
       ),
     );

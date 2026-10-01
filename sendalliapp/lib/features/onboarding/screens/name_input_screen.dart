@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/models/user_role.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/form_randomizer.dart';
 import 'phone_input_screen.dart';
 
 /// Screen 2: User's Name Identification (Onboarding-1.png).
 class NameInputScreen extends StatefulWidget {
-  const NameInputScreen({super.key});
+  final UserRole? targetRole;
+
+  const NameInputScreen({super.key, this.targetRole});
 
   @override
   State<NameInputScreen> createState() => _NameInputScreenState();
@@ -52,6 +55,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
         builder: (_) => PhoneInputScreen(
           firstName: _firstNameController.text.trim(),
           lastName: _lastNameController.text.trim(),
+          targetRole: widget.targetRole,
         ),
       ),
     );

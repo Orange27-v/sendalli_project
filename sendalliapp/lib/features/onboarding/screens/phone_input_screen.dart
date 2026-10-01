@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/models/user_role.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/form_randomizer.dart';
 import 'otp_verification_screen.dart';
@@ -9,12 +10,14 @@ class PhoneInputScreen extends StatefulWidget {
   final String? firstName;
   final String? lastName;
   final bool isReturningLogin;
+  final UserRole? targetRole;
 
   const PhoneInputScreen({
     super.key,
     this.firstName,
     this.lastName,
     this.isReturningLogin = false,
+    this.targetRole,
   });
 
   @override
@@ -69,6 +72,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
           firstName: widget.firstName,
           lastName: widget.lastName,
           isReturningLogin: widget.isReturningLogin,
+          targetRole: widget.targetRole,
         ),
       ),
     );

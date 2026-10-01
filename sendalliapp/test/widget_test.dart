@@ -16,12 +16,16 @@ void main() {
 
     // Verify brand name and options
     expect(find.text('SENDALLI'), findsOneWidget);
-    expect(find.text('Corridor Parcel Logistics'), findsOneWidget);
+    expect(find.text('Corridor Parcel Logistics • Warri & Effurun'), findsOneWidget);
     expect(find.text('Receiving a Parcel?'), findsOneWidget);
     expect(find.text('Track by ID'), findsOneWidget);
     expect(find.text('Receiver Portal'), findsOneWidget);
-    expect(find.text('Register as Sender, Rider, or Hub'), findsOneWidget);
-    expect(find.text('Operator Sign In • Phone & PIN'), findsOneWidget);
+    expect(find.text('CHOOSE ROLE TO ENTER'), findsOneWidget);
+    expect(find.text('Merchant'), findsOneWidget);
+    expect(find.text('Rider'), findsOneWidget);
+    expect(find.text('Drop Hub'), findsOneWidget);
+    expect(find.text('Quick Onboard as Sender / Merchant'), findsOneWidget);
+    expect(find.text('Sign In as Sender / Merchant • Phone & PIN'), findsOneWidget);
   });
 
   testWidgets('NameInputScreen validates name before enabling button', (WidgetTester tester) async {

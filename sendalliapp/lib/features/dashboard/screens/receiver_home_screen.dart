@@ -4,12 +4,13 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
 import '../../../core/storage/session_manager.dart';
-import '../../onboarding/screens/welcome_screen.dart';
-import '../../../widgets/guest_tracking_sheet.dart';
+import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/settings_kit.dart';
-import '../../../widgets/content_card.dart';
+import '../../onboarding/screens/welcome_screen.dart';
 
-/// Full-featured Receiver Home Dashboard using Nelo specs & Feather icons.
+/// Clean, simplified, and well-organized Receiver Tracking & Portal Screen.
+/// Built with Nelo quiet aesthetics, zero elevation, and hairline borders.
 class ReceiverHomeScreen extends StatefulWidget {
   final UserProfile user;
 
@@ -20,9 +21,30 @@ class ReceiverHomeScreen extends StatefulWidget {
 }
 
 class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
-  final String _mockTrackingId = 'SND-WAR-8492';
+  final TextEditingController _trackingController = TextEditingController(text: 'SND-WAR-8492');
+  String _activeTrackingId = 'SND-WAR-8492';
+  bool _isDivertedToHub = false;
 
   bool get _isGuest => widget.user.id.startsWith('GUEST');
+
+  @override
+  void dispose() {
+    _trackingController.dispose();
+    super.dispose();
+  }
+
+  void _onTrackSubmitted() {
+    final query = _trackingController.text.trim().toUpperCase();
+    if (query.isNotEmpty) {
+      setState(() => _activeTrackingId = query);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Tracking parcel: $query'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +53,19 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(
-          _isGuest ? 'Receiver Portal' : 'Receiver Dashboard',
-          style: AppTextStyles.h3.copyWith(fontSize: 18),
+        centerTitle: false,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Package Tracker',
+              style: AppTextStyles.h3.copyWith(fontSize: 18),
+            ),
+            Text(
+              _isGuest ? 'Roadside Guest Access • No login' : widget.user.fullName,
+              style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+            ),
+          ],
         ),
         actions: [
           IconButton(
@@ -42,7 +74,7 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
               size: 20,
               color: AppColors.textSecondary,
             ),
-            tooltip: _isGuest ? 'Close' : 'Log out',
+            tooltip: _isGuest ? 'Close Tracker' : 'Log out',
             onPressed: () async {
               if (_isGuest) {
                 Navigator.of(context).pop();
@@ -63,186 +95,346 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Profile Header Card (Nelo pattern)
-            ProfileHeaderCard(
-              name: _isGuest ? 'Roadside Receiver' : widget.user.fullName,
-              subtitle: widget.user.phone.isNotEmpty
-                  ? '${widget.user.phone} • ${widget.user.corridor ?? "Warri Route"}'
-                  : 'Zero login required • Roadside handoffs',
-              roleBadgeText: _isGuest ? 'Guest Access' : 'Receiver',
-              accent: AppColors.primaryDark,
-              initial: widget.user.firstName.isNotEmpty ? widget.user.firstName[0] : 'R',
-              isVerified: widget.user.isVerified,
-            ),
-            const SizedBox(height: 16),
+            // 1. Search / Track By ID Bar
+            _buildTrackingSearchBar(),
+            const SizedBox(height: 20),
 
-            // Track Another Parcel Fast Action
-            OutlinedButton.icon(
-              onPressed: () => GuestTrackingSheet.show(context),
-              icon: const Icon(FeatherIcons.search, size: 18),
-              label: const Text('Track Another Tracking ID'),
-            ),
-            const SizedBox(height: 24),
+            // 2. Active Parcel Card (Hero card)
+            _buildActiveParcelCard(),
+            const SizedBox(height: 18),
 
-            // Active Incoming Parcel using ContentCard
-            ContentCard(
-              title: 'Active Incoming Parcel',
-              badgeCount: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _mockTrackingId,
-                        style: AppTextStyles.h3.copyWith(
-                          color: AppColors.primaryDark,
-                          fontSize: 19,
-                        ),
-                      ),
-                      const StatusBadge(
-                        text: 'IN TRANSIT',
-                        color: AppColors.textPrimary,
-                        backgroundColor: AppColors.primary,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 14),
-
-                  // ETA Tile
-                  Row(
-                    children: [
-                      const Icon(FeatherIcons.clock, size: 16, color: AppColors.textSecondary),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Estimated Arrival: In ~12 mins',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(FeatherIcons.mapPin, size: 16, color: AppColors.textSecondary),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Roadside Stop: ${widget.user.landmark ?? "Jakpa Junction"}',
-                        style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 18),
-
-                  // 6-digit release code container
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          '6-DIGIT RELEASE CODE',
-                          style: AppTextStyles.caption.copyWith(
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0.8,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          '849 201',
-                          style: AppTextStyles.displayLarge.copyWith(
-                            fontSize: 30,
-                            letterSpacing: 6,
-                            color: AppColors.primaryDark,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Read this code to the keke rider at the roadside stop.',
-                          style: AppTextStyles.caption,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-
-                  // Driver Details & 1-tap call
-                  Row(
-                    children: [
-                      Container(
-                        width: 42,
-                        height: 42,
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.15),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(FeatherIcons.user, color: AppColors.primaryDark, size: 20),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Diran Olakunle (Keke)',
-                              style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              'Plate: WRA-492-XA • Score: 94%',
-                              style: AppTextStyles.caption,
-                            ),
-                          ],
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Calling rider: +234 803 000 1234')),
-                          );
-                        },
-                        icon: const Icon(FeatherIcons.phone, color: AppColors.textPrimary, size: 18),
-                        style: IconButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          shape: const CircleBorder(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Drop Hub Diversion Helper (Nelo SettingsGroup)
-            SettingsGroup(
-              label: 'Cannot meet the rider?',
-              children: [
-                SettingsRow(
-                  icon: FeatherIcons.home,
-                  title: 'Divert to Partner Drop Hub',
-                  subtitle: 'Store package at a nearby chemist/shop for ₦500 pickup.',
-                  accent: AppColors.primaryDark,
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Rider notified to divert parcel to nearest partner Hub.')),
-                    );
-                  },
-                ),
-              ],
-            ),
+            // 3. Roadside Drop Hub Diversion Card
+            _buildHubDiversionCard(),
             const SizedBox(height: 24),
           ],
         ),
+      ),
+    );
+  }
+
+  /// Compact, clean search bar with Sample ID generator
+  Widget _buildTrackingSearchBar() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Track A Parcel',
+                style: AppTextStyles.caption.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              RandomizeButton.inline(
+                label: 'Sample ID',
+                onRandomize: () {
+                  final sample = FormSampleData.randomTrackingId();
+                  _trackingController.text = sample;
+                  setState(() => _activeTrackingId = sample);
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: CustomTextField(
+                  controller: _trackingController,
+                  hintText: 'e.g. SND-WAR-8492',
+                  textCapitalization: TextCapitalization.characters,
+                  prefixIcon: FeatherIcons.search,
+                ),
+              ),
+              const SizedBox(width: 8),
+              ElevatedButton(
+                onPressed: _onTrackSubmitted,
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(60, 48),
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                child: const Text('Track'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// High-contrast, clean Active Parcel Card
+  Widget _buildActiveParcelCard() {
+    final stop = widget.user.landmark ?? 'Jakpa Junction Roadside';
+    final corridor = widget.user.corridor ?? 'Refinery Road — Jakpa';
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Card Header: ID + Live Status
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'TRACKING ID',
+                      style: AppTextStyles.caption.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 10,
+                        letterSpacing: 0.6,
+                      ),
+                    ),
+                    Text(
+                      _activeTrackingId,
+                      style: AppTextStyles.h2.copyWith(
+                        color: AppColors.primaryDark,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+                StatusBadge(
+                  text: _isDivertedToHub ? 'DIVERTED TO HUB' : 'IN TRANSIT',
+                  color: AppColors.textPrimary,
+                  backgroundColor: _isDivertedToHub ? AppColors.surfaceSubtle : AppColors.primary,
+                ),
+              ],
+            ),
+          ),
+          const Divider(color: AppColors.border, height: 1),
+
+          // Route & ETA Strip
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Icon(FeatherIcons.navigation, size: 15, color: AppColors.primaryDark),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        corridor,
+                        style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryLight,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(FeatherIcons.clock, size: 12, color: AppColors.primaryDark),
+                          const SizedBox(width: 4),
+                          Text(
+                            _isDivertedToHub ? 'Awaiting drop' : '~12 mins away',
+                            style: AppTextStyles.caption.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primaryDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(FeatherIcons.mapPin, size: 15, color: AppColors.textSecondary),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Pickup Stop: $stop',
+                      style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          // 6-digit Release Code Box
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16.0),
+            decoration: BoxDecoration(
+              color: AppColors.surfaceSubtle,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'HANDOVER RELEASE CODE',
+                      style: AppTextStyles.caption.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 10,
+                        letterSpacing: 0.8,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '849 201',
+                      style: AppTextStyles.displayLarge.copyWith(
+                        fontSize: 24,
+                        letterSpacing: 4,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.primaryDark,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(FeatherIcons.check, size: 16, color: AppColors.primaryDark),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          // Driver Strip with 1-tap call
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: AppColors.primary.withValues(alpha: 0.15),
+                  child: const Icon(FeatherIcons.user, color: AppColors.primaryDark, size: 18),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Diran Olakunle (Keke)',
+                        style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        'Plate: WRA-492-XA • Score: 94%',
+                        style: AppTextStyles.caption,
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Calling rider: +234 803 000 1234')),
+                    );
+                  },
+                  icon: const Icon(FeatherIcons.phone, size: 16, color: AppColors.textPrimary),
+                  style: IconButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: const CircleBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+      ),
+    );
+  }
+
+  /// Drop Hub Diversion Card
+  Widget _buildHubDiversionCard() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.primaryLight,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(FeatherIcons.home, size: 20, color: AppColors.primaryDark),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Cannot meet rider at roadside?',
+                  style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  _isDivertedToHub
+                      ? 'Diverted to City Care Pharmacy Hub (₦500 custody fee on pickup).'
+                      : 'Store parcel at nearby partner chemist or shop for ₦500 pickup.',
+                  style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                ),
+                const SizedBox(height: 10),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    setState(() => _isDivertedToHub = !_isDivertedToHub);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          _isDivertedToHub
+                              ? 'Rider instructed to drop at City Care Pharmacy Hub.'
+                              : 'Parcel reset to direct roadside pickup.',
+                        ),
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                    _isDivertedToHub ? FeatherIcons.check : FeatherIcons.cornerUpRight,
+                    size: 14,
+                    color: AppColors.textPrimary,
+                  ),
+                  label: Text(_isDivertedToHub ? 'Diverted to Hub' : 'Divert to Partner Hub (₦500)'),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(38),
+                    textStyle: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
