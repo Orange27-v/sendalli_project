@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../widgets/guest_tracking_sheet.dart';
@@ -28,9 +29,9 @@ class WelcomeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: const Icon(
-                  Icons.electric_rickshaw_rounded,
-                  size: 52,
-                  color: AppColors.primary,
+                  FeatherIcons.package,
+                  size: 44,
+                  color: AppColors.primaryDark,
                 ),
               ),
               const SizedBox(height: 24),
@@ -93,12 +94,12 @@ class WelcomeScreen extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.qr_code_scanner, size: 18, color: AppColors.primary),
+                      const Icon(FeatherIcons.maximize, size: 16, color: AppColors.textPrimary),
                       const SizedBox(width: 8),
                       Text(
                         'Have a Tracking ID? Track here',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.primary,
+                          color: AppColors.textPrimary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

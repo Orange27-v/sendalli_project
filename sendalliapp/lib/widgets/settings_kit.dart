@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../core/constants/app_colors.dart';
 import '../core/constants/app_text_styles.dart';
 
@@ -155,7 +156,7 @@ class ProfileHeaderCard extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
-                          Icons.check,
+                          FeatherIcons.check,
                           size: 11,
                           color: Colors.white,
                         ),
@@ -217,8 +218,8 @@ class ProfileHeaderCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     const Icon(
-                      Icons.chevron_right,
-                      size: 18,
+                      FeatherIcons.chevronRight,
+                      size: 16,
                       color: AppColors.textSecondary,
                     ),
                   ],
@@ -373,8 +374,8 @@ class SettingsRow extends StatelessWidget {
             if (!isDestructive) ...[
               const SizedBox(width: 6),
               const Icon(
-                Icons.chevron_right,
-                size: 20,
+                FeatherIcons.chevronRight,
+                size: 18,
                 color: AppColors.textMuted,
               ),
             ],

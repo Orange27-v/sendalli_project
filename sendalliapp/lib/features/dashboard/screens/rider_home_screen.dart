@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
@@ -25,7 +26,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
         title: Text('Rider Corridor Hub', style: AppTextStyles.h3),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout, color: AppColors.textSecondary),
+            icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textSecondary),
             onPressed: () async {
               await SessionManager.logout();
               if (!context.mounted) return;
@@ -94,7 +95,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.shield_rounded, size: 16, color: AppColors.eliteGold),
+                            const Icon(FeatherIcons.shield, size: 14, color: AppColors.eliteGold),
                             const SizedBox(width: 4),
                             Text(
                               '${widget.user.trustScore}%',
@@ -154,9 +155,9 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
               child: Row(
                 children: [
                   Icon(
-                    _isOnRoute ? Icons.radar_rounded : Icons.pause_circle_outline_rounded,
-                    color: _isOnRoute ? AppColors.primary : AppColors.textMuted,
-                    size: 32,
+                    _isOnRoute ? FeatherIcons.radio : FeatherIcons.pauseCircle,
+                    color: _isOnRoute ? AppColors.primaryDark : AppColors.textMuted,
+                    size: 28,
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -212,9 +213,9 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                 child: Column(
                   children: [
                     Icon(
-                      _isOnRoute ? Icons.sensors_rounded : Icons.sensors_off_rounded,
-                      size: 48,
-                      color: _isOnRoute ? AppColors.primary : AppColors.textMuted,
+                      _isOnRoute ? FeatherIcons.activity : FeatherIcons.circle,
+                      size: 44,
+                      color: _isOnRoute ? AppColors.primaryDark : AppColors.textMuted,
                     ),
                     const SizedBox(height: 12),
                     Text(

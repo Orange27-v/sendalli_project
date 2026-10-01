@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import 'role_selection_screen.dart';
@@ -174,7 +175,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
                     width: 72,
                     height: 60,
                     alignment: Alignment.center,
-                    child: const Icon(Icons.backspace_outlined, size: 24, color: AppColors.textPrimary),
+                    child: const Icon(FeatherIcons.delete, size: 22, color: AppColors.textPrimary),
                   ),
                 );
               }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
@@ -18,7 +19,7 @@ class HubHomeScreen extends StatelessWidget {
         title: Text('Drop Hub Custody', style: AppTextStyles.h3),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout, color: AppColors.textSecondary),
+            icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textSecondary),
             onPressed: () async {
               await SessionManager.logout();
               if (!context.mounted) return;
@@ -47,7 +48,7 @@ class HubHomeScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 26,
                     backgroundColor: AppColors.primary,
-                    child: const Icon(Icons.storefront_rounded, color: Colors.white, size: 28),
+                    child: const Icon(FeatherIcons.home, color: AppColors.textPrimary, size: 24),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -70,7 +71,7 @@ class HubHomeScreen extends StatelessWidget {
                   const SnackBar(content: Text('Camera QR scanner will open to accept package into custody.')),
                 );
               },
-              icon: const Icon(Icons.qr_code_scanner_rounded, color: Colors.white),
+              icon: const Icon(FeatherIcons.maximize, size: 18, color: AppColors.textPrimary),
               label: const Text('Scan Package Into Custody'),
             ),
             const SizedBox(height: 28),
@@ -86,7 +87,7 @@ class HubHomeScreen extends StatelessWidget {
               child: Center(
                 child: Column(
                   children: [
-                    const Icon(Icons.inventory_2_outlined, size: 44, color: AppColors.textMuted),
+                    const Icon(FeatherIcons.package, size: 40, color: AppColors.textMuted),
                     const SizedBox(height: 12),
                     Text('No parcels currently held in custody', style: AppTextStyles.bodyMedium),
                     const SizedBox(height: 4),

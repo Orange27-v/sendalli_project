@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
@@ -118,9 +119,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: const Icon(
-                  Icons.electric_rickshaw_rounded,
-                  size: 56,
-                  color: AppColors.primary,
+                  FeatherIcons.package,
+                  size: 48,
+                  color: AppColors.primaryDark,
                 ),
               ),
               const SizedBox(height: 24),

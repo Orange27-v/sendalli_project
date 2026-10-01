@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/storage/session_manager.dart';
@@ -204,7 +205,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                               );
                               _startTimer();
                             },
-                            icon: const Icon(Icons.chat_bubble_outline, size: 18),
+                            icon: const Icon(FeatherIcons.messageSquare, size: 16),
                             label: const Text('Send via WhatsApp'),
                           ),
                         ],

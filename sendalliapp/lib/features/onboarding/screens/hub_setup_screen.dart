@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
@@ -53,7 +54,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
     // Request Notification permission contextually (Modal - Location-1.png)
     await PermissionDialog.show(
       context: context,
-      icon: Icons.notifications_active_outlined,
+      icon: FeatherIcons.bell,
       title: 'Turn on Notifications',
       description: 'Receive immediate alerts when a keke rider needs to drop off a parcel at your store.',
       primaryButtonText: 'Allow Notifications',
@@ -117,7 +118,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Shop / Pharmacy Name',
                   hintText: 'e.g. City Care Pharmacy & Stores',
-                  prefixIcon: Icon(Icons.store_outlined, color: AppColors.primary),
+                  prefixIcon: Icon(FeatherIcons.home, color: AppColors.textSecondary, size: 20),
                 ),
               ),
               const SizedBox(height: 16),
@@ -127,7 +128,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Roadside Landmark',
                   hintText: 'e.g. PTI Road, opposite First Gate',
-                  prefixIcon: Icon(Icons.location_on_outlined, color: AppColors.primary),
+                  prefixIcon: Icon(FeatherIcons.mapPin, color: AppColors.textSecondary, size: 20),
                 ),
               ),
               const SizedBox(height: 36),

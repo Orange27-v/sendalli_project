@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/storage/session_manager.dart';
@@ -15,7 +16,7 @@ class ReceiverTrackingScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Live Parcel Tracker', style: AppTextStyles.h3),
         leading: IconButton(
-          icon: const Icon(Icons.close_rounded),
+          icon: const Icon(FeatherIcons.x, size: 20),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
@@ -70,7 +71,7 @@ class ReceiverTrackingScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      const Icon(Icons.timer_outlined, size: 20, color: AppColors.primary),
+                      const Icon(FeatherIcons.clock, size: 16, color: AppColors.primaryDark),
                       const SizedBox(width: 8),
                       Text(
                         'Estimated Arrival: In ~12 mins',
@@ -154,7 +155,7 @@ class ReceiverTrackingScreen extends StatelessWidget {
                   const CircleAvatar(
                     radius: 24,
                     backgroundColor: AppColors.surfaceSubtle,
-                    child: Icon(Icons.person, color: AppColors.primary, size: 28),
+                    child: Icon(FeatherIcons.user, color: AppColors.textPrimary, size: 22),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -165,7 +166,7 @@ class ReceiverTrackingScreen extends StatelessWidget {
                         Text('Tricycle Plate: WRA-492-XA', style: AppTextStyles.bodySmall),
                         Row(
                           children: [
-                            const Icon(Icons.shield_rounded, size: 14, color: AppColors.eliteGold),
+                            const Icon(FeatherIcons.shield, size: 14, color: AppColors.eliteGold),
                             const SizedBox(width: 4),
                             Text('Trust Score: 94%', style: AppTextStyles.caption.copyWith(color: AppColors.eliteGold)),
                           ],
@@ -179,7 +180,7 @@ class ReceiverTrackingScreen extends StatelessWidget {
                         const SnackBar(content: Text('Calling rider: +234 803 000 1234')),
                       );
                     },
-                    icon: const Icon(Icons.phone_in_talk_rounded, color: Colors.white),
+                    icon: const Icon(FeatherIcons.phone, color: AppColors.textPrimary, size: 18),
                     style: IconButton.styleFrom(backgroundColor: AppColors.primary),
                   ),
                 ],

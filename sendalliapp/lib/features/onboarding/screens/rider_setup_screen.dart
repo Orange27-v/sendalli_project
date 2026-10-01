@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/corridor_constants.dart';
@@ -56,7 +57,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
     // Request Location permission contextually (Modal - Location-3.png)
     await PermissionDialog.show(
       context: context,
-      icon: Icons.location_on_outlined,
+      icon: FeatherIcons.mapPin,
       title: 'Share your Location',
       description: 'Sendalli needs your location to broadcast orders matching your active transit corridor in real-time.',
       primaryButtonText: 'Allow Location Access',
@@ -127,9 +128,9 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
                           radius: 46,
                           backgroundColor: AppColors.primaryLight,
                           child: Icon(
-                            _selfieCaptured ? Icons.check_circle_rounded : Icons.person_rounded,
-                            size: 48,
-                            color: AppColors.primary,
+                            _selfieCaptured ? FeatherIcons.checkCircle : FeatherIcons.user,
+                            size: 40,
+                            color: AppColors.primaryDark,
                           ),
                         ),
                         Positioned(
@@ -141,7 +142,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
                               color: AppColors.primary,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
+                            child: const Icon(FeatherIcons.camera, color: AppColors.textPrimary, size: 14),
                           ),
                         ),
                       ],
@@ -160,7 +161,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Tricycle Plate Number',
                   hintText: 'e.g. WRA-492-XA',
-                  prefixIcon: Icon(Icons.pin_outlined, color: AppColors.primary),
+                  prefixIcon: Icon(FeatherIcons.hash, color: AppColors.textSecondary, size: 20),
                 ),
               ),
               const SizedBox(height: 16),
@@ -170,7 +171,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
                 initialValue: _selectedCorridor,
                 decoration: const InputDecoration(
                   labelText: 'Primary Corridor',
-                  prefixIcon: Icon(Icons.alt_route_rounded, color: AppColors.primary),
+                  prefixIcon: Icon(FeatherIcons.navigation, color: AppColors.textSecondary, size: 20),
                 ),
                 items: CorridorConstants.pilotCorridors.map((c) {
                   return DropdownMenuItem(value: c, child: Text(c, style: AppTextStyles.bodyMedium));
@@ -188,7 +189,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Home Keke Park / Chairman',
                   hintText: 'e.g. Refinery Junction Unit Park',
-                  prefixIcon: Icon(Icons.groups_outlined, color: AppColors.primary),
+                  prefixIcon: Icon(FeatherIcons.users, color: AppColors.textSecondary, size: 20),
                 ),
               ),
               const SizedBox(height: 36),

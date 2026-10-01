@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
@@ -43,7 +44,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
     // Request Notification permission contextually (Modal - Location-1.png)
     await PermissionDialog.show(
       context: context,
-      icon: Icons.notifications_active_outlined,
+      icon: FeatherIcons.bell,
       title: 'Turn on Notifications',
       description: 'Get real-time updates when a keke rider accepts and arrives with your parcel.',
       primaryButtonText: 'Turn On Notifications',
@@ -105,7 +106,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Shop / Business Name',
                   hintText: 'e.g. Warri Glow Boutique',
-                  prefixIcon: Icon(Icons.storefront_outlined, color: AppColors.primary),
+                  prefixIcon: Icon(FeatherIcons.shoppingBag, color: AppColors.textSecondary, size: 20),
                 ),
               ),
               const Spacer(),

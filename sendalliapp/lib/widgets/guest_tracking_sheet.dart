@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../core/constants/app_colors.dart';
 import '../core/constants/app_text_styles.dart';
 import '../core/storage/session_manager.dart';
@@ -71,7 +72,7 @@ class _GuestTrackingSheetState extends State<GuestTrackingSheet> {
       ),
       decoration: const BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -79,7 +80,7 @@ class _GuestTrackingSheetState extends State<GuestTrackingSheet> {
         children: [
           Center(
             child: Container(
-              width: 44,
+              width: 36,
               height: 4,
               decoration: BoxDecoration(
                 color: AppColors.border,
@@ -100,7 +101,7 @@ class _GuestTrackingSheetState extends State<GuestTrackingSheet> {
             textCapitalization: TextCapitalization.characters,
             decoration: InputDecoration(
               hintText: 'e.g. SND-WAR-8492',
-              prefixIcon: const Icon(Icons.qr_code_scanner, color: AppColors.primary),
+              prefixIcon: const Icon(FeatherIcons.search, size: 18, color: AppColors.textSecondary),
               errorText: _errorMessage,
             ),
             onSubmitted: (_) => _submitTrackingId(),

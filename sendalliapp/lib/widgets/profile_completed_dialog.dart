@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../core/constants/app_colors.dart';
 import '../core/constants/app_text_styles.dart';
 
@@ -54,9 +55,9 @@ class ProfileCompletedDialog extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: const Icon(
-                Icons.check_circle_rounded,
-                size: 48,
-                color: AppColors.primary,
+                FeatherIcons.checkCircle,
+                size: 40,
+                color: AppColors.primaryDark,
               ),
             ),
             const SizedBox(height: 20),

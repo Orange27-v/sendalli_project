@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../core/constants/app_colors.dart';
 import '../core/constants/app_text_styles.dart';
 import 'settings_kit.dart';
@@ -102,8 +103,8 @@ class ContentCard extends StatelessWidget {
                               ),
                               const SizedBox(width: 4),
                               const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 11,
+                                FeatherIcons.chevronRight,
+                                size: 13,
                                 color: AppColors.textMuted,
                               ),
                             ],

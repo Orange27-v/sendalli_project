@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/constants/corridor_constants.dart';
@@ -42,7 +43,7 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
       // Request Notification permission contextually (Modal - Location-1.png)
       await PermissionDialog.show(
         context: context,
-        icon: Icons.notifications_active_outlined,
+        icon: FeatherIcons.bell,
         title: 'Turn on Notifications',
         description: 'Receive real-time arrival countdowns whenever a parcel is sent to your phone number.',
         primaryButtonText: 'Turn On Notifications',
@@ -129,7 +130,7 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
                     child: Row(
                       children: [
                         const IconTile(
-                          icon: Icons.alt_route_rounded,
+                          icon: FeatherIcons.map,
                           tone: AppColors.primaryDark,
                         ),
                         const SizedBox(width: 14),
@@ -159,7 +160,7 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
                     child: Row(
                       children: [
                         const IconTile(
-                          icon: Icons.pin_drop_outlined,
+                          icon: FeatherIcons.mapPin,
                           tone: AppColors.primaryDark,
                         ),
                         const SizedBox(width: 14),
@@ -193,7 +194,7 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
                 label: 'Real-time Alerts',
                 children: [
                   SettingsSwitchRow(
-                    icon: Icons.notifications_active_outlined,
+                    icon: FeatherIcons.bell,
                     title: 'Live Arrival Alerts',
                     description: 'Receive audio & push notifications when keke riders are 10 minutes away.',
                     accent: AppColors.primaryDark,
@@ -216,7 +217,7 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const IconTile(
-                      icon: Icons.sync_rounded,
+                      icon: FeatherIcons.refreshCw,
                       tone: AppColors.primaryDark,
                       size: 32,
                       iconSize: 18,

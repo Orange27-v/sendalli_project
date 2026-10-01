@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
@@ -110,28 +111,28 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
                     children: [
                       _buildRoleCard(
                         role: UserRole.sender,
-                        icon: Icons.store_mall_directory_rounded,
+                        icon: FeatherIcons.shoppingBag,
                         title: 'Send Parcels',
                         subtitle: 'I run a shop, market stall, or want to send items across town.',
                       ),
                       const SizedBox(height: 14),
                       _buildRoleCard(
                         role: UserRole.rider,
-                        icon: Icons.electric_rickshaw_rounded,
+                        icon: FeatherIcons.navigation,
                         title: 'Deliver Along Route (Rider)',
                         subtitle: 'I drive a keke or minibus and want to earn extra on my regular trips.',
                       ),
                       const SizedBox(height: 14),
                       _buildRoleCard(
                         role: UserRole.hub,
-                        icon: Icons.storefront_rounded,
+                        icon: FeatherIcons.home,
                         title: 'Roadside Drop Hub Partner',
                         subtitle: 'I operate a roadside store or chemist and want to earn fees holding packages.',
                       ),
                       const SizedBox(height: 14),
                       _buildRoleCard(
                         role: UserRole.receiver,
-                        icon: Icons.markunread_mailbox_rounded,
+                        icon: FeatherIcons.package,
                         title: 'Receive & Track Parcels',
                         subtitle: 'I regularly receive deliveries and want live roadside arrival alerts.',
                       ),
@@ -182,13 +183,13 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary : AppColors.surfaceSubtle,
+                color: isSelected ? AppColors.primary : AppColors.primary.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 icon,
-                color: isSelected ? Colors.white : AppColors.primary,
-                size: 26,
+                color: isSelected ? AppColors.textPrimary : AppColors.primaryDark,
+                size: 22,
               ),
             ),
             const SizedBox(width: 16),
@@ -207,6 +208,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
                     subtitle,
                     style: AppTextStyles.bodySmall.copyWith(
                       color: isSelected ? AppColors.textSecondary : AppColors.textMuted,
+                      height: 1.4,
                     ),
                   ),
                 ],
@@ -226,7 +228,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
               ),
               child: isSelected
                   ? const Center(
-                      child: Icon(Icons.check, size: 14, color: Colors.white),
+                      child: Icon(FeatherIcons.check, size: 13, color: AppColors.textPrimary),
                     )
                   : null,
             ),
