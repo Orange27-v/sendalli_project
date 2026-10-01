@@ -6,6 +6,7 @@ import '../../../core/storage/session_manager.dart';
 import '../../dashboard/screens/sender_home_screen.dart';
 import '../../dashboard/screens/rider_home_screen.dart';
 import '../../dashboard/screens/hub_home_screen.dart';
+import '../../dashboard/screens/receiver_home_screen.dart';
 import '../../../core/models/user_role.dart';
 import 'pin_setup_screen.dart';
 
@@ -110,7 +111,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             );
             return;
           case UserRole.receiver:
-            break;
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => ReceiverHomeScreen(user: user)),
+              (route) => false,
+            );
+            return;
         }
       }
     }

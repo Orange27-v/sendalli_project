@@ -8,6 +8,7 @@ import '../../dashboard/screens/sender_home_screen.dart';
 import '../../dashboard/screens/rider_home_screen.dart';
 import '../../dashboard/screens/hub_home_screen.dart';
 import '../../dashboard/screens/receiver_tracking_screen.dart';
+import '../../dashboard/screens/receiver_home_screen.dart';
 
 /// Cold-start splash screen with automated session verification and routing.
 class SplashScreen extends StatefulWidget {
@@ -58,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           target = HubHomeScreen(user: user);
           break;
         case UserRole.receiver:
-          target = const WelcomeScreen();
+          target = ReceiverHomeScreen(user: user);
           break;
       }
       if (!mounted) return;

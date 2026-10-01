@@ -48,22 +48,23 @@ It covers the initial launch, cold-start session routing, guest receiver trackin
        ▼
 [ Screen 6: Role Selection (Onboarding-10.png) ]
        │
-       ├─────────────────────┼─────────────────────┐
-       ▼                     ▼                     ▼
-[ Branch A: Sender ]   [ Branch B: Rider ]   [ Branch C: Hub ]
-• Shop/Business Name   • Driver Selfie       • Shop Name & Landmark
-• Push Notifications   • Plate Number        • Roadside Store Photo
-                       • Corridor & Park     • Operating Hours
-                       • Location Access
+       ├─────────────────────┬─────────────────────┬─────────────────────┐
+       ▼                     ▼                     ▼                     ▼
+[ Branch A: Sender ]   [ Branch B: Rider ]   [ Branch C: Hub ]     [ Branch D: Receiver ]
+• Shop/Business Name   • Driver Selfie       • Shop Name & Landmark• Preferred Corridor & Stop
+• Push Notifications   • Plate Number        • Roadside Store Photo• Push Notifications
+                       • Corridor & Park     • Operating Hours     • Live Arrival Alerts
+                       • Location Access                           • Auto Parcel Detection
                        • Base Trust Score: 80
-       │                     │                     │
-       └─────────────────────┼─────────────────────┘
-                             ▼
-               [ Screen 7: Profile Completed ]
-                  (Modal - Location-2.png)
-                             │
-                             ▼
-                    [ Role Home Screen ]
+       │                     │                     │                     │
+       └─────────────────────┴─────────────────────┴─────────────────────┘
+                                       ▼
+                         [ Screen 7: Profile Completed ]
+                            (Modal - Location-2.png)
+                                       │
+                                       ▼
+                              [ Role Home Screen ]
+                       (Sender, Rider, Hub, or Receiver)
 ```
 
 ---
@@ -135,7 +136,7 @@ It covers the initial launch, cold-start session routing, guest receiver trackin
 * **UI Elements:**
   * Headline: *"How will you use Sendalli?"*
   * Subtitle: *"You can change or add roles later from your profile."*
-* **3 Interactive Cards:**
+* **4 Interactive Cards:**
   1. **Sender (Merchant):**
      * Title: *"Send Parcels"*
      * Description: *"I want to send packages across town on keke routes."*
@@ -145,6 +146,9 @@ It covers the initial launch, cold-start session routing, guest receiver trackin
   3. **Drop Hub (Roadside Shop):**
      * Title: *"Roadside Drop Hub"*
      * Description: *"I own a store, pharmacy, or kiosk and want to store packages for fees."*
+  4. **Receiver (Package Recipient / Consignee):**
+     * Title: *"Receive & Track Parcels"*
+     * Description: *"I regularly receive deliveries and want live roadside arrival alerts & automatic package tracking."*
 
 ---
 
@@ -180,6 +184,18 @@ It covers the initial launch, cold-start session routing, guest receiver trackin
 
 ---
 
+### **Branch D: Receiver Setup (Consignee Profile Flow)**
+1. **Corridor & Drop Point Selection:**
+   * Preferred transit corridor (e.g., *Refinery Road – Jakpa*).
+   * Preferred roadside landmark / meeting junction (e.g., *Jakpa Junction*).
+2. **Permission Modal (`Modal - Location-1.png`):**
+   * Prompt for **Push Notifications** explaining: *"Receive real-time arrival countdowns whenever a parcel is sent to your phone number"*.
+3. **Automatic Parcel Syncing:**
+   * Any shipment booked in Warri/Effurun addressed to the user's verified phone number automatically links to their account.
+4. **State:** Receiver profile active $\rightarrow$ Direct to Receiver Dashboard (`ReceiverHomeScreen`).
+
+---
+
 ## **5. Edge Cases & Resilience Strategy**
 
 | Scenario / Edge Case | System Solution |
@@ -211,11 +227,13 @@ It covers the initial launch, cold-start session routing, guest receiver trackin
   - [ ] `CreatePinScreen` (`Onboarding-6.png`) with custom numeric keypad.
 
 - [ ] **Step 4: Role Branching & Progressive Setup**
-  - [ ] `RoleSelectionScreen` (`Onboarding-10.png`) with 3 selectable cards.
+  - [ ] `RoleSelectionScreen` (`Onboarding-10.png`) with 4 selectable cards (Sender, Rider, Hub, Receiver).
   - [ ] `SenderProfileSetupScreen` with business name input.
   - [ ] `RiderProfileSetupScreen` with selfie capture, plate number, and corridor dropdown.
   - [ ] `HubProfileSetupScreen` with shop name, landmark, and storefront photo capture.
+  - [ ] `ReceiverSetupScreen` with preferred corridor and roadside junction.
 
 - [ ] **Step 5: Permissions & Success Dialogs**
   - [ ] Reusable permission dialogs for Notifications (`Modal - Location-1.png`) and Location (`Modal - Location-3.png`).
-  - [ ] `ProfileCompletedModal` (`Modal - Location-2.png`) routing to the respective role's dashboard.
+  - [ ] `ProfileCompletedModal` (`Modal - Location-2.png`) routing to the respective role's dashboard (Sender, Rider, Hub, or Receiver).
+  - [ ] Dedicated home dashboards: `SenderHomeScreen`, `RiderHomeScreen`, `HubHomeScreen`, and `ReceiverHomeScreen`.

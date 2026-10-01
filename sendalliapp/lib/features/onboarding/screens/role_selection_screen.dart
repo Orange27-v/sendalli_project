@@ -5,6 +5,7 @@ import '../../../core/models/user_role.dart';
 import 'sender_setup_screen.dart';
 import 'rider_setup_screen.dart';
 import 'hub_setup_screen.dart';
+import 'receiver_setup_screen.dart';
 
 /// Screen 6: Role Selection "How will you use Sendalli?" (Onboarding-10.png).
 class RoleSelectionScreen extends StatefulWidget {
@@ -67,6 +68,16 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
         );
         break;
       case UserRole.receiver:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => ReceiverSetupScreen(
+              phoneNumber: widget.phoneNumber,
+              firstName: widget.firstName,
+              lastName: widget.lastName,
+              pin: widget.pin,
+            ),
+          ),
+        );
         break;
     }
   }
@@ -90,31 +101,47 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
                 'Select your primary role. You can switch or add roles later.',
                 style: AppTextStyles.bodyMedium,
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: 20),
 
-              // 3 Selectable Cards
-              _buildRoleCard(
-                role: UserRole.sender,
-                icon: Icons.store_mall_directory_rounded,
-                title: 'Send Parcels',
-                subtitle: 'I run a shop, market stall, or want to send items across town.',
-              ),
-              const SizedBox(height: 16),
-              _buildRoleCard(
-                role: UserRole.rider,
-                icon: Icons.electric_rickshaw_rounded,
-                title: 'Deliver Along Route (Rider)',
-                subtitle: 'I drive a keke or minibus and want to earn extra on my regular trips.',
-              ),
-              const SizedBox(height: 16),
-              _buildRoleCard(
-                role: UserRole.hub,
-                icon: Icons.storefront_rounded,
-                title: 'Roadside Drop Hub Partner',
-                subtitle: 'I operate a roadside store or chemist and want to earn fees holding packages.',
+              // 4 Selectable Role Cards
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildRoleCard(
+                        role: UserRole.sender,
+                        icon: Icons.store_mall_directory_rounded,
+                        title: 'Send Parcels',
+                        subtitle: 'I run a shop, market stall, or want to send items across town.',
+                      ),
+                      const SizedBox(height: 14),
+                      _buildRoleCard(
+                        role: UserRole.rider,
+                        icon: Icons.electric_rickshaw_rounded,
+                        title: 'Deliver Along Route (Rider)',
+                        subtitle: 'I drive a keke or minibus and want to earn extra on my regular trips.',
+                      ),
+                      const SizedBox(height: 14),
+                      _buildRoleCard(
+                        role: UserRole.hub,
+                        icon: Icons.storefront_rounded,
+                        title: 'Roadside Drop Hub Partner',
+                        subtitle: 'I operate a roadside store or chemist and want to earn fees holding packages.',
+                      ),
+                      const SizedBox(height: 14),
+                      _buildRoleCard(
+                        role: UserRole.receiver,
+                        icon: Icons.markunread_mailbox_rounded,
+                        title: 'Receive & Track Parcels',
+                        subtitle: 'I regularly receive deliveries and want live roadside arrival alerts.',
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
               ),
 
-              const Spacer(),
+              const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: _proceed,
                 child: const Text('Continue'),

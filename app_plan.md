@@ -22,15 +22,17 @@
 │  SENDER (Shop)  │   RIDER (Keke)    │    HUB (Store)   │   RECEIVER    │
 │ • Post parcels  │ • Go "On Route"   │ • Custody intake │ • Guest track │
 │ • Escrow funding│ • 1-tap accept    │ • ₦500 hub fee   │ • 6-digit OTP │
-│ • Pickup QR gen │ • Pickup QR scan  │ • Secure release │ • No signup   │
-│ • Track delivery│ • 6-digit code in │ • Ledger balance │ • Contact info│
+│ • Pickup QR gen │ • Pickup QR scan  │ • Secure release │ • Auto parcel │
+│ • Track delivery│ • 6-digit code in │ • Ledger balance │ • Home dash   │
 └─────────────────┴───────────────────┴──────────────────┴───────────────┘
 ```
 
 1. **Sender (Merchant / Customer):** Fast business profile, posts parcel with mandatory photo, selects corridor drop point, deposits fee into escrow, and shares 6-digit code.
 2. **Rider (*Keke* Driver):** Approved via union park chairman, goes "On Route", receives corridor alerts, makes quick 1-minute roadside pickup/drop stops, and earns instant wallet credit.
 3. **Hub (Micro-Store Operator):** Roadside shop/chemist that accepts parcels when receivers miss roadside windows or pre-book custody, earning a flat **₦500 custody fee**.
-4. **Receiver (Frictionless Guest):** Accesses a temporary in-app tracking session using only a **Tracking ID** (`SND-WAR-XXXX`) without passwords or account registration.
+4. **Receiver (Consignee — Dual Access):**
+   * *Instant Guest Track:* Accesses a temporary in-app tracking session using only a **Tracking ID** (`SND-WAR-XXXX`) without passwords or account registration.
+   * *Registered Receiver Dashboard:* Completes 45-second sign-up to automatically aggregate all incoming parcels sent to their phone number, track live arrival countdowns, view 6-digit handover codes, and redirect parcels to nearby Drop Hubs if unavailable at roadside.
 
 ---
 
@@ -47,11 +49,13 @@ Based on the design assets organized in `Ride Sharing App - Rider App/`:
   * *Sender:* Quick shop name entry $\rightarrow$ Direct to Sender Dashboard.
   * *Rider:* Driver selfie (`Onboarding-8.png`, `Onboarding-9.png`), vehicle plate number, corridor and union park selection $\rightarrow$ Verification pending.
   * *Hub:* Store name, roadside storefront photo, and operating hours.
+  * *Receiver:* Preferred corridor drop point & junction $\rightarrow$ Direct to Receiver Dashboard.
 * **Permissions (`Modal - Location-1.png` to `3.png`):** Contextually triggered modals for Push Notifications (broadcast alerts), Location (corridor matching), and Camera (parcel/selfie photos).
 
 ### **Module 2: Home & Role Dashboards (`02_Home_and_Dashboard/`)**
 * **Rider Dashboard (`Home.png`, `Home-1.png`):** "Go On Route" toggle switch, active corridor selector, today's earnings card, and **Trust Score badge** (e.g., *Trust Score: 94% - Elite Partner*).
 * **Sender Dashboard (`Home-2.png`):** Quick "Send Parcel" CTA, active shipments carousel, and recent corridor routes.
+* **Receiver Dashboard (`ReceiverHomeScreen`):** Real-time incoming shipments linked to phone, live arrival ETA countdown ("In ~12 mins"), 6-digit release code card, direct driver calling, and 1-tap Hub diversion.
 * **Corridor Drop Points Search (`Home-4.png`):** Quick-select search sheet for standardized roadside landmarks (e.g., *Refinery Junction, PTI Gate, Jakpa Junction*).
 
 ### **Module 3: Location, Corridor & Booking (`03_Location_and_Booking/`)**

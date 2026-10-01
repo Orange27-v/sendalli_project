@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sendalliapp/core/theme/app_theme.dart';
 import 'package:sendalliapp/features/onboarding/screens/welcome_screen.dart';
 import 'package:sendalliapp/features/onboarding/screens/name_input_screen.dart';
+import 'package:sendalliapp/features/onboarding/screens/role_selection_screen.dart';
 
 void main() {
   testWidgets('WelcomeScreen renders brand titles and action buttons', (WidgetTester tester) async {
@@ -41,5 +42,36 @@ void main() {
 
     final activeBtn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
     expect(activeBtn.onPressed, isNotNull);
+  });
+
+  testWidgets('RoleSelectionScreen displays all 4 roles including Receiver', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const Scaffold(
+          body: RoleSelectionScreen(
+            phoneNumber: '+2348031234567',
+            firstName: 'Tega',
+            lastName: 'Okoro',
+            pin: '1234',
+          ),
+        ),
+      ),
+    );
+
+    // Verify all 4 roles are rendered
+    expect(find.text('Send Parcels'), findsOneWidget);
+    expect(find.text('Deliver Along Route (Rider)'), findsOneWidget);
+    expect(find.text('Roadside Drop Hub Partner'), findsOneWidget);
+    expect(find.text('Receive & Track Parcels'), findsOneWidget);
+
+    // Tap Receiver card
+    await tester.ensureVisible(find.text('Receive & Track Parcels'));
+    await tester.tap(find.text('Receive & Track Parcels'));
+    await tester.pump();
+
+    // Verify Continue button is enabled
+    final continueBtn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+    expect(continueBtn.onPressed, isNotNull);
   });
 }
