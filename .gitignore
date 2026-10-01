@@ -1,0 +1,27 @@
+.DS_Store
+*.log
+.idea/
+.vscode/
+
+# Flutter & Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+**/build/
+**/.dart_tool/
+
+# Node / JS
+node_modules/
+dist/
+.next/
+out/
+
+# PHP / Laravel
+vendor/
+.env
+.env.backup
+.env.production
