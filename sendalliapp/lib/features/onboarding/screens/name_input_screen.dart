@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/form_randomizer.dart';
 import 'phone_input_screen.dart';
 
 /// Screen 2: User's Name Identification (Onboarding-1.png).
@@ -30,6 +33,11 @@ class _NameInputScreenState extends State<NameInputScreen> {
     }
   }
 
+  void _randomize() {
+    _firstNameController.text = FormSampleData.randomFirstName();
+    _lastNameController.text = FormSampleData.randomLastName();
+  }
+
   @override
   void dispose() {
     _firstNameController.dispose();
@@ -55,6 +63,9 @@ class _NameInputScreenState extends State<NameInputScreen> {
       appBar: AppBar(
         leading: const BackButton(),
         title: Text('Step 1 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+        actions: [
+          RandomizeButton(onRandomize: _randomize),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -69,22 +80,20 @@ class _NameInputScreenState extends State<NameInputScreen> {
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 32),
-              TextField(
+              CustomTextField(
                 controller: _firstNameController,
+                labelText: 'First Name',
+                hintText: 'e.g. Diran',
                 textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                  labelText: 'First Name',
-                  hintText: 'e.g. Diran',
-                ),
+                prefixIcon: FeatherIcons.user,
               ),
-              const SizedBox(height: 16),
-              TextField(
+              const SizedBox(height: 18),
+              CustomTextField(
                 controller: _lastNameController,
+                labelText: 'Last Name',
+                hintText: 'e.g. Olakunle',
                 textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                  labelText: 'Last Name',
-                  hintText: 'e.g. Olakunle',
-                ),
+                prefixIcon: FeatherIcons.user,
               ),
               const Spacer(),
               ElevatedButton(

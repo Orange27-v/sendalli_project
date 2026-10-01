@@ -74,4 +74,26 @@ void main() {
     final continueBtn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
     expect(continueBtn.onPressed, isNotNull);
   });
+
+  testWidgets('RandomizeButton populates NameInputScreen fields and enables Continue', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const NameInputScreen(),
+      ),
+    );
+
+    // Initial state: continue button disabled
+    final continueBtn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+    expect(continueBtn.onPressed, isNull);
+
+    // Tap Randomize action
+    expect(find.text('Randomize'), findsOneWidget);
+    await tester.tap(find.text('Randomize'));
+    await tester.pump();
+
+    // Verify fields populated and continue button enabled
+    final activeBtn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+    expect(activeBtn.onPressed, isNotNull);
+  });
 }

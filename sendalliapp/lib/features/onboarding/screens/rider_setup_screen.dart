@@ -6,6 +6,8 @@ import '../../../core/constants/corridor_constants.dart';
 import '../../../core/models/user_profile.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
+import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
 import '../../dashboard/screens/rider_home_screen.dart';
@@ -33,8 +35,17 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
   final _plateController = TextEditingController();
   final _parkController = TextEditingController();
   String _selectedCorridor = CorridorConstants.pilotCorridors.first;
-  final bool _selfieCaptured = true; // Default simulated capture for quick onboarding
+  bool _selfieCaptured = true; // Default simulated capture for quick onboarding
   bool _isLoading = false;
+
+  void _randomize() {
+    setState(() {
+      _plateController.text = FormSampleData.randomPlateNumber();
+      _selectedCorridor = FormSampleData.randomCorridor();
+      _parkController.text = FormSampleData.randomPark();
+      _selfieCaptured = true;
+    });
+  }
 
   @override
   void dispose() {
@@ -103,6 +114,9 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
       appBar: AppBar(
         leading: const BackButton(),
         title: Text('Rider Vetting', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+        actions: [
+          RandomizeButton(onRandomize: _randomize),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -155,24 +169,20 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
               const SizedBox(height: 28),
 
               // Plate Number
-              TextField(
+              CustomTextField(
                 controller: _plateController,
+                labelText: 'Tricycle Plate Number',
+                hintText: 'e.g. WRA-492-XA',
                 textCapitalization: TextCapitalization.characters,
-                decoration: const InputDecoration(
-                  labelText: 'Tricycle Plate Number',
-                  hintText: 'e.g. WRA-492-XA',
-                  prefixIcon: Icon(FeatherIcons.hash, color: AppColors.textSecondary, size: 20),
-                ),
+                prefixIcon: FeatherIcons.hash,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 18),
 
               // Corridor Dropdown
-              DropdownButtonFormField<String>(
-                initialValue: _selectedCorridor,
-                decoration: const InputDecoration(
-                  labelText: 'Primary Corridor',
-                  prefixIcon: Icon(FeatherIcons.navigation, color: AppColors.textSecondary, size: 20),
-                ),
+              CustomDropdownField<String>(
+                labelText: 'Primary Corridor',
+                value: _selectedCorridor,
+                prefixIcon: FeatherIcons.navigation,
                 items: CorridorConstants.pilotCorridors.map((c) {
                   return DropdownMenuItem(value: c, child: Text(c, style: AppTextStyles.bodyMedium));
                 }).toList(),
@@ -180,17 +190,15 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
                   if (val != null) setState(() => _selectedCorridor = val);
                 },
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 18),
 
               // Union Park Name
-              TextField(
+              CustomTextField(
                 controller: _parkController,
+                labelText: 'Home Keke Park / Chairman',
+                hintText: 'e.g. Refinery Junction Unit Park',
                 textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                  labelText: 'Home Keke Park / Chairman',
-                  hintText: 'e.g. Refinery Junction Unit Park',
-                  prefixIcon: Icon(FeatherIcons.users, color: AppColors.textSecondary, size: 20),
-                ),
+                prefixIcon: FeatherIcons.users,
               ),
               const SizedBox(height: 36),
 

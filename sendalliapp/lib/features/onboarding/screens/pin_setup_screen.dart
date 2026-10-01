@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../widgets/form_randomizer.dart';
 import 'role_selection_screen.dart';
 
 /// Screen 5: 4-Digit Security PIN Setup (Onboarding-6.png).
@@ -81,12 +82,24 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
     }
   }
 
+  void _quickFill() {
+    setState(() {
+      _firstPin = '1234';
+      _enteredPin = '1234';
+      _isConfirming = true;
+    });
+    _handlePinComplete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
         title: Text('Step 4 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+        actions: [
+          RandomizeButton(label: 'Fill 1234', onRandomize: _quickFill),
+        ],
       ),
       body: SafeArea(
         child: Padding(

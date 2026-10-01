@@ -5,6 +5,8 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
+import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
 import '../../dashboard/screens/hub_home_screen.dart';
@@ -32,6 +34,11 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
   final _storeNameController = TextEditingController();
   final _landmarkController = TextEditingController();
   bool _isLoading = false;
+
+  void _randomize() {
+    _storeNameController.text = FormSampleData.randomHubStore();
+    _landmarkController.text = FormSampleData.randomLandmark();
+  }
 
   @override
   void dispose() {
@@ -98,6 +105,9 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
       appBar: AppBar(
         leading: const BackButton(),
         title: Text('Drop Hub Setup', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+        actions: [
+          RandomizeButton(onRandomize: _randomize),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -112,24 +122,20 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 32),
-              TextField(
+              CustomTextField(
                 controller: _storeNameController,
+                labelText: 'Shop / Pharmacy Name',
+                hintText: 'e.g. City Care Pharmacy & Stores',
                 textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                  labelText: 'Shop / Pharmacy Name',
-                  hintText: 'e.g. City Care Pharmacy & Stores',
-                  prefixIcon: Icon(FeatherIcons.home, color: AppColors.textSecondary, size: 20),
-                ),
+                prefixIcon: FeatherIcons.home,
               ),
-              const SizedBox(height: 16),
-              TextField(
+              const SizedBox(height: 18),
+              CustomTextField(
                 controller: _landmarkController,
+                labelText: 'Roadside Landmark',
+                hintText: 'e.g. PTI Road, opposite First Gate',
                 textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                  labelText: 'Roadside Landmark',
-                  hintText: 'e.g. PTI Road, opposite First Gate',
-                  prefixIcon: Icon(FeatherIcons.mapPin, color: AppColors.textSecondary, size: 20),
-                ),
+                prefixIcon: FeatherIcons.mapPin,
               ),
               const SizedBox(height: 36),
               ElevatedButton(

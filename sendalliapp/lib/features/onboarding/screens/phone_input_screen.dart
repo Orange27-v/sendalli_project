@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/form_randomizer.dart';
 import 'otp_verification_screen.dart';
 
 /// Screen 3: Mobile Phone Number Entry (Onboarding-2.png).
@@ -35,6 +37,10 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
     if (valid != _isValid) {
       setState(() => _isValid = valid);
     }
+  }
+
+  void _randomize() {
+    _phoneController.text = FormSampleData.randomPhone();
   }
 
   String _cleanPhone(String text) {
@@ -77,6 +83,9 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
           widget.isReturningLogin ? 'Sign In' : 'Step 2 of 4',
           style: AppTextStyles.caption.copyWith(fontSize: 13),
         ),
+        actions: [
+          RandomizeButton(onRandomize: _randomize),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -94,22 +103,10 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 32),
-              TextField(
+              CustomTextField.phone(
                 controller: _phoneController,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  labelText: 'Phone Number',
-                  hintText: '803 123 4567',
-                  prefixIcon: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    alignment: Alignment.centerLeft,
-                    width: 80,
-                    child: Text(
-                      '🇳🇬 +234',
-                      style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
+                labelText: 'Phone Number',
+                hintText: '803 123 4567',
               ),
               const Spacer(),
               ElevatedButton(

@@ -5,6 +5,8 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
+import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
 import '../../dashboard/screens/sender_home_screen.dart';
@@ -31,6 +33,10 @@ class SenderSetupScreen extends StatefulWidget {
 class _SenderSetupScreenState extends State<SenderSetupScreen> {
   final _shopNameController = TextEditingController();
   bool _isLoading = false;
+
+  void _randomize() {
+    _shopNameController.text = FormSampleData.randomMerchantShop();
+  }
 
   @override
   void dispose() {
@@ -86,6 +92,9 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
       appBar: AppBar(
         leading: const BackButton(),
         title: Text('Merchant Profile', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+        actions: [
+          RandomizeButton(onRandomize: _randomize),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -100,14 +109,12 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 32),
-              TextField(
+              CustomTextField(
                 controller: _shopNameController,
+                labelText: 'Shop / Business Name',
+                hintText: 'e.g. Warri Glow Boutique',
                 textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                  labelText: 'Shop / Business Name',
-                  hintText: 'e.g. Warri Glow Boutique',
-                  prefixIcon: Icon(FeatherIcons.shoppingBag, color: AppColors.textSecondary, size: 20),
-                ),
+                prefixIcon: FeatherIcons.shoppingBag,
               ),
               const Spacer(),
               ElevatedButton(

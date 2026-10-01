@@ -6,6 +6,7 @@ import '../../../core/constants/corridor_constants.dart';
 import '../../../core/models/user_profile.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
+import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
 import '../../../widgets/settings_kit.dart';
@@ -35,6 +36,14 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
   String _selectedLandmark = CorridorConstants.refineryJakpaLandmarks.last; // Jakpa Junction
   bool _notificationsEnabled = true;
   bool _isLoading = false;
+
+  void _randomize() {
+    setState(() {
+      _selectedCorridor = FormSampleData.randomCorridor();
+      _selectedLandmark = FormSampleData.randomLandmark();
+      _notificationsEnabled = true;
+    });
+  }
 
   Future<void> _completeSetup() async {
     setState(() => _isLoading = true);
@@ -96,6 +105,9 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
             letterSpacing: 0.5,
           ),
         ),
+        actions: [
+          RandomizeButton(onRandomize: _randomize),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

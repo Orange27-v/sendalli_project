@@ -4,6 +4,8 @@ import '../core/constants/app_colors.dart';
 import '../core/constants/app_text_styles.dart';
 import '../core/storage/session_manager.dart';
 import '../features/dashboard/screens/receiver_tracking_screen.dart';
+import 'custom_text_field.dart';
+import 'form_randomizer.dart';
 
 /// Instant bottom sheet allowing receivers to enter a Tracking ID with zero registration.
 class GuestTrackingSheet extends StatefulWidget {
@@ -89,22 +91,39 @@ class _GuestTrackingSheetState extends State<GuestTrackingSheet> {
             ),
           ),
           const SizedBox(height: 20),
-          Text('Track Your Parcel', style: AppTextStyles.h2),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Track Your Parcel', style: AppTextStyles.h2),
+              RandomizeButton.inline(
+                label: 'Sample ID',
+                onRandomize: () {
+                  setState(() {
+                    _controller.text = FormSampleData.randomTrackingId();
+                    _errorMessage = null;
+                  });
+                },
+              ),
+            ],
+          ),
           const SizedBox(height: 6),
           Text(
             'Enter the Tracking ID shared by the sender or from your SMS link.',
             style: AppTextStyles.bodyMedium,
           ),
           const SizedBox(height: 20),
-          TextField(
+          CustomTextField(
             controller: _controller,
+            labelText: 'Tracking ID',
+            hintText: 'e.g. SND-WAR-8492',
             textCapitalization: TextCapitalization.characters,
-            decoration: InputDecoration(
-              hintText: 'e.g. SND-WAR-8492',
-              prefixIcon: const Icon(FeatherIcons.search, size: 18, color: AppColors.textSecondary),
-              errorText: _errorMessage,
-            ),
-            onSubmitted: (_) => _submitTrackingId(),
+            prefixIcon: FeatherIcons.search,
+            validator: (_) => _errorMessage,
+            onChanged: (_) {
+              if (_errorMessage != null) {
+                setState(() => _errorMessage = null);
+              }
+            },
           ),
           const SizedBox(height: 24),
           ElevatedButton(
