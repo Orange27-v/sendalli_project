@@ -38,14 +38,15 @@ class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.textPrimary,
+          foregroundColor: AppColors.textSecondary,
           minimumSize: const Size.fromHeight(48),
-          side: const BorderSide(color: AppColors.textPrimary, width: 1.5),
+          side: const BorderSide(color: Color(0xFFCBD5E1), width: 1.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
           textStyle: AppTextStyles.button.copyWith(
-            color: AppColors.textPrimary,
+            color: AppColors.textSecondary,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
