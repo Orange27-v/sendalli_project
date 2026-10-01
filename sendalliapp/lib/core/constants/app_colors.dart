@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  // Primary brand colors (Corridor Emerald)
-  static const Color primary = Color(0xFF00875A);
-  static const Color primaryDark = Color(0xFF006644);
-  static const Color primaryLight = Color(0xFFE3FCEF);
-  static const Color primaryAccent = Color(0xFF36B37E);
+  // Primary brand colors (Vibrant Lime #A6EB2E)
+  static const Color primary = Color(0xFFA6EB2E);
+  static const Color primaryDark = Color(0xFF6E9E1E);
+  static const Color primaryLight = Color(0xFFF1FCD6);
+  static const Color primaryAccent = Color(0xFFB8F547);
 
   // Neutral background & surface colors
   static const Color background = Color(0xFFF8FAFC);
@@ -24,7 +24,7 @@ class AppColors {
 
   // Borders & Dividers
   static const Color border = Color(0xFFE2E8F0);
-  static const Color borderFocus = Color(0xFF00875A);
+  static const Color borderFocus = Color(0xFFA6EB2E);
 
   // Status & Gamification Colors
   static const Color success = Color(0xFF10B981);

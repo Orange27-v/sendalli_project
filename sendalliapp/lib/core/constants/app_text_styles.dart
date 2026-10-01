@@ -48,8 +48,8 @@ class AppTextStyles {
 
   static TextStyle get button => GoogleFonts.inter(
         fontSize: 16,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
+        fontWeight: FontWeight.w700,
+        color: AppColors.textPrimary,
       );
 
   static TextStyle get caption => GoogleFonts.inter(
