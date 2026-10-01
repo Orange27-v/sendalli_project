@@ -24,6 +24,7 @@ class AppColors {
 
   // Borders & Dividers
   static const Color border = Color(0xFFEEEEEE);
+  static const Color borderMedium = Color(0xFFD1D5DB);
   static const Color borderFocus = Color(0xFFA6EB2E);
 
   // Status & Gamification Colors

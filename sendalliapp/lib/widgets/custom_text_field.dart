@@ -25,6 +25,7 @@ class CustomTextField extends StatelessWidget {
   final int? maxLines;
   final Color? borderColor;
   final double borderWidth;
+  final double borderRadius;
   final bool isPhone;
   final TextCapitalization textCapitalization;
   final FormFieldValidator<String>? validator;
@@ -47,6 +48,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.borderColor,
     this.borderWidth = 1.0,
+    this.borderRadius = 8.0,
     this.isPhone = false,
     this.textCapitalization = TextCapitalization.none,
     this.validator,
@@ -62,6 +64,7 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.suffixIcon,
     this.enabled = true,
+    this.borderRadius = 8.0,
   })  : labelText = null,
         prefixWidget = null,
         obscureText = false,
@@ -88,13 +91,14 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.enabled = true,
+    this.borderColor,
+    this.borderWidth = 1.0,
+    this.borderRadius = 8.0,
   })  : obscureText = false,
         keyboardType = TextInputType.phone,
         readOnly = false,
         onTap = null,
         maxLines = 1,
-        borderColor = null,
-        borderWidth = 1.0,
         isPhone = true,
         textCapitalization = TextCapitalization.none,
         inputFormatters = null;
@@ -159,35 +163,35 @@ class CustomTextField extends StatelessWidget {
             filled: true,
             fillColor: enabled ? AppColors.surface : AppColors.surfaceSubtle,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(borderRadius),
               borderSide: BorderSide(
-                color: borderColor ?? AppColors.border,
+                color: borderColor ?? AppColors.borderMedium,
                 width: borderWidth,
               ),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(borderRadius),
               borderSide: BorderSide(
-                color: borderColor ?? AppColors.border,
+                color: borderColor ?? AppColors.borderMedium,
                 width: borderWidth,
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(borderRadius),
               borderSide: const BorderSide(
                 color: AppColors.primaryDark,
                 width: 1.5,
               ),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(borderRadius),
               borderSide: const BorderSide(
                 color: AppColors.danger,
                 width: 1.0,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(borderRadius),
               borderSide: const BorderSide(
                 color: AppColors.danger,
                 width: 1.5,

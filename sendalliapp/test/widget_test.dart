@@ -4,6 +4,7 @@ import 'package:sendalliapp/core/theme/app_theme.dart';
 import 'package:sendalliapp/features/onboarding/screens/welcome_screen.dart';
 import 'package:sendalliapp/features/onboarding/screens/name_input_screen.dart';
 import 'package:sendalliapp/features/onboarding/screens/role_selection_screen.dart';
+import 'package:sendalliapp/features/onboarding/screens/phone_input_screen.dart';
 
 void main() {
   testWidgets('WelcomeScreen renders outside receiver portal and operator actions', (WidgetTester tester) async {
@@ -102,6 +103,35 @@ void main() {
 
     // Verify fields populated and continue button enabled
     final activeBtn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+    expect(activeBtn.onPressed, isNotNull);
+  });
+
+  testWidgets('PhoneInputScreen renders square input boxes, validation badge, and quick-fill', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const PhoneInputScreen(firstName: 'Osas'),
+      ),
+    );
+
+    // Verify header and square country code prefix
+    expect(find.text('Hi, Osas 👋'), findsOneWidget);
+    expect(find.text('+234'), findsOneWidget);
+    expect(find.text('MOBILE PHONE NUMBER'), findsOneWidget);
+    expect(find.text('10 digits required'), findsOneWidget);
+
+    // Initial state: button is disabled
+    final initialBtn = tester.widget<ElevatedButton>(find.widgetWithText(ElevatedButton, 'Send Verification Code'));
+    expect(initialBtn.onPressed, isNull);
+
+    // Tap quick-fill chip for MTN
+    expect(find.text('803 (MTN)'), findsOneWidget);
+    await tester.tap(find.text('803 (MTN)'));
+    await tester.pump();
+
+    // Verify 10 digits valid status and button enabled
+    expect(find.text('✓ 10 digits valid'), findsOneWidget);
+    final activeBtn = tester.widget<ElevatedButton>(find.widgetWithText(ElevatedButton, 'Send Verification Code'));
     expect(activeBtn.onPressed, isNotNull);
   });
 }
