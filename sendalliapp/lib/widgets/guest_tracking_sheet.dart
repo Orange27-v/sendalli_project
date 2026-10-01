@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
-import '../../../core/storage/session_manager.dart';
-import '../../dashboard/screens/receiver_tracking_screen.dart';
+import '../core/constants/app_colors.dart';
+import '../core/constants/app_text_styles.dart';
+import '../core/storage/session_manager.dart';
+import '../features/dashboard/screens/receiver_tracking_screen.dart';
 
 /// Instant bottom sheet allowing receivers to enter a Tracking ID with zero registration.
 class GuestTrackingSheet extends StatefulWidget {

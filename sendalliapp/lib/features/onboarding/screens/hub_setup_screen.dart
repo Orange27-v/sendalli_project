@@ -4,8 +4,8 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
-import '../widgets/permission_dialog.dart';
-import '../widgets/profile_completed_dialog.dart';
+import '../../../widgets/permission_dialog.dart';
+import '../../../widgets/profile_completed_dialog.dart';
 import '../../dashboard/screens/hub_home_screen.dart';
 
 /// Branch C: Drop Hub Partner Setup Screen.

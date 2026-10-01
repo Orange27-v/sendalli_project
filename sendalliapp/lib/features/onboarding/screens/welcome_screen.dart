@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
-import '../widgets/guest_tracking_sheet.dart';
+import '../../../widgets/guest_tracking_sheet.dart';
 import 'name_input_screen.dart';
 import 'phone_input_screen.dart';
 

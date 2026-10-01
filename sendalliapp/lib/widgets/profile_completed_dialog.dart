@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
+import '../core/constants/app_colors.dart';
+import '../core/constants/app_text_styles.dart';
 
 /// Modal dialog displayed upon successful profile creation (Modal - Location-2.png).
 class ProfileCompletedDialog extends StatelessWidget {

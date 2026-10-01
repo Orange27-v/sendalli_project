@@ -5,8 +5,8 @@ import '../../../core/constants/corridor_constants.dart';
 import '../../../core/models/user_profile.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
-import '../widgets/permission_dialog.dart';
-import '../widgets/profile_completed_dialog.dart';
+import '../../../widgets/permission_dialog.dart';
+import '../../../widgets/profile_completed_dialog.dart';
 import '../../dashboard/screens/rider_home_screen.dart';
 
 /// Branch B: Rider Vetting & Vehicle Setup Screen (Onboarding-8.png / Onboarding-9.png).

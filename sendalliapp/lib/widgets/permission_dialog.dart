@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
+import '../core/constants/app_colors.dart';
+import '../core/constants/app_text_styles.dart';
 
 /// Reusable contextual permission dialog matching Modal - Location designs.
 class PermissionDialog extends StatelessWidget {
