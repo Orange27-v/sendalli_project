@@ -6,6 +6,8 @@ import 'package:sendalliapp/features/onboarding/screens/name_input_screen.dart';
 import 'package:sendalliapp/features/onboarding/screens/role_selection_screen.dart';
 import 'package:sendalliapp/features/onboarding/screens/phone_input_screen.dart';
 
+import 'package:sendalliapp/features/onboarding/screens/role_gateway_screen.dart';
+
 void main() {
   testWidgets('WelcomeScreen renders outside receiver portal and operator actions', (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -21,10 +23,23 @@ void main() {
     expect(find.text('Receiving a Parcel?'), findsOneWidget);
     expect(find.text('Track by ID'), findsOneWidget);
     expect(find.text('Receiver Portal'), findsOneWidget);
-    expect(find.text('CHOOSE ROLE TO ENTER'), findsOneWidget);
-    expect(find.text('Merchant'), findsOneWidget);
-    expect(find.text('Rider'), findsOneWidget);
-    expect(find.text('Drop Hub'), findsOneWidget);
+    expect(find.text('OPERATORS: SENDERS • RIDERS • HUBS'), findsOneWidget);
+    expect(find.text('Choose Role to Enter'), findsOneWidget);
+    expect(find.text('Operator Sign In • Phone & PIN'), findsOneWidget);
+  });
+
+  testWidgets('RoleGatewayScreen renders the 3 operator roles and fast onboarding actions', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const RoleGatewayScreen(),
+      ),
+    );
+
+    expect(find.text('How will you use Sendalli?'), findsOneWidget);
+    expect(find.text('Merchant / Sender'), findsOneWidget);
+    expect(find.text('Keke / Dispatch Rider'), findsOneWidget);
+    expect(find.text('Drop Hub Partner'), findsOneWidget);
     expect(find.text('Quick Onboard as Sender / Merchant'), findsOneWidget);
     expect(find.text('Sign In as Sender / Merchant • Phone & PIN'), findsOneWidget);
   });

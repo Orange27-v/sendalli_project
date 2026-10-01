@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
@@ -272,6 +273,17 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
                   ],
                 ),
               ],
+            ),
+          ),
+
+          // Delivery Illustration
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4.0, bottom: 12.0),
+              child: SvgPicture.asset(
+                'assets/svg/order-delivered.svg',
+                height: 90,
+              ),
             ),
           ),
 

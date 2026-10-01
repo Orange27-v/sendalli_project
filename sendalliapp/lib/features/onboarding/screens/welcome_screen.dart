@@ -1,40 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
-import '../../../core/models/user_role.dart';
 import '../../../widgets/guest_tracking_sheet.dart';
 import '../../dashboard/screens/receiver_home_screen.dart';
-import 'name_input_screen.dart';
+import 'role_gateway_screen.dart';
 import 'phone_input_screen.dart';
 
-/// Clean, modern Welcome & Gateway Screen.
-/// Provides:
-/// 1. Outside instant Receiver tracking (Zero login required).
-/// 2. Interactive "Choose / Login As" role selector with Quick Onboarding.
-class WelcomeScreen extends StatefulWidget {
+/// Clean, spacious, and uncluttered Welcome Screen.
+/// Highlights:
+/// 1. Vibrant logistics.svg hero graphic.
+/// 2. Outside receiver access (zero account required).
+/// 3. Navigation to dedicated Role Gateway Screen for spread-out role selection.
+class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
-
-  @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
-}
-
-class _WelcomeScreenState extends State<WelcomeScreen> {
-  UserRole _selectedRole = UserRole.sender;
-
-  String get _roleTitle {
-    switch (_selectedRole) {
-      case UserRole.sender:
-        return 'Sender / Merchant';
-      case UserRole.rider:
-        return 'Keke Rider';
-      case UserRole.hub:
-        return 'Drop Hub Partner';
-      case UserRole.receiver:
-        return 'Receiver';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,36 +23,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       backgroundColor: AppColors.surface,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 8),
+
+              // Hero Brand Illustration (logistics.svg in brand green)
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: SvgPicture.asset(
+                    'assets/svg/logistics.svg',
+                    height: 160,
+                  ),
+                ),
+              ),
               const SizedBox(height: 12),
-              // Brand mark & hero banner
+
+              // Brand Title & Tagline
               Center(
                 child: Column(
                   children: [
-                    Container(
-                      width: 68,
-                      height: 68,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: const Icon(
-                        FeatherIcons.package,
-                        size: 34,
-                        color: AppColors.primaryDark,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
                     Text(
                       'SENDALLI',
                       style: AppTextStyles.h1.copyWith(
                         letterSpacing: 2,
                         color: AppColors.primaryDark,
                         fontWeight: FontWeight.w800,
-                        fontSize: 24,
+                        fontSize: 26,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -80,19 +60,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       style: AppTextStyles.caption.copyWith(
                         fontWeight: FontWeight.w600,
                         color: AppColors.textSecondary,
+                        fontSize: 13,
                       ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Move items rapidly across refinery, market, and estate routes using trusted local transit.',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSecondary,
+                        fontSize: 13,
+                        height: 1.4,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
 
+              // ==========================================
               // SECTION 1: OUTSIDE RECEIVER ENTRANCE (NO LOGIN)
-              _buildReceiverSection(),
-              const SizedBox(height: 24),
+              // ==========================================
+              _buildReceiverCard(context),
+              const SizedBox(height: 20),
 
-              // SECTION 2: CHOOSE / LOGIN AS OPERATOR (QUICK ONBOARDING)
-              _buildOperatorSection(),
+              // ==========================================
+              // SECTION 2: OPERATOR NETWORK (SPREAD OUT TO GATEWAY)
+              // ==========================================
+              _buildOperatorSection(context),
               const SizedBox(height: 16),
             ],
           ),
@@ -101,15 +97,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     );
   }
 
-  /// Outside instant Receiver tracking with zero login
-  Widget _buildReceiverSection() {
+  /// Clean, spacious receiver entry card
+  Widget _buildReceiverCard(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.surfaceSubtle,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.borderMedium, width: 1.2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,43 +112,70 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           Row(
             children: [
               Container(
-                width: 36,
-                height: 36,
+                width: 44,
+                height: 44,
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: AppColors.primaryLight,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(6),
                 ),
-                child: const Icon(FeatherIcons.package, size: 18, color: AppColors.primaryDark),
+                child: SvgPicture.asset(
+                  'assets/svg/delivery-location.svg',
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Receiving a Parcel?',
-                      style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700),
+                    Row(
+                      children: [
+                        Text(
+                          'Receiving a Parcel?',
+                          style: AppTextStyles.h2.copyWith(fontSize: 16),
+                        ),
+                        const SizedBox(width: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.success.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            'NO LOGIN',
+                            style: AppTextStyles.caption.copyWith(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.success,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 3),
                     Text(
-                      'No account or login required',
-                      style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                      'Track live ETA and get your pickup release code.',
+                      style: AppTextStyles.caption.copyWith(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () => GuestTrackingSheet.show(context),
-                  icon: const Icon(FeatherIcons.search, size: 15, color: AppColors.textPrimary),
+                  icon: const Icon(FeatherIcons.search, size: 15),
                   label: const Text('Track by ID'),
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(42),
-                    padding: EdgeInsets.zero,
+                    minimumSize: const Size.fromHeight(44),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     textStyle: AppTextStyles.button.copyWith(fontSize: 13),
                   ),
                 ),
@@ -170,11 +192,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                     );
                   },
-                  icon: const Icon(FeatherIcons.mapPin, size: 15, color: AppColors.textPrimary),
+                  icon: const Icon(FeatherIcons.mapPin, size: 15),
                   label: const Text('Receiver Portal'),
                   style: OutlinedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(42),
-                    padding: EdgeInsets.zero,
+                    minimumSize: const Size.fromHeight(44),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
                     textStyle: AppTextStyles.button.copyWith(fontSize: 13),
                   ),
                 ),
@@ -186,8 +209,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     );
   }
 
-  /// Operator section: choose role to log in or quick-onboard
-  Widget _buildOperatorSection() {
+  /// Clean operator access navigating to dedicated RoleGatewayScreen
+  Widget _buildOperatorSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -197,7 +220,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text(
-                'CHOOSE ROLE TO ENTER',
+                'OPERATORS: SENDERS • RIDERS • HUBS',
                 style: AppTextStyles.caption.copyWith(
                   letterSpacing: 1.0,
                   fontWeight: FontWeight.w700,
@@ -209,55 +232,36 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             const Expanded(child: Divider(color: AppColors.border, height: 1)),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 18),
 
-        // 3 Interactive Role Selector Cards
-        Row(
-          children: [
-            Expanded(
-              child: _buildRoleCard(
-                role: UserRole.sender,
-                icon: FeatherIcons.shoppingBag,
-                title: 'Merchant',
-                desc: 'Send items',
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: _buildRoleCard(
-                role: UserRole.rider,
-                icon: FeatherIcons.navigation,
-                title: 'Rider',
-                desc: 'Earn on route',
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: _buildRoleCard(
-                role: UserRole.hub,
-                icon: FeatherIcons.home,
-                title: 'Drop Hub',
-                desc: '₦500 / parcel',
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-
-        // Contextual Quick Onboard Button
+        // Primary action to navigate to spread-out Role Gateway Screen
         ElevatedButton(
           onPressed: () {
             Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => NameInputScreen(targetRole: _selectedRole),
-              ),
+              MaterialPageRoute(builder: (_) => const RoleGatewayScreen()),
             );
           },
-          child: Text('Quick Onboard as $_roleTitle'),
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size.fromHeight(50),
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.textPrimary,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Choose Role to Enter',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+              ),
+              SizedBox(width: 8),
+              Icon(FeatherIcons.arrowRight, size: 17),
+            ],
+          ),
         ),
         const SizedBox(height: 10),
 
-        // Direct Login Button
+        // Direct returning operator sign-in button
         OutlinedButton(
           onPressed: () {
             Navigator.of(context).push(
@@ -266,66 +270,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
             );
           },
-          child: Text('Sign In as $_roleTitle • Phone & PIN'),
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size.fromHeight(48),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
+          ),
+          child: const Text('Operator Sign In • Phone & PIN'),
         ),
       ],
-    );
-  }
-
-  /// Compact interactive role selector card
-  Widget _buildRoleCard({
-    required UserRole role,
-    required IconData icon,
-    required String title,
-    required String desc,
-  }) {
-    final isSelected = _selectedRole == role;
-
-    return InkWell(
-      onTap: () => setState(() => _selectedRole = role),
-      borderRadius: BorderRadius.circular(12),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryLight : AppColors.surface,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? AppColors.primaryDark : AppColors.border,
-            width: isSelected ? 1.5 : 1.0,
-          ),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              size: 22,
-              color: isSelected ? AppColors.primaryDark : AppColors.textSecondary,
-            ),
-            const SizedBox(height: 6),
-            Text(
-              title,
-              style: AppTextStyles.bodyMedium.copyWith(
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                fontSize: 13,
-                color: AppColors.textPrimary,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-            ),
-            const SizedBox(height: 2),
-            Text(
-              desc,
-              style: AppTextStyles.caption.copyWith(
-                fontSize: 10,
-                color: isSelected ? AppColors.primaryDark : AppColors.textMuted,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
