@@ -7,9 +7,10 @@ import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
+import '../../../widgets/settings_kit.dart';
 import '../../dashboard/screens/receiver_home_screen.dart';
 
-/// Branch D: Receiver Setup Screen.
+/// Branch D: Receiver Setup Screen — Clean Nelo UI Design Flow.
 class ReceiverSetupScreen extends StatefulWidget {
   final String phoneNumber;
   final String firstName;
@@ -31,19 +32,22 @@ class ReceiverSetupScreen extends StatefulWidget {
 class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
   String _selectedCorridor = CorridorConstants.pilotCorridors.first;
   String _selectedLandmark = CorridorConstants.refineryJakpaLandmarks.last; // Jakpa Junction
+  bool _notificationsEnabled = true;
   bool _isLoading = false;
 
   Future<void> _completeSetup() async {
     setState(() => _isLoading = true);
 
-    // Request Notification permission contextually (Modal - Location-1.png)
-    await PermissionDialog.show(
-      context: context,
-      icon: Icons.notifications_active_outlined,
-      title: 'Turn on Notifications',
-      description: 'Receive real-time arrival countdowns whenever a parcel is sent to your phone number.',
-      primaryButtonText: 'Turn On Notifications',
-    );
+    if (_notificationsEnabled) {
+      // Request Notification permission contextually (Modal - Location-1.png)
+      await PermissionDialog.show(
+        context: context,
+        icon: Icons.notifications_active_outlined,
+        title: 'Turn on Notifications',
+        description: 'Receive real-time arrival countdowns whenever a parcel is sent to your phone number.',
+        primaryButtonText: 'Turn On Notifications',
+      );
+    }
 
     final user = UserProfile(
       id: 'RCV-${DateTime.now().millisecondsSinceEpoch}',
@@ -78,55 +82,174 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         leading: const BackButton(),
-        title: Text('Receiver Profile', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'Receiver Setup',
+          style: AppTextStyles.caption.copyWith(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.5,
+          ),
+        ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Preferred Drop Point', style: AppTextStyles.h1),
               const SizedBox(height: 8),
               Text(
-                'Select your frequent transit corridor and roadside stop so drivers know where to meet you.',
-                style: AppTextStyles.bodyMedium,
-              ),
-              const SizedBox(height: 32),
-
-              // Corridor Dropdown
-              DropdownButtonFormField<String>(
-                initialValue: _selectedCorridor,
-                decoration: const InputDecoration(
-                  labelText: 'Primary Transit Corridor',
-                  prefixIcon: Icon(Icons.alt_route_rounded, color: AppColors.primaryDark),
+                'Delivery Preferences',
+                style: AppTextStyles.h1.copyWith(
+                  fontSize: 26,
+                  height: 1.2,
                 ),
-                items: CorridorConstants.pilotCorridors.map((c) {
-                  return DropdownMenuItem(value: c, child: Text(c, style: AppTextStyles.bodyMedium));
-                }).toList(),
-                onChanged: (val) {
-                  if (val != null) setState(() => _selectedCorridor = val);
-                },
               ),
-              const SizedBox(height: 20),
-
-              // Landmark Dropdown
-              DropdownButtonFormField<String>(
-                initialValue: _selectedLandmark,
-                decoration: const InputDecoration(
-                  labelText: 'Frequent Roadside Landmark',
-                  prefixIcon: Icon(Icons.pin_drop_outlined, color: AppColors.primaryDark),
+              const SizedBox(height: 8),
+              Text(
+                'Choose your transit corridor and roadside stop for seamless, zero-detour parcel handovers.',
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.45,
                 ),
-                items: CorridorConstants.refineryJakpaLandmarks.map((l) {
-                  return DropdownMenuItem(value: l, child: Text(l, style: AppTextStyles.bodyMedium));
-                }).toList(),
-                onChanged: (val) {
-                  if (val != null) setState(() => _selectedLandmark = val);
-                },
               ),
-              const Spacer(),
+              const SizedBox(height: 28),
+
+              // Group 1: Transit & Corridor Selection
+              SettingsGroup(
+                label: 'Transit Corridor & Roadside Stop',
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Row(
+                      children: [
+                        const IconTile(
+                          icon: Icons.alt_route_rounded,
+                          tone: AppColors.primaryDark,
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: _selectedCorridor,
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              items: CorridorConstants.pilotCorridors.map((c) {
+                                return DropdownMenuItem(value: c, child: Text(c));
+                              }).toList(),
+                              onChanged: (val) {
+                                if (val != null) setState(() => _selectedCorridor = val);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Row(
+                      children: [
+                        const IconTile(
+                          icon: Icons.pin_drop_outlined,
+                          tone: AppColors.primaryDark,
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: _selectedLandmark,
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              items: CorridorConstants.refineryJakpaLandmarks.map((l) {
+                                return DropdownMenuItem(value: l, child: Text(l));
+                              }).toList(),
+                              onChanged: (val) {
+                                if (val != null) setState(() => _selectedLandmark = val);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+
+              // Group 2: Notifications & Alerts
+              SettingsGroup(
+                label: 'Real-time Alerts',
+                children: [
+                  SettingsSwitchRow(
+                    icon: Icons.notifications_active_outlined,
+                    title: 'Live Arrival Alerts',
+                    description: 'Receive audio & push notifications when keke riders are 10 minutes away.',
+                    accent: AppColors.primaryDark,
+                    value: _notificationsEnabled,
+                    onChanged: (val) => setState(() => _notificationsEnabled = val),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+
+              // Group 3: Quiet Information Note
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(kDefaultCardRadius),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const IconTile(
+                      icon: Icons.sync_rounded,
+                      tone: AppColors.primaryDark,
+                      size: 32,
+                      iconSize: 18,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Automatic Parcel Linking',
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            'Any merchant in Warri or Effurun sending to ${widget.phoneNumber} will automatically appear in your active shipments.',
+                            style: AppTextStyles.caption.copyWith(
+                              color: AppColors.textSecondary,
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 36),
+
+              // Primary Action
               ElevatedButton(
                 onPressed: _isLoading ? null : _completeSetup,
                 child: _isLoading
@@ -137,7 +260,7 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
                       )
                     : const Text('Complete & Start Tracking'),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -145,3 +268,4 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
     );
   }
 }
+

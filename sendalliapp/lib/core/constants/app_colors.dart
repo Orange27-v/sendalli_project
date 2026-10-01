@@ -11,10 +11,10 @@ class AppColors {
   static const Color primaryLight = Color(0xFFF1FCD6);
   static const Color primaryAccent = Color(0xFFB8F547);
 
-  // Neutral background & surface colors
-  static const Color background = Color(0xFFF8FAFC);
+  // Neutral background & surface colors (Nelo clean spec: kGrey100 & kGrey200)
+  static const Color background = Color(0xFFF5F5F5);
   static const Color surface = Colors.white;
-  static const Color surfaceSubtle = Color(0xFFF1F5F9);
+  static const Color surfaceSubtle = Color(0xFFEEEEEE);
 
   // Typography & text hierarchy
   static const Color textPrimary = Color(0xFF0F172A);
@@ -23,7 +23,7 @@ class AppColors {
   static const Color textInverse = Colors.white;
 
   // Borders & Dividers
-  static const Color border = Color(0xFFE2E8F0);
+  static const Color border = Color(0xFFEEEEEE);
   static const Color borderFocus = Color(0xFFA6EB2E);
 
   // Status & Gamification Colors
