@@ -34,6 +34,21 @@ class UserProfile {
     this.isVerified = false,
   });
 
+  /// Factory constructor for unauthenticated roadside guest receivers
+  factory UserProfile.guestReceiver({String? corridor, String? landmark}) {
+    return UserProfile(
+      id: 'GUEST-RECEIVER',
+      firstName: 'Roadside',
+      lastName: 'Receiver',
+      phone: '',
+      role: UserRole.receiver,
+      pin: '',
+      corridor: corridor ?? 'Refinery Road — Jakpa',
+      landmark: landmark ?? 'Roadside Handoff',
+      isVerified: false,
+    );
+  }
+
   String get fullName => '$firstName $lastName'.trim();
 
   UserProfile copyWith({

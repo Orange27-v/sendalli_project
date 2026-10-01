@@ -22,6 +22,8 @@ class ReceiverHomeScreen extends StatefulWidget {
 class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
   final String _mockTrackingId = 'SND-WAR-8492';
 
+  bool get _isGuest => widget.user.id.startsWith('GUEST');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,14 +32,22 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Receiver Dashboard',
+          _isGuest ? 'Receiver Portal' : 'Receiver Dashboard',
           style: AppTextStyles.h3.copyWith(fontSize: 18),
         ),
         actions: [
           IconButton(
-            icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textSecondary),
-            tooltip: 'Log out',
+            icon: Icon(
+              _isGuest ? FeatherIcons.x : FeatherIcons.logOut,
+              size: 20,
+              color: AppColors.textSecondary,
+            ),
+            tooltip: _isGuest ? 'Close' : 'Log out',
             onPressed: () async {
+              if (_isGuest) {
+                Navigator.of(context).pop();
+                return;
+              }
               await SessionManager.logout();
               if (!context.mounted) return;
               Navigator.of(context).pushAndRemoveUntil(
@@ -55,9 +65,11 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
           children: [
             // Profile Header Card (Nelo pattern)
             ProfileHeaderCard(
-              name: widget.user.fullName,
-              subtitle: '${widget.user.phone} • ${widget.user.corridor ?? "Warri Route"}',
-              roleBadgeText: 'Receiver',
+              name: _isGuest ? 'Roadside Receiver' : widget.user.fullName,
+              subtitle: widget.user.phone.isNotEmpty
+                  ? '${widget.user.phone} • ${widget.user.corridor ?? "Warri Route"}'
+                  : 'Zero login required • Roadside handoffs',
+              roleBadgeText: _isGuest ? 'Guest Access' : 'Receiver',
               accent: AppColors.primaryDark,
               initial: widget.user.firstName.isNotEmpty ? widget.user.firstName[0] : 'R',
               isVerified: widget.user.isVerified,

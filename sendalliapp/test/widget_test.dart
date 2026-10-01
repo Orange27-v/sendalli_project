@@ -6,7 +6,7 @@ import 'package:sendalliapp/features/onboarding/screens/name_input_screen.dart';
 import 'package:sendalliapp/features/onboarding/screens/role_selection_screen.dart';
 
 void main() {
-  testWidgets('WelcomeScreen renders brand titles and action buttons', (WidgetTester tester) async {
+  testWidgets('WelcomeScreen renders outside receiver portal and operator actions', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.lightTheme,
@@ -17,9 +17,11 @@ void main() {
     // Verify brand name and options
     expect(find.text('SENDALLI'), findsOneWidget);
     expect(find.text('Corridor Parcel Logistics'), findsOneWidget);
-    expect(find.text('Get Started'), findsOneWidget);
-    expect(find.text('I already have an account • Log In'), findsOneWidget);
-    expect(find.text('Have a Tracking ID? Track here'), findsOneWidget);
+    expect(find.text('Receiving a Parcel?'), findsOneWidget);
+    expect(find.text('Track by ID'), findsOneWidget);
+    expect(find.text('Receiver Portal'), findsOneWidget);
+    expect(find.text('Register as Sender, Rider, or Hub'), findsOneWidget);
+    expect(find.text('Operator Sign In • Phone & PIN'), findsOneWidget);
   });
 
   testWidgets('NameInputScreen validates name before enabling button', (WidgetTester tester) async {
@@ -44,7 +46,7 @@ void main() {
     expect(activeBtn.onPressed, isNotNull);
   });
 
-  testWidgets('RoleSelectionScreen displays all 4 roles including Receiver', (WidgetTester tester) async {
+  testWidgets('RoleSelectionScreen displays the 3 operator roles and excludes Receiver', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.lightTheme,
@@ -59,15 +61,17 @@ void main() {
       ),
     );
 
-    // Verify all 4 roles are rendered
+    // Verify 3 operator roles are rendered
     expect(find.text('Send Parcels'), findsOneWidget);
     expect(find.text('Deliver Along Route (Rider)'), findsOneWidget);
     expect(find.text('Roadside Drop Hub Partner'), findsOneWidget);
-    expect(find.text('Receive & Track Parcels'), findsOneWidget);
 
-    // Tap Receiver card
-    await tester.ensureVisible(find.text('Receive & Track Parcels'));
-    await tester.tap(find.text('Receive & Track Parcels'));
+    // Verify Receiver is excluded from logged-in onboarding
+    expect(find.text('Receive & Track Parcels'), findsNothing);
+
+    // Tap Rider card
+    await tester.ensureVisible(find.text('Deliver Along Route (Rider)'));
+    await tester.tap(find.text('Deliver Along Route (Rider)'));
     await tester.pump();
 
     // Verify Continue button is enabled

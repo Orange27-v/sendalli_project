@@ -6,9 +6,9 @@ import '../../../core/models/user_role.dart';
 import 'sender_setup_screen.dart';
 import 'rider_setup_screen.dart';
 import 'hub_setup_screen.dart';
-import 'receiver_setup_screen.dart';
 
 /// Screen 6: Role Selection "How will you use Sendalli?" (Onboarding-10.png).
+/// Note: Receivers access Sendalli without account login from the Welcome Gateway.
 class RoleSelectionScreen extends StatefulWidget {
   final String phoneNumber;
   final String firstName;
@@ -69,16 +69,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
         );
         break;
       case UserRole.receiver:
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => ReceiverSetupScreen(
-              phoneNumber: widget.phoneNumber,
-              firstName: widget.firstName,
-              lastName: widget.lastName,
-              pin: widget.pin,
-            ),
-          ),
-        );
+        // Receivers enter directly from outside without account creation
         break;
     }
   }
@@ -99,12 +90,12 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
               Text('How will you use Sendalli?', style: AppTextStyles.h1),
               const SizedBox(height: 8),
               Text(
-                'Select your primary role. You can switch or add roles later.',
+                'Select your primary operator role. Receivers do not need an account and can track directly.',
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 20),
 
-              // 4 Selectable Role Cards
+              // 3 Selectable Operator Role Cards
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -128,13 +119,6 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
                         icon: FeatherIcons.home,
                         title: 'Roadside Drop Hub Partner',
                         subtitle: 'I operate a roadside store or chemist and want to earn fees holding packages.',
-                      ),
-                      const SizedBox(height: 14),
-                      _buildRoleCard(
-                        role: UserRole.receiver,
-                        icon: FeatherIcons.package,
-                        title: 'Receive & Track Parcels',
-                        subtitle: 'I regularly receive deliveries and want live roadside arrival alerts.',
                       ),
                       const SizedBox(height: 16),
                     ],
