@@ -141,6 +141,13 @@ class AppTheme {
           side: const BorderSide(color: AppColors.border),
         ),
       ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
       dividerTheme: const DividerThemeData(
         color: AppColors.border,
         space: 1,
