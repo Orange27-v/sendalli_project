@@ -79,89 +79,133 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.brandGreen,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         automaticallyImplyLeading: false,
         leading: _currentPage > 0
             ? IconButton(
-                icon: const Icon(FeatherIcons.arrowLeft, size: 20, color: AppColors.textPrimary),
+                icon: const Icon(FeatherIcons.arrowLeft, size: 20, color: Colors.white),
                 onPressed: _onPrev,
               )
             : null,
         title: Text(
           'SENDALLI',
           style: AppTextStyles.h2.copyWith(
-            fontSize: 20,
+            fontSize: 18,
             letterSpacing: 2.0,
-            color: AppColors.primaryDark,
+            color: Colors.white,
+            fontWeight: FontWeight.w800,
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: _finishWalkthrough,
-            child: Text(
-              'Skip',
-              style: AppTextStyles.caption.copyWith(
-                fontWeight: FontWeight.w700,
-                fontSize: 13,
-                color: AppColors.textSecondary,
+          Padding(
+            padding: const EdgeInsets.only(right: 18.0),
+            child: InkWell(
+              onTap: _finishWalkthrough,
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.7), width: 1.0),
+                ),
+                child: Text(
+                  'Skip',
+                  style: AppTextStyles.caption.copyWith(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           ),
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Separated Context Slide
-            Expanded(
-              child: _buildSlide(_slides[_currentPage]),
-            ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+          child: Column(
+            children: [
+              // Separated Context Slide
+              Expanded(
+                child: _buildSlide(_slides[_currentPage]),
+              ),
 
-            // Bottom Navigation & Progress Indicator Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Dot Indicators
-                  Row(
-                    children: List.generate(
-                      _slides.length,
-                      (i) => AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        margin: const EdgeInsets.only(right: 6),
-                        width: _currentPage == i ? 22 : 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: _currentPage == i ? AppColors.primaryDark : AppColors.borderMedium,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
+              // Dot Indicators (White modern pills/dots from design guide)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  _slides.length,
+                  (i) => AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    width: _currentPage == i ? 22 : 7,
+                    height: 7,
+                    decoration: BoxDecoration(
+                      color: _currentPage == i ? Colors.white : Colors.white.withValues(alpha: 0.4),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Full-Width Crisp White Button with Bold Green Text
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: _onNext,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppColors.brandGreenDark,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(
+                    _currentPage == _slides.length - 1 ? 'Get Started' : 'Next',
+                    style: AppTextStyles.button.copyWith(
+                      color: AppColors.brandGreenDark,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 14),
+
+              // Bottom pill tag (inspired by language pill in design guide)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.4), width: 0.8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(FeatherIcons.globe, size: 12, color: Colors.white),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Warri & Effurun Transit Corridors',
+                      style: AppTextStyles.caption.copyWith(
+                        fontSize: 11,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ),
-
-                  // Next / Get Started Action
-                  ElevatedButton(
-                    onPressed: _onNext,
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(110, 44),
-                      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(_currentPage == _slides.length - 1 ? 'Get Started' : 'Next'),
-                        const SizedBox(width: 6),
-                        const Icon(FeatherIcons.arrowRight, size: 15),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 6),
+            ],
+          ),
         ),
       ),
     );
@@ -170,26 +214,35 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
   Widget _buildSlide(_WalkthroughSlideData slide, {Key? key}) {
     return SingleChildScrollView(
       key: key,
-      padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 8.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Context Hero SVG
-          SizedBox(
-            height: 140,
-            child: SvgPicture.asset(
-              slide.svgPath,
-              fit: BoxFit.contain,
+          const SizedBox(height: 12),
+
+          // Hero Artwork in soft circular contrast container
+          Container(
+            width: 220,
+            height: 200,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.16),
+              shape: BoxShape.circle,
+            ),
+            padding: const EdgeInsets.all(22),
+            child: Center(
+              child: SvgPicture.asset(
+                slide.svgPath,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 22),
 
           // Context Category Badge
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(4),
+              color: Colors.white.withValues(alpha: 0.22),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
               slide.badge,
@@ -197,7 +250,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
                 fontSize: 10,
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0.8,
-                color: AppColors.primaryDark,
+                color: Colors.white,
               ),
             ),
           ),
@@ -206,7 +259,11 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
           // Context Headline
           Text(
             slide.title,
-            style: AppTextStyles.h1.copyWith(fontSize: 22),
+            style: AppTextStyles.h1.copyWith(
+              fontSize: 23,
+              fontWeight: FontWeight.w800,
+              color: Colors.white,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 10),
@@ -216,8 +273,8 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
             slide.description,
             style: AppTextStyles.bodyMedium.copyWith(
               fontSize: 14,
-              color: AppColors.textSecondary,
-              height: 1.4,
+              color: Colors.white.withValues(alpha: 0.88),
+              height: 1.45,
             ),
             textAlign: TextAlign.center,
           ),
@@ -227,26 +284,27 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: AppColors.surfaceSubtle,
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: AppColors.borderMedium, width: 0.8),
+              color: Colors.white.withValues(alpha: 0.18),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.35), width: 0.8),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(FeatherIcons.checkCircle, size: 14, color: AppColors.success),
+                const Icon(FeatherIcons.checkCircle, size: 14, color: Colors.white),
                 const SizedBox(width: 6),
                 Text(
                   slide.highlightTag,
                   style: AppTextStyles.caption.copyWith(
                     fontWeight: FontWeight.w700,
                     fontSize: 11,
-                    color: AppColors.textPrimary,
+                    color: Colors.white,
                   ),
                 ),
               ],
             ),
           ),
+          const SizedBox(height: 12),
         ],
       ),
     );
