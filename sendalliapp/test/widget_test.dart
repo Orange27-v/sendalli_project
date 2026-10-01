@@ -7,6 +7,8 @@ import 'package:sendalliapp/features/onboarding/screens/role_selection_screen.da
 import 'package:sendalliapp/features/onboarding/screens/phone_input_screen.dart';
 
 import 'package:sendalliapp/features/onboarding/screens/role_gateway_screen.dart';
+import 'package:sendalliapp/features/onboarding/screens/track_parcel_screen.dart';
+import 'package:sendalliapp/features/onboarding/screens/onboarding_walkthrough_screen.dart';
 
 void main() {
   testWidgets('WelcomeScreen renders outside receiver portal and operator actions', (WidgetTester tester) async {
@@ -148,5 +150,48 @@ void main() {
     expect(find.text('✓ 10 digits valid'), findsOneWidget);
     final activeBtn = tester.widget<ElevatedButton>(find.widgetWithText(ElevatedButton, 'Send Verification Code'));
     expect(activeBtn.onPressed, isNotNull);
+  });
+
+  testWidgets('TrackParcelScreen renders dedicated receiver tracking context', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const TrackParcelScreen(),
+      ),
+    );
+
+    expect(find.text('Track Your Parcel'), findsOneWidget);
+    expect(find.text('NO LOGIN'), findsOneWidget);
+    expect(find.text('TRACKING NUMBER'), findsOneWidget);
+    expect(find.text('Track Live Delivery'), findsOneWidget);
+    expect(find.text('Open Receiver Portal & Hubs'), findsOneWidget);
+
+    // Tap sample chip
+    expect(find.widgetWithText(InkWell, 'SND-WAR-8492'), findsOneWidget);
+    await tester.tap(find.widgetWithText(InkWell, 'SND-WAR-8492'));
+    await tester.pump();
+  });
+
+  testWidgets('OnboardingWalkthroughScreen renders separate context slides with navigation', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const OnboardingWalkthroughScreen(),
+      ),
+    );
+    await tester.pump();
+
+    // Slide 1: Send Parcels context
+    expect(find.text('CORRIDOR PARCEL NETWORK'), findsOneWidget);
+    expect(find.text('Move Parcels Across Warri & Effurun'), findsOneWidget);
+    expect(find.text('Skip'), findsOneWidget);
+    expect(find.text('Next'), findsOneWidget);
+
+    // Tap Next to advance to Slide 2: Keke Transit context
+    await tester.tap(find.text('Next'));
+    await tester.pump();
+
+    expect(find.text('ROUTE-POOLED TRANSIT'), findsOneWidget);
+    expect(find.text('Tricycle Drivers Earn on Passenger Routes'), findsOneWidget);
   });
 }

@@ -4,9 +4,10 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
-import '../../../widgets/guest_tracking_sheet.dart';
 import '../../dashboard/screens/receiver_home_screen.dart';
 import 'role_gateway_screen.dart';
+import 'track_parcel_screen.dart';
+import 'onboarding_walkthrough_screen.dart';
 import 'phone_input_screen.dart';
 
 /// Clean, spacious, and uncluttered Welcome Screen.
@@ -170,7 +171,11 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () => GuestTrackingSheet.show(context),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const TrackParcelScreen()),
+                    );
+                  },
                   icon: const Icon(FeatherIcons.search, size: 15),
                   label: const Text('Track by ID'),
                   style: ElevatedButton.styleFrom(
@@ -276,6 +281,27 @@ class WelcomeScreen extends StatelessWidget {
             side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
           ),
           child: const Text('Operator Sign In • Phone & PIN'),
+        ),
+        const SizedBox(height: 18),
+
+        // Link to separate 4-context walkthrough
+        Center(
+          child: TextButton.icon(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const OnboardingWalkthroughScreen()),
+              );
+            },
+            icon: const Icon(FeatherIcons.compass, size: 14, color: AppColors.textSecondary),
+            label: Text(
+              'How Sendalli Works • Explore 4 Corridors',
+              style: AppTextStyles.caption.copyWith(
+                fontWeight: FontWeight.w700,
+                fontSize: 12,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
         ),
       ],
     );
