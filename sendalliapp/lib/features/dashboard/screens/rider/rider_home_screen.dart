@@ -69,7 +69,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
             ? _buildActiveDeliveryAppBar()
             : DashboardAppBar(
                 user: widget.user,
-                title: 'Hello ${widget.user.firstName}',
+                title: 'Rider Dashboard',
                 subtitle: widget.user.corridor ?? 'Warri — Effurun Corridor',
               ),
         body: SafeArea(
@@ -143,7 +143,8 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
     );
   }
 
-  /// Main Map View with separate standalone corridor toggler and slide-up requests modal
+  /// Main Map View with redesigned floating toggler (matching image)
+  /// and compact floating delivery request list (bottom modal disabled).
   Widget _buildMapHomeView() {
     return Stack(
       children: [
@@ -155,151 +156,148 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           ),
         ),
 
-        // 2. Standalone Floating Toggler Container (Online / Offline Corridor Broadcast)
+        // 2. Redesigned Floating Toggler Container (Matching User Uploaded Image)
         Positioned(
           top: 14,
-          left: AppDimens.screenPaddingH,
-          right: AppDimens.screenPaddingH,
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(AppDimens.radiusButton),
-                border: Border.all(
-                  color: _isOnline ? AppColors.primary : AppColors.border,
-                  width: 1.5,
+          left: 16,
+          right: 16,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: AppColors.border,
+                width: 1.0,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.08),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // "Hello John" in clean green text on the left (matching image)
+                Text(
+                  'Hello ${widget.user.firstName}',
+                  style: const TextStyle(
+                    color: Color(0xFF1E7E34),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                   ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 9,
-                    height: 9,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _isOnline ? AppColors.primary : AppColors.textMuted,
+                ),
+
+                // "Online" / "Offline" + Switch on the right (matching image)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _isOnline ? 'Online' : 'Offline',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14.5,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    _isOnline ? 'Online' : 'Offline',
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: _isOnline ? AppColors.primary : AppColors.textSecondary,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    _isOnline ? '• Broadcasting' : '• Paused',
-                    style: AppTextStyles.caption.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textMuted,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Transform.scale(
-                    scale: 0.82,
-                    child: Switch.adaptive(
-                      value: _isOnline,
-                      activeThumbColor: AppColors.primary,
-                      activeTrackColor: AppColors.primaryLight,
-                      onChanged: (val) {
-                        setState(() => _isOnline = val);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              val
-                                  ? 'Online: Listening for corridor parcel requests.'
-                                  : 'Offline: Broadcast paused.',
+                    const SizedBox(width: 8),
+                    Transform.scale(
+                      scale: 0.85,
+                      child: Switch.adaptive(
+                        value: _isOnline,
+                        activeThumbColor: const Color(0xFF1E7E34),
+                        activeTrackColor: const Color(0xFF1E7E34).withValues(alpha: 0.35),
+                        inactiveThumbColor: Colors.white,
+                        inactiveTrackColor: const Color(0xFFD1D5DB),
+                        onChanged: (val) {
+                          setState(() => _isOnline = val);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                val
+                                    ? 'Online: Listening for corridor parcel requests.'
+                                    : 'Offline: Broadcast paused.',
+                              ),
+                              duration: const Duration(seconds: 2),
                             ),
-                            duration: const Duration(seconds: 2),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
 
-        // 3. Bottom Modal Overlay (Slide-Up Incoming Request Sheet or Offline Corridor Card)
+        // 3. Compact Floating Request List or Offline Card (Bottom modal disabled!)
         Positioned(
-          left: _isOnline ? 0 : AppDimens.screenPaddingH,
-          right: _isOnline ? 0 : AppDimens.screenPaddingH,
-          bottom: _isOnline ? 0 : AppDimens.screenPaddingV,
+          left: 16,
+          right: 16,
+          bottom: 16,
           child: _isOnline
-              ? _buildIncomingRequestsSheet()
+              ? _buildIncomingRequestsList()
               : _buildOfflineCorridorCard(),
         ),
       ],
     );
   }
 
-  /// Slide-up bottom modal sheet for incoming delivery requests.
-  /// Tapping the request item card opens up the full detailed information page.
-  Widget _buildIncomingRequestsSheet() {
+  /// Compact floating request list for incoming deliveries.
+  /// Does NOT cover the entire screen — leaves map view fully interactive.
+  /// Shows request address along the route and price.
+  /// On click opens complete detailed information page.
+  Widget _buildIncomingRequestsList() {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.border, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.12),
-            blurRadius: 18,
-            offset: const Offset(0, -4),
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
           ),
         ],
-        border: Border(
-          top: BorderSide(color: AppColors.border, width: AppDimens.borderWidth),
-          left: BorderSide(color: AppColors.border, width: AppDimens.borderWidth),
-          right: BorderSide(color: AppColors.border, width: AppDimens.borderWidth),
-        ),
       ),
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+      padding: const EdgeInsets.all(12),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Drag Handle
-          Center(
-            child: Container(
-              width: 42,
-              height: 4,
-              margin: const EdgeInsets.only(bottom: 12),
-              decoration: BoxDecoration(
-                color: AppColors.borderMedium,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-
-          // Header: Package Delivery & Date & Live Badge
+          // Header: Category & Date
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
+                  Container(
+                    width: 7,
+                    height: 7,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  const SizedBox(width: 6),
                   Text(
                     'Package Delivery',
-                    style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w700),
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                     decoration: BoxDecoration(
                       color: AppColors.primaryLight,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
                       '1 Available',
@@ -314,91 +312,153 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
               ),
               Text(
                 _dateText,
-                style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+                style: AppTextStyles.caption.copyWith(
+                  color: AppColors.textMuted,
+                  fontSize: 11,
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
-
-          // Tappable Request Item Card -> Opens Detailed Information Page
-          InkWell(
-            borderRadius: BorderRadius.circular(AppDimens.radius),
-            onTap: _openDeliveryDetailPage,
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.background,
-                borderRadius: BorderRadius.circular(AppDimens.radius),
-                border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
-              ),
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  // Route preview card
-                  DeliveryRouteCard(
-                    pickupTitle: _pickupTitle,
-                    pickupSubtitle: _pickupSubtitle,
-                    dropoffTitle: _dropoffTitle,
-                    dropoffSubtitle: _dropoffSubtitle,
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Package ID & Delivery fee
-                  DeliveryPackageCard(
-                    packageId: _orderId,
-                    deliveryFee: _deliveryFee,
-                  ),
-                  const SizedBox(height: 6),
-
-                  // Tap indicator banner
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Tap to inspect route & parcel details',
-                        style: AppTextStyles.caption.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      const Icon(FeatherIcons.arrowRight, size: 13, color: AppColors.primary),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
           const SizedBox(height: 8),
 
-          // Notes
-          DeliveryNoteTile(
-            title: 'Pickup note',
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Pickup note: Pick up parcel from front counter.')),
-              );
-            },
-          ),
-          DeliveryNoteTile(
-            title: 'Drop-off note',
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Drop-off note: Hand over parcel at gate.')),
-              );
-            },
-          ),
-          const SizedBox(height: 12),
+          // Compact Request Card: shows route address and price. On click opens complete details!
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.background,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.border, width: 1.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Upper Route Details Area (Tappable -> Opens Full Details)
+                InkWell(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                  onTap: _openDeliveryDetailPage,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Request address along the route
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              children: [
+                                const Icon(FeatherIcons.circle, size: 9, color: AppColors.primary),
+                                Container(width: 1.5, height: 14, color: AppColors.borderMedium),
+                                const Icon(FeatherIcons.mapPin, size: 10, color: Color(0xFFEF4444)),
+                              ],
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _pickupTitle,
+                                    style: AppTextStyles.caption.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                      fontSize: 11.5,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    _dropoffTitle,
+                                    style: AppTextStyles.caption.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                      fontSize: 11.5,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Tap to inspect route & parcel details',
+                              style: AppTextStyles.caption.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 10.5,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(FeatherIcons.arrowRight, size: 11, color: AppColors.primary),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(color: AppColors.border, height: 1),
 
-          // Action Buttons: Accept Delivery & Cancel
-          DeliveryActionGroup(
-            primaryLabel: 'Accept Delivery',
-            onPrimary: _acceptDelivery,
-            secondaryLabel: 'Cancel',
-            onSecondary: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Delivery request declined.')),
-              );
-            },
+                // Lower Price & Action Bar
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Payout Price
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Price: ',
+                            style: AppTextStyles.caption.copyWith(
+                              fontSize: 11,
+                              color: AppColors.textMuted,
+                            ),
+                          ),
+                          Text(
+                            _deliveryFee,
+                            style: AppTextStyles.caption.copyWith(
+                              fontSize: 14.5,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // Accept Delivery button (Pill rounded)
+                      ElevatedButton(
+                        onPressed: _acceptDelivery,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.textInverse,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28),
+                          ),
+                        ),
+                        child: const Text(
+                          'Accept Delivery',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 11.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
