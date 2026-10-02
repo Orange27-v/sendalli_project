@@ -22,6 +22,9 @@ class SendalliMapView extends StatefulWidget {
   final double? height;
   final bool isFullScreen;
   final VoidCallback? onMinimize;
+  final double? controlsTop;
+  final double? controlsBottom;
+  final double? controlsRight;
 
   const SendalliMapView({
     super.key,
@@ -35,6 +38,9 @@ class SendalliMapView extends StatefulWidget {
     this.height,
     this.isFullScreen = false,
     this.onMinimize,
+    this.controlsTop,
+    this.controlsBottom,
+    this.controlsRight,
   });
 
   @override
@@ -182,60 +188,103 @@ class _SendalliMapViewState extends State<SendalliMapView> {
   }
 
   Widget _buildFloatingControls(BuildContext context) {
-    final topOffset = widget.isFullScreen
-        ? MediaQuery.of(context).padding.top + 60
-        : 16.0;
+    if (!widget.showControls) return const SizedBox.shrink();
+
+    final double defaultTop;
+    if (widget.isFullScreen) {
+      defaultTop = MediaQuery.of(context).padding.top + 64.0;
+    } else if (widget.height == null) {
+      // Full-bleed dashboard view (e.g. RiderHomeScreen) - sit cleanly below the top floating bar
+      defaultTop = 68.0;
+    } else {
+      // Embedded card preview (e.g. 160-240px tall map previews)
+      defaultTop = 12.0;
+    }
+
+    final topOffset = widget.controlsTop ?? defaultTop;
+    final rightOffset = widget.controlsRight ?? 14.0;
 
     return Positioned(
       top: topOffset,
-      right: 16,
+      right: rightOffset,
+      bottom: widget.controlsBottom,
       child: Material(
         color: Colors.transparent,
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppColors.border, width: 1.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Zoom In Button
-              _buildControlButton(
-                key: const Key('map_zoom_in_button'),
-                icon: FeatherIcons.plus,
-                tooltip: 'Zoom In',
-                onTap: _zoomIn,
-              ),
-              Container(width: 30, height: 1, color: AppColors.border),
-              // Zoom Out Button
-              _buildControlButton(
-                key: const Key('map_zoom_out_button'),
-                icon: FeatherIcons.minus,
-                tooltip: 'Zoom Out',
-                onTap: _zoomOut,
-              ),
-              Container(width: 30, height: 1, color: AppColors.border),
-              // Full Screen / Minimise Button
-              _buildControlButton(
-                key: widget.isFullScreen
-                    ? const Key('map_minimize_button')
-                    : const Key('map_fullscreen_button'),
-                icon: widget.isFullScreen ? FeatherIcons.minimize2 : FeatherIcons.maximize2,
-                tooltip: widget.isFullScreen ? 'Minimise Map' : 'Full Screen Map',
-                onTap: _handleFullScreenToggle,
-                iconColor: widget.isFullScreen ? AppColors.primary : AppColors.textPrimary,
-              ),
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            // 1. Properly positioned Expand / Minimise container
+            _buildExpandContainer(),
+            const SizedBox(height: 8),
+
+            // 2. Properly positioned Zoom in / out controller container
+            _buildZoomContainer(),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildExpandContainer() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.border, width: 1.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: _buildControlButton(
+        key: widget.isFullScreen
+            ? const Key('map_minimize_button')
+            : const Key('map_fullscreen_button'),
+        icon: widget.isFullScreen ? FeatherIcons.minimize2 : FeatherIcons.maximize2,
+        tooltip: widget.isFullScreen ? 'Minimise Map' : 'Full Screen Map',
+        onTap: _handleFullScreenToggle,
+        iconColor: widget.isFullScreen ? AppColors.primary : AppColors.textPrimary,
+      ),
+    );
+  }
+
+  Widget _buildZoomContainer() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.border, width: 1.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Zoom In Button
+          _buildControlButton(
+            key: const Key('map_zoom_in_button'),
+            icon: FeatherIcons.plus,
+            tooltip: 'Zoom In',
+            onTap: _zoomIn,
+          ),
+          Container(width: 28, height: 1, color: AppColors.border),
+          // Zoom Out Button
+          _buildControlButton(
+            key: const Key('map_zoom_out_button'),
+            icon: FeatherIcons.minus,
+            tooltip: 'Zoom Out',
+            onTap: _zoomOut,
+          ),
+        ],
       ),
     );
   }

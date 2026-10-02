@@ -215,16 +215,18 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           child: SendalliMapView(
             corridorName: widget.user.corridor ?? 'Warri — Effurun Corridor',
             showLiveRider: _isOnline,
+            controlsTop: 66,
           ),
         ),
 
-        // 2. Redesigned Floating Toggler Container (Matching User Uploaded Image)
+        // 2. Redesigned Floating Toggler Container (Slim, Responsive & Height-Reduced)
         Positioned(
           top: 14,
           left: 16,
           right: 16,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+            constraints: const BoxConstraints(minHeight: 38, maxHeight: 42),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
@@ -242,51 +244,57 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // "Hello John" in clean green text on the left (matching image)
                 Text(
                   'Hello ${widget.user.firstName}',
                   style: const TextStyle(
                     color: Color(0xFF1E7E34),
-                    fontSize: 14,
+                    fontSize: 13.5,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
 
-                // "Online" / "Offline" + Switch on the right (matching image)
+                // "Online" / "Offline" + Compact Switch on the right (matching image)
                 Row(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       _isOnline ? 'Online' : 'Offline',
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w700,
-                        fontSize: 14.5,
+                        fontSize: 13.5,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    Transform.scale(
-                      scale: 0.85,
-                      child: Switch.adaptive(
-                        value: _isOnline,
-                        activeThumbColor: const Color(0xFF1E7E34),
-                        activeTrackColor: const Color(0xFF1E7E34).withValues(alpha: 0.35),
-                        inactiveThumbColor: Colors.white,
-                        inactiveTrackColor: const Color(0xFFD1D5DB),
-                        onChanged: (val) {
-                          setState(() => _isOnline = val);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                val
-                                    ? 'Online: Listening for corridor parcel requests.'
-                                    : 'Offline: Broadcast paused.',
+                    const SizedBox(width: 6),
+                    SizedBox(
+                      height: 28,
+                      child: Transform.scale(
+                        scale: 0.78,
+                        child: Switch.adaptive(
+                          value: _isOnline,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          activeThumbColor: const Color(0xFF1E7E34),
+                          activeTrackColor: const Color(0xFF1E7E34).withValues(alpha: 0.35),
+                          inactiveThumbColor: Colors.white,
+                          inactiveTrackColor: const Color(0xFFD1D5DB),
+                          onChanged: (val) {
+                            setState(() => _isOnline = val);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  val
+                                      ? 'Online: Listening for corridor parcel requests.'
+                                      : 'Offline: Broadcast paused.',
+                                ),
+                                duration: const Duration(seconds: 2),
                               ),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],
