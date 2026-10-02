@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_text_styles.dart';
 
@@ -16,16 +17,59 @@ class AppColors {
   static const Color primaryLight = Color(0xFFF1F5F9); // Crisp neutral light slate
   static const Color primaryAccent = Color(0xFF1E293B);
 
-  // --- Non-Dominant Accent: Deep Green ---
-  // Used strictly for subtle badges, active dots, verified status, focus rings
-  static const Color deepGreen = Color(0xFF14532D); // Classic Nigerian deep forest / emerald green
-  static const Color deepGreenLight = Color(0xFFDCFCE7); // Soft mint/sage tint for chips and badges
-  static const Color deepGreenMuted = Color(0xFF166534); // Supporting deep green
+  // --- Accent Color: Calm Sage / Seafoam Teal (#509D8A) ---
+  // Subtle, elegant accent color matching the modern minimal brand aesthetic
+  static const Color deepGreen = Color(0xFF509D8A); // Primary brand accent (#509D8A)
+  static const Color deepGreenLight = Color(0xFFE8F4F1); // Soft sage tint for chips and badges
+  static const Color deepGreenMuted = Color(0xFF387A6C); // Supporting deep sage for text contrast
+  static const Color sageAccent = Color(0xFF509D8A); // Explicit #509D8A alias
+  static const Color sageLight = Color(0xFFE8F4F1);
+  static const Color sageMuted = Color(0xFF387A6C);
 
   // Standardized green aliases for backwards compatibility
   static const Color brandGreen = deepGreen;
   static const Color brandGreenDark = deepGreenMuted;
   static const Color brandGreenLight = deepGreenLight;
+
+  // --- Signature Sage Gradient Fades (#509D8A) ---
+  // Soft, airy top & bottom vignette fade as seen in the reference onboarding design
+  static const LinearGradient screenGradientFade = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color(0x38509D8A), // ~22% opacity soft sage at top edge
+      Color(0x0F509D8A), // ~6% opacity transition
+      Colors.white,      // Pure crisp white in center focus area
+      Colors.white,      // Pure crisp white
+      Color(0x0F509D8A), // ~6% opacity transition
+      Color(0x3D509D8A), // ~24% opacity soft sage at bottom edge
+    ],
+    stops: [0.0, 0.20, 0.40, 0.65, 0.85, 1.0],
+  );
+
+  // Soft top fade only (e.g. for hero backgrounds)
+  static const LinearGradient topFadeGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color(0x2E509D8A), // ~18% soft sage fade
+      Color(0x08509D8A),
+      Colors.white,
+    ],
+    stops: [0.0, 0.50, 1.0],
+  );
+
+  // Soft bottom fade only
+  static const LinearGradient bottomFadeGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Colors.white,
+      Color(0x08509D8A),
+      Color(0x33509D8A), // ~20% soft sage fade
+    ],
+    stops: [0.0, 0.50, 1.0],
+  );
 
   // --- Neutral Canvas & Surfaces ---
   static const Color background = Color(0xFFF8FAFC); // Clean off-white canvas
@@ -37,11 +81,12 @@ class AppColors {
   static const Color textSecondary = Color(0xFF475569); // Slate body
   static const Color textMuted = Color(0xFF94A3B8); // Muted captions & hints
   static const Color textInverse = Colors.white; // Pure white text
+  static const Color textSage = Color(0xFF509D8A); // Headline accent text in #509D8A
 
   // --- Borders & Dividers ---
   static const Color border = Color(0xFFE2E8F0); // Subtle divider / card border
   static const Color borderMedium = Color(0xFFCBD5E1); // Input field border
-  static const Color borderFocus = Color(0xFF14532D); // Deep green subtle focus ring
+  static const Color borderFocus = Color(0xFF509D8A); // Sage #509D8A subtle focus ring
 
   // --- Status & Feedback Colors ---
   static const Color success = Color(0xFF15803D); // Deep green success
@@ -64,10 +109,17 @@ class AppTheme {
   static const Color primaryColor = AppColors.primary;
   static const Color deepGreen = AppColors.deepGreen;
   static const Color deepGreenLight = AppColors.deepGreenLight;
+  static const Color sageAccent = AppColors.sageAccent;
+  static const Color sageLight = AppColors.sageLight;
   static const Color backgroundColor = AppColors.background;
   static const Color surfaceColor = AppColors.surface;
   static const Color textPrimary = AppColors.textPrimary;
   static const Color textSecondary = AppColors.textSecondary;
+
+  // Signature gradient fade aliases
+  static const LinearGradient screenGradientFade = AppColors.screenGradientFade;
+  static const LinearGradient topFadeGradient = AppColors.topFadeGradient;
+  static const LinearGradient bottomFadeGradient = AppColors.bottomFadeGradient;
 
   static TextTheme _buildTextTheme(TextTheme base, Color color) {
     final fontTheme = GoogleFonts.urbanistTextTheme(base);
@@ -142,6 +194,11 @@ class AppTheme {
         scrolledUnderElevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: AppColors.textPrimary),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark, // Android dark icons
+          statusBarBrightness: Brightness.light,     // iOS dark text/icons
+        ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: AppColors.primary,

@@ -27,6 +27,7 @@ class ReceiverTrackingScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           title: Text('Live Parcel Tracker', style: AppTextStyles.h3),
           leading: IconButton(
             icon: const Icon(FeatherIcons.x, size: 20),
@@ -42,39 +43,41 @@ class ReceiverTrackingScreen extends StatelessWidget {
             ),
           ],
         ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Tracking Header
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppColors.primaryLight,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Tracking ID', style: AppTextStyles.caption),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          'IN TRANSIT',
-                          style: AppTextStyles.caption.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ],
+        body: SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Tracking Header
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryLight,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
                   ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Tracking ID', style: AppTextStyles.caption),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: AppColors.deepGreenLight,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              'IN TRANSIT',
+                              style: AppTextStyles.caption.copyWith(color: AppColors.deepGreen, fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
                   const SizedBox(height: 4),
                   Text(trackingId, style: AppTextStyles.h2.copyWith(color: AppColors.primaryDark)),
                   const SizedBox(height: 16),
@@ -189,7 +192,7 @@ class ReceiverTrackingScreen extends StatelessWidget {
                         const SnackBar(content: Text('Calling rider: +234 803 000 1234')),
                       );
                     },
-                    icon: const Icon(FeatherIcons.phone, color: AppColors.textPrimary, size: 18),
+                    icon: const Icon(FeatherIcons.phone, color: AppColors.textInverse, size: 18),
                     style: IconButton.styleFrom(backgroundColor: AppColors.primary),
                   ),
                 ],
@@ -198,6 +201,8 @@ class ReceiverTrackingScreen extends StatelessWidget {
           ],
         ),
       ),
-    ),);
+    ),
+  ),
+);
   }
 }

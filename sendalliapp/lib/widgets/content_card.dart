@@ -72,7 +72,7 @@ class ContentCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       StatusBadge(
                         text: '$badgeCount',
-                        color: AppColors.textPrimary,
+                        color: AppColors.textInverse,
                         backgroundColor: AppColors.primary,
                       ),
                     ],

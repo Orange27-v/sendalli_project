@@ -30,24 +30,27 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-        title: Text('Rider Corridor Hub', style: AppTextStyles.h3),
-        actions: [
-          IconButton(
-            icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textSecondary),
-            onPressed: () async {
-              await SessionManager.logout();
-              if (!context.mounted) return;
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-                (route) => false,
-              );
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+          scrolledUnderElevation: 0,
+          title: Text('Rider Corridor Hub', style: AppTextStyles.h3),
+          actions: [
+            IconButton(
+              icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textSecondary),
+              onPressed: () async {
+                await SessionManager.logout();
+                if (!context.mounted) return;
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+                  (route) => false,
+                );
+              },
+            ),
+          ],
+        ),
+        body: SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Rider Status & Trust Score Card
@@ -242,6 +245,8 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           ],
         ),
       ),
-    ),);
+    ),
+  ),
+);
   }
 }

@@ -154,7 +154,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
                     ? const SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textPrimary),
+                        child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse),
                       )
                     : const Text('Complete & Register Hub'),
               ),

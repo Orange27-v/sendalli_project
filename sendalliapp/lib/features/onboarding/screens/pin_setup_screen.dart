@@ -5,7 +5,6 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/navigation/app_navigator.dart';
 import '../../../widgets/form_randomizer.dart';
-import 'role_selection_screen.dart';
 import 'sender_setup_screen.dart';
 import 'rider_setup_screen.dart';
 import 'hub_setup_screen.dart';
@@ -67,61 +66,49 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
     } else {
       // Confirmation entry
       if (_enteredPin == _firstPin) {
-        // PINs match -> if role was already pre-selected at Welcome screen, skip role picker
-        if (widget.targetRole != null) {
-          switch (widget.targetRole!) {
-            case UserRole.sender:
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => SenderSetupScreen(
-                    phoneNumber: widget.phoneNumber,
-                    firstName: widget.firstName,
-                    lastName: widget.lastName,
-                    pin: _enteredPin,
-                  ),
+        // PINs match -> proceed directly to the selected role's setup screen.
+        // Users select their role once at the beginning (RoleGatewayScreen); they do not select it twice.
+        final role = widget.targetRole ?? UserRole.sender;
+        switch (role) {
+          case UserRole.sender:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => SenderSetupScreen(
+                  phoneNumber: widget.phoneNumber,
+                  firstName: widget.firstName,
+                  lastName: widget.lastName,
+                  pin: _enteredPin,
                 ),
-              );
-              return;
-            case UserRole.rider:
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => RiderSetupScreen(
-                    phoneNumber: widget.phoneNumber,
-                    firstName: widget.firstName,
-                    lastName: widget.lastName,
-                    pin: _enteredPin,
-                  ),
+              ),
+            );
+            return;
+          case UserRole.rider:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => RiderSetupScreen(
+                  phoneNumber: widget.phoneNumber,
+                  firstName: widget.firstName,
+                  lastName: widget.lastName,
+                  pin: _enteredPin,
                 ),
-              );
-              return;
-            case UserRole.hub:
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => HubSetupScreen(
-                    phoneNumber: widget.phoneNumber,
-                    firstName: widget.firstName,
-                    lastName: widget.lastName,
-                    pin: _enteredPin,
-                  ),
+              ),
+            );
+            return;
+          case UserRole.hub:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => HubSetupScreen(
+                  phoneNumber: widget.phoneNumber,
+                  firstName: widget.firstName,
+                  lastName: widget.lastName,
+                  pin: _enteredPin,
                 ),
-              );
-              return;
-            case UserRole.receiver:
-              break;
-          }
+              ),
+            );
+            return;
+          case UserRole.receiver:
+            break;
         }
-
-        // Default or unselected role -> proceed to role selection
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => RoleSelectionScreen(
-              phoneNumber: widget.phoneNumber,
-              firstName: widget.firstName,
-              lastName: widget.lastName,
-              pin: _enteredPin,
-            ),
-          ),
-        );
       } else {
         setState(() {
           _errorMessage = 'PINs did not match. Please try again.';

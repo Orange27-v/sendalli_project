@@ -87,6 +87,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
       child: Scaffold(
         backgroundColor: AppColors.surface,
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           leading: IconButton(
             icon: const Icon(FeatherIcons.arrowLeft, size: 20),
             onPressed: () => AppNavigator.safePop(context),

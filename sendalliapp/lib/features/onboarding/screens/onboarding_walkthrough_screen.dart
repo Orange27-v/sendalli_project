@@ -91,7 +91,8 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.surface,
+        backgroundColor: Colors.white,
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -141,11 +142,15 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
           ),
         ],
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-          child: Column(
-            children: [
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: AppColors.screenGradientFade,
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            child: Column(
+              children: [
               // Separated Context Slide
               Expanded(
                 child: _buildSlide(_slides[_currentPage]),
@@ -224,8 +229,10 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
           ),
         ),
       ),
-    ),);
-  }
+    ),
+  ),
+);
+}
 
   Widget _buildSlide(_WalkthroughSlideData slide, {Key? key}) {
     return SingleChildScrollView(
@@ -274,13 +281,13 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
           ),
           const SizedBox(height: 14),
 
-          // Context Headline
+          // Context Headline in #509D8A (matching design reference)
           Text(
             slide.title,
             style: AppTextStyles.h1.copyWith(
               fontSize: 23,
               fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
+              color: AppColors.deepGreen,
             ),
             textAlign: TextAlign.center,
           ),

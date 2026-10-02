@@ -61,6 +61,12 @@ class StatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Prevent dark-on-dark unreadable text: if background is dark, automatically use textInverse (white)
+    final isDarkBg = backgroundColor == AppColors.primary ||
+        backgroundColor == AppColors.primaryDark ||
+        backgroundColor == AppColors.primaryAccent;
+    final effectiveTextColor = isDarkBg ? AppColors.textInverse : color;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
@@ -70,7 +76,7 @@ class StatusBadge extends StatelessWidget {
       child: Text(
         text,
         style: AppTextStyles.caption.copyWith(
-          color: color,
+          color: effectiveTextColor,
           fontWeight: FontWeight.w700,
           fontSize: 11,
           letterSpacing: 0.3,

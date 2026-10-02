@@ -9,7 +9,6 @@ import '../../dashboard/screens/receiver/receiver_home_screen.dart';
 import 'role_gateway_screen.dart';
 import 'track_parcel_screen.dart';
 import 'onboarding_walkthrough_screen.dart';
-import 'phone_input_screen.dart';
 
 /// Clean, spacious, and uncluttered Welcome Screen.
 /// Highlights:
@@ -27,86 +26,99 @@ class WelcomeScreen extends StatelessWidget {
         if (didPop) return;
         SystemNavigator.pop();
       },
-      child: Scaffold(
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
+        child: Scaffold(
         backgroundColor: AppColors.background,
         body: SafeArea(
           bottom: false,
           child: Column(
           children: [
             // ==========================================
-            // TOP HERO SECTION (Clean Black & White with Deep Green Accent)
-            // ==========================================
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-              child: Column(
-                children: [
-                  // App Brand Title & Subtitle in dark slate text
-                  Text(
-                    'SENDALLI',
-                    style: AppTextStyles.h1.copyWith(
-                      letterSpacing: 2.2,
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 24,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Local Parcel Delivery • Warri & Effurun',
-                    style: AppTextStyles.caption.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textSecondary,
-                      fontSize: 13,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Hero Graphic in clean white container
-                  Container(
-                    width: 140,
-                    height: 110,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppColors.border, width: 1.0),
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'assets/svg/logistics.svg',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Punchy Value Prop Badge with subtle deep green accent
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.deepGreenLight,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.deepGreen.withValues(alpha: 0.25), width: 1.0),
-                    ),
-                    child: Text(
-                      'Send items across town in 10 minutes',
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.deepGreen,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // ==========================================
-            // BOTTOM WHITE CURVED SHEET (matching Screen 3 of design guide)
+            // TOP HERO SECTION (Spacious upper half matching design guide)
             // ==========================================
             Expanded(
+              flex: 48,
+              child: Center(
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // App Brand Title & Subtitle in dark slate text
+                      Text(
+                        'SENDALLI',
+                        style: AppTextStyles.h1.copyWith(
+                          letterSpacing: 2.2,
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 24,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Local Parcel Delivery • Warri & Effurun',
+                        style: AppTextStyles.caption.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textSecondary,
+                          fontSize: 13,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 14),
+
+                      // Hero Graphic in clean white container
+                      Container(
+                        width: 156,
+                        height: 124,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(22),
+                          border: Border.all(color: AppColors.border, width: 1.0),
+                        ),
+                        padding: const EdgeInsets.all(14),
+                        child: Center(
+                          child: SvgPicture.asset(
+                            'assets/svg/logistics.svg',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Punchy Value Prop Badge with subtle deep green accent
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: AppColors.deepGreenLight,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: AppColors.deepGreen.withValues(alpha: 0.25), width: 1.0),
+                        ),
+                        child: Text(
+                          'Send items across town in 10 minutes',
+                          style: AppTextStyles.caption.copyWith(
+                            color: AppColors.deepGreen,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // ==========================================
+            // BOTTOM WHITE CURVED SHEET (Reduced height downwards)
+            // ==========================================
+            Expanded(
+              flex: 52,
               child: Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(
@@ -123,7 +135,7 @@ class WelcomeScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 18.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 14.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -138,15 +150,10 @@ class WelcomeScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 14),
 
-                        // Section 1: Outside Receiver Entrance (No Login)
-                        _buildReceiverCard(context),
-                        const SizedBox(height: 18),
-
-                        // Section 2: Operator Network & Actions
+                        // Operator Actions with Receiver Text Buttons under Get Started
                         _buildOperatorSection(context),
-                        const SizedBox(height: 16),
                       ],
                     ),
                   ),
@@ -156,140 +163,12 @@ class WelcomeScreen extends StatelessWidget {
           ],
         ),
       ),
-    ),);
+    ),
+  ),
+);
   }
 
-  /// Clean, spacious receiver entry card
-  Widget _buildReceiverCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border, width: 1.2),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.deepGreenLight,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  FeatherIcons.package,
-                  color: AppColors.deepGreen,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Receiving a Parcel?',
-                          style: AppTextStyles.h2.copyWith(fontSize: 16, fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(width: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            'NO LOGIN',
-                            style: AppTextStyles.caption.copyWith(
-                              fontSize: 9,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textInverse,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      'See where your parcel is and get your pickup code.',
-                      style: AppTextStyles.caption.copyWith(
-                        fontSize: 12,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const TrackParcelScreen()),
-                    );
-                  },
-                  icon: const Icon(FeatherIcons.search, size: 15, color: AppColors.textInverse),
-                  label: const Text('Track by ID'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.textInverse,
-                    elevation: 0,
-                    minimumSize: const Size.fromHeight(44),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    textStyle: AppTextStyles.button.copyWith(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textInverse,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => ReceiverHomeScreen(
-                          user: UserProfile.guestReceiver(),
-                        ),
-                      ),
-                    );
-                  },
-                  icon: const Icon(FeatherIcons.mapPin, size: 15, color: AppColors.textPrimary),
-                  label: const Text('My Parcels'),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(44),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
-                    foregroundColor: AppColors.textPrimary,
-                    textStyle: AppTextStyles.button.copyWith(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Clean operator access navigating to dedicated RoleGatewayScreen
+  /// Clean operator access with Receiver Text Buttons positioned under Get Started
   Widget _buildOperatorSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,7 +191,7 @@ class WelcomeScreen extends StatelessWidget {
             const Expanded(child: Divider(color: AppColors.border, height: 1)),
           ],
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 14),
 
         // Primary action to navigate to spread-out Role Gateway Screen (Solid Black)
         ElevatedButton(
@@ -342,12 +221,12 @@ class WelcomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 10),
 
-        // Direct returning operator sign-in button
+        // Direct returning operator sign-in button navigating to RoleGatewayScreen
         OutlinedButton(
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => const PhoneInputScreen(isReturningLogin: true),
+                builder: (_) => const RoleGatewayScreen(),
               ),
             );
           },
@@ -359,7 +238,11 @@ class WelcomeScreen extends StatelessWidget {
           ),
           child: const Text('Already have an account? Sign In'),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 14),
+
+        // Clean Receiver Text Buttons under Get Started
+        _buildReceiverSection(context),
+        const SizedBox(height: 14),
 
         // Link to separate 4-context walkthrough
         Center(
@@ -381,6 +264,83 @@ class WelcomeScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  /// Sleek, minimal outside receiver access as clean text buttons under Get Started
+  Widget _buildReceiverSection(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.border, width: 1.0),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Receiving a Parcel?',
+            style: AppTextStyles.caption.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: 11.5,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 2),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const TrackParcelScreen()),
+                    );
+                  },
+                  icon: const Icon(FeatherIcons.search, size: 13, color: AppColors.textPrimary),
+                  label: const Text('Track by ID'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.textPrimary,
+                    textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  height: 12,
+                  color: AppColors.borderMedium,
+                  margin: const EdgeInsets.symmetric(horizontal: 6),
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ReceiverHomeScreen(
+                          user: UserProfile.guestReceiver(),
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(FeatherIcons.mapPin, size: 13, color: AppColors.textPrimary),
+                  label: const Text('My Parcels'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.textPrimary,
+                    textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

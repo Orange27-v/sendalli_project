@@ -23,24 +23,27 @@ class HubHomeScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-        title: Text('Drop Hub Custody', style: AppTextStyles.h3),
-        actions: [
-          IconButton(
-            icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textSecondary),
-            onPressed: () async {
-              await SessionManager.logout();
-              if (!context.mounted) return;
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-                (route) => false,
-              );
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+          scrolledUnderElevation: 0,
+          title: Text('Drop Hub Custody', style: AppTextStyles.h3),
+          actions: [
+            IconButton(
+              icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textSecondary),
+              onPressed: () async {
+                await SessionManager.logout();
+                if (!context.mounted) return;
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+                  (route) => false,
+                );
+              },
+            ),
+          ],
+        ),
+        body: SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -55,7 +58,7 @@ class HubHomeScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 26,
                     backgroundColor: AppColors.primary,
-                    child: const Icon(FeatherIcons.home, color: AppColors.textPrimary, size: 24),
+                    child: const Icon(FeatherIcons.home, color: AppColors.textInverse, size: 24),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -78,7 +81,7 @@ class HubHomeScreen extends StatelessWidget {
                   const SnackBar(content: Text('Camera QR scanner will open to accept package into custody.')),
                 );
               },
-              icon: const Icon(FeatherIcons.maximize, size: 18, color: AppColors.textPrimary),
+              icon: const Icon(FeatherIcons.maximize, size: 18, color: AppColors.textInverse),
               label: const Text('Scan Package Into Custody'),
             ),
             const SizedBox(height: 28),
@@ -106,6 +109,8 @@ class HubHomeScreen extends StatelessWidget {
           ],
         ),
       ),
-    ),);
+    ),
+  ),
+);
   }
 }

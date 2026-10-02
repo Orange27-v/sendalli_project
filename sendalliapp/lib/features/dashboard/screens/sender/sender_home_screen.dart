@@ -23,24 +23,27 @@ class SenderHomeScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-        title: Text('Sendalli Merchant', style: AppTextStyles.h3),
-        actions: [
-          IconButton(
-            icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textSecondary),
-            onPressed: () async {
-              await SessionManager.logout();
-              if (!context.mounted) return;
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-                (route) => false,
-              );
-            },
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+          scrolledUnderElevation: 0,
+          title: Text('Sendalli Merchant', style: AppTextStyles.h3),
+          actions: [
+            IconButton(
+              icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textSecondary),
+              onPressed: () async {
+                await SessionManager.logout();
+                if (!context.mounted) return;
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+                  (route) => false,
+                );
+              },
+            ),
+          ],
+        ),
+        body: SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -81,7 +84,7 @@ class SenderHomeScreen extends StatelessWidget {
                   const SnackBar(content: Text('Send Parcel flow will open here.')),
                 );
               },
-              icon: const Icon(FeatherIcons.plus, size: 18, color: AppColors.textPrimary),
+              icon: const Icon(FeatherIcons.plus, size: 18, color: AppColors.textInverse),
               label: const Text('Send a New Parcel'),
             ),
             const SizedBox(height: 28),
@@ -109,6 +112,8 @@ class SenderHomeScreen extends StatelessWidget {
           ],
         ),
       ),
-    ),);
+    ),
+  ),
+);
   }
 }

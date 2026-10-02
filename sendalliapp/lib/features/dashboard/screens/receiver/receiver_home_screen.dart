@@ -68,6 +68,7 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          scrolledUnderElevation: 0,
           centerTitle: false,
           leading: IconButton(
             icon: const Icon(FeatherIcons.arrowLeft, size: 20),
@@ -106,23 +107,26 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 1. Search / Track By ID Bar
-              _buildTrackingSearchBar(),
-              const SizedBox(height: 20),
+        body: SafeArea(
+          top: false,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 1. Search / Track By ID Bar
+                _buildTrackingSearchBar(),
+                const SizedBox(height: 20),
 
-              // 2. Active Parcel Card (Hero card)
-              _buildActiveParcelCard(),
-              const SizedBox(height: 18),
+                // 2. Active Parcel Card (Hero card)
+                _buildActiveParcelCard(),
+                const SizedBox(height: 18),
 
-              // 3. Roadside Drop Hub Diversion Card
-              _buildHubDiversionCard(),
-              const SizedBox(height: 24),
-            ],
+                // 3. Roadside Drop Hub Diversion Card
+                _buildHubDiversionCard(),
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),
@@ -232,8 +236,8 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
                 ),
                 StatusBadge(
                   text: _isDivertedToHub ? 'DIVERTED TO HUB' : 'IN TRANSIT',
-                  color: AppColors.textPrimary,
-                  backgroundColor: _isDivertedToHub ? AppColors.surfaceSubtle : AppColors.primary,
+                  color: _isDivertedToHub ? AppColors.textSecondary : AppColors.deepGreen,
+                  backgroundColor: _isDivertedToHub ? AppColors.surfaceSubtle : AppColors.deepGreenLight,
                 ),
               ],
             ),
@@ -383,7 +387,7 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
                       const SnackBar(content: Text('Calling rider: +234 803 000 1234')),
                     );
                   },
-                  icon: const Icon(FeatherIcons.phone, size: 16, color: AppColors.textPrimary),
+                  icon: const Icon(FeatherIcons.phone, size: 16, color: AppColors.textInverse),
                   style: IconButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: const CircleBorder(),
