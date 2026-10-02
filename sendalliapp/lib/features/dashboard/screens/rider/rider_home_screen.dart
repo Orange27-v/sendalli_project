@@ -1,3 +1,4 @@
+import '../../../../core/models/rider_delivery_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -42,18 +43,79 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
   String _deliveryStatus = 'Pickup';
   final List<String> _statusOptions = ['Pickup', 'In Transit', 'Delivered'];
 
-  // Sample package info
-  final String _orderId = '#BE12345';
-  final String _referenceId = '#123456789';
-  final String _dateText = '12th of November, 2024';
-  final String _pickupTitle = '9ja kitchen (Pickup Location)';
-  final String _pickupSubtitle = 'Lagos avenue, Ring road';
-  final String _dropoffTitle = 'John Deo (Drop-off Location)';
-  final String _dropoffSubtitle = '114, Ojuelegba, Lagos state';
-  final String _customerName = 'John Deo';
-  final String _handoverCode = '1234';
-  final String _deliveryFee = '₦ 260.00';
-  final String _customerNote = 'Ring the bell when you get to the gate';
+  int _deliveriesFilterIndex = 0; // 0: Pending, 1: Accepted, 2: Completed
+
+  late List<RiderDeliveryItem> _pendingDeliveries;
+  late List<RiderDeliveryItem> _acceptedDeliveries;
+  RiderDeliveryItem? _activeDeliveryItem;
+
+  @override
+  void initState() {
+    super.initState();
+    _pendingDeliveries = [
+      RiderDeliveryItem(
+        orderId: '#BE12345',
+        referenceId: '#123456789',
+        dateText: '12th of November, 2024',
+        pickupTitle: '9ja kitchen (Pickup Location)',
+        pickupSubtitle: 'Lagos avenue, Ring road',
+        dropoffTitle: 'John Deo (Drop-off Location)',
+        dropoffSubtitle: '114, Ojuelegba, Lagos state',
+        packageItem: 'Food • Jollof Rice, meat and moi moi',
+        deliveryFee: '₦ 260.00',
+        customerName: 'John Deo',
+        customerNote: 'Ring the bell when you get to the gate',
+        handoverCode: '1234',
+        status: DeliveryItemStatus.pending,
+      ),
+      RiderDeliveryItem(
+        orderId: '#BE12389',
+        referenceId: '#556677889',
+        dateText: 'Today • 3:10 PM',
+        pickupTitle: 'Enerhen Pharmacy Hub (Pickup Location)',
+        pickupSubtitle: '12 Enerhen Junction, Warri',
+        dropoffTitle: 'Jakpa Roadside Mart (Drop-off Location)',
+        dropoffSubtitle: 'Total Station, Jakpa Road',
+        packageItem: 'Pharmacy • Prescription box',
+        deliveryFee: '₦ 400.00',
+        customerName: 'Amina Bello',
+        customerNote: 'Fragile medicine. Keep upright.',
+        handoverCode: '4321',
+        status: DeliveryItemStatus.pending,
+      ),
+    ];
+
+    _acceptedDeliveries = [
+      RiderDeliveryItem(
+        orderId: '#BE12330',
+        referenceId: '#998877665',
+        dateText: 'Today • 1:15 PM',
+        pickupTitle: 'Market Stall 14 (Pickup Location)',
+        pickupSubtitle: 'Main Market Roadside, Warri',
+        dropoffTitle: 'Effurun Roundabout (Drop-off Location)',
+        dropoffSubtitle: 'Shop 4, Express Corner',
+        packageItem: 'Textiles • Ankara fabric pack',
+        deliveryFee: '₦ 500.00',
+        customerName: 'Chief Emeka',
+        customerNote: 'Meet at the roundabout bus stop',
+        handoverCode: '8899',
+        status: DeliveryItemStatus.accepted,
+      ),
+    ];
+  }
+
+  // Active delivery properties derived dynamically from active delivery item or fallback
+  String get _orderId => _activeDeliveryItem?.orderId ?? '#BE12345';
+  String get _referenceId => _activeDeliveryItem?.referenceId ?? '#123456789';
+  String get _dateText => _activeDeliveryItem?.dateText ?? '12th of November, 2024';
+  String get _pickupTitle => _activeDeliveryItem?.pickupTitle ?? '9ja kitchen (Pickup Location)';
+  String get _pickupSubtitle => _activeDeliveryItem?.pickupSubtitle ?? 'Lagos avenue, Ring road';
+  String get _dropoffTitle => _activeDeliveryItem?.dropoffTitle ?? 'John Deo (Drop-off Location)';
+  String get _dropoffSubtitle => _activeDeliveryItem?.dropoffSubtitle ?? '114, Ojuelegba, Lagos state';
+  String get _customerName => _activeDeliveryItem?.customerName ?? 'John Deo';
+  String get _handoverCode => _activeDeliveryItem?.handoverCode ?? '1234';
+  String get _deliveryFee => _activeDeliveryItem?.riderProposedFee ?? _activeDeliveryItem?.deliveryFee ?? '₦ 260.00';
+  String get _customerNote => _activeDeliveryItem?.customerNote ?? 'Ring the bell when you get to the gate';
 
   @override
   Widget build(BuildContext context) {
@@ -465,46 +527,102 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
     );
   }
 
-  void _openDeliveryDetailPage() async {
+  void _openDeliveryDetailPage([RiderDeliveryItem? specificItem]) async {
+    final target = specificItem ?? (_pendingDeliveries.isNotEmpty ? _pendingDeliveries.first : null);
+    if (target == null) return;
+
     final accepted = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
         builder: (_) => RiderDeliveryDetailScreen(
-          orderId: _orderId,
-          referenceId: _referenceId,
-          dateText: _dateText,
-          pickupTitle: _pickupTitle,
-          pickupSubtitle: _pickupSubtitle,
-          dropoffTitle: _dropoffTitle,
-          dropoffSubtitle: _dropoffSubtitle,
-          packageItem: 'Food • Jollof Rice, meat and moi moi',
-          deliveryFee: _deliveryFee,
-          customerName: _customerName,
-          customerNote: _customerNote,
-          handoverCode: _handoverCode,
+          orderId: target.orderId,
+          referenceId: target.referenceId,
+          dateText: target.dateText,
+          pickupTitle: target.pickupTitle,
+          pickupSubtitle: target.pickupSubtitle,
+          dropoffTitle: target.dropoffTitle,
+          dropoffSubtitle: target.dropoffSubtitle,
+          packageItem: target.packageItem,
+          deliveryFee: target.riderProposedFee ?? target.deliveryFee,
+          customerName: target.customerName,
+          customerNote: target.customerNote,
+          handoverCode: target.handoverCode,
           corridorName: widget.user.corridor ?? 'Warri — Effurun Corridor',
           onAccept: () {
-            _acceptDelivery();
+            _acceptSpecificDelivery(target);
+          },
+          onCounterOffer: (proposedAmount, reason) {
+            setState(() {
+              target.riderProposedFee = proposedAmount;
+              target.objectionReason = reason;
+              target.status = DeliveryItemStatus.counterOffered;
+            });
           },
         ),
       ),
     );
 
     if (accepted == true && !_hasActiveDelivery) {
-      _acceptDelivery();
+      _acceptSpecificDelivery(target);
     }
   }
 
   void _acceptDelivery() {
+    if (_pendingDeliveries.isNotEmpty) {
+      _acceptSpecificDelivery(_pendingDeliveries.first);
+    } else {
+      setState(() {
+        _hasActiveDelivery = true;
+        _deliveryStatus = 'Pickup';
+      });
+    }
+  }
+
+  void _acceptSpecificDelivery(RiderDeliveryItem item) {
     setState(() {
+      _pendingDeliveries.remove(item);
+      item.status = DeliveryItemStatus.accepted;
+      if (!_acceptedDeliveries.contains(item)) {
+        _acceptedDeliveries.insert(0, item);
+      }
+      _activeDeliveryItem = item;
       _hasActiveDelivery = true;
       _deliveryStatus = 'Pickup';
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Accepted delivery for $_orderId! Navigating to corridor route.'),
+        content: Text('Accepted delivery for ${item.orderId}! Navigating to corridor route.'),
         backgroundColor: AppColors.primary,
       ),
     );
+  }
+
+  void _proposeFareFor(RiderDeliveryItem item) {
+    ProposeFareSheet.show(
+      context: context,
+      orderId: item.orderId,
+      currentFee: item.riderProposedFee ?? item.deliveryFee,
+      onSendOffer: (proposedAmount, reason) {
+        setState(() {
+          item.riderProposedFee = proposedAmount;
+          item.objectionReason = reason;
+          item.status = DeliveryItemStatus.counterOffered;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Proposed $proposedAmount sent to sender for ${item.orderId}!'),
+            backgroundColor: AppColors.primary,
+          ),
+        );
+      },
+    );
+  }
+
+  void _resumeActiveDelivery(RiderDeliveryItem item) {
+    setState(() {
+      _activeDeliveryItem = item;
+      _hasActiveDelivery = true;
+      _deliveryStatus = 'Pickup';
+    });
   }
 
   /// Offline status card prompting rider to go online
@@ -884,65 +1002,582 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
     }
   }
 
-  /// Tab 1: Corridor Trips & Delivery History
+  /// Tab 1: Deliveries Tab showing Pending Requests, Accepted Requests, and Completed Trips.
   Widget _buildDeliveriesTab() {
     return SingleChildScrollView(
-      padding: AppDimens.screenInsets,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('My Deliveries', style: AppTextStyles.h2),
+              Text('Deliveries', style: AppTextStyles.h1.copyWith(fontSize: 22)),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: AppColors.primaryLight,
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  '8 Completed Today',
+                  '${_pendingDeliveries.length} Pending • ${_acceptedDeliveries.length} Active',
                   style: AppTextStyles.caption.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: AppColors.primary,
+                    color: AppColors.primaryDark,
+                    fontSize: 11,
                   ),
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 14),
+
+          // Segmented Filter Bar: Pending, Accepted, Completed
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: AppColors.surfaceSubtle,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.border, width: 1.0),
+            ),
+            child: Row(
+              children: [
+                _buildFilterTab(
+                  key: const Key('deliveries_filter_pending'),
+                  index: 0,
+                  label: 'Pending',
+                  count: _pendingDeliveries.length,
+                ),
+                _buildFilterTab(
+                  key: const Key('deliveries_filter_accepted'),
+                  index: 1,
+                  label: 'Accepted',
+                  count: _acceptedDeliveries.length,
+                ),
+                _buildFilterTab(
+                  key: const Key('deliveries_filter_completed'),
+                  index: 2,
+                  label: 'Completed',
+                  count: 8,
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: 16),
 
-          _buildTripCard(
-            orderId: '#BE12345',
-            pickup: '9ja Kitchen • Ring Road',
-            dropoff: 'John Deo • Jakpa Junction Stop',
-            fare: '₦ 800.00',
-            status: 'Delivered',
-            time: '12:45 PM',
-            isComplete: true,
-          ),
-          const SizedBox(height: 12),
-          _buildTripCard(
-            orderId: '#BE12344',
-            pickup: 'Warri Central Chemist',
-            dropoff: 'PTI Gate Roadside',
-            fare: '₦ 800.00',
-            status: 'Delivered',
-            time: '11:15 AM',
-            isComplete: true,
-          ),
-          const SizedBox(height: 12),
-          _buildTripCard(
-            orderId: '#BE12343',
-            pickup: 'Deco Road Provisions',
-            dropoff: 'Airport Road Express Stop',
-            fare: '₦ 800.00',
-            status: 'Delivered',
-            time: '09:40 AM',
-            isComplete: true,
-          ),
+          // Content according to selected filter
+          if (_deliveriesFilterIndex == 0) ...[
+            _buildPendingDeliveriesList(),
+          ] else if (_deliveriesFilterIndex == 1) ...[
+            _buildAcceptedDeliveriesList(),
+          ] else ...[
+            _buildCompletedTripsList(),
+          ],
         ],
+      ),
+    );
+  }
+
+  Widget _buildFilterTab({
+    required Key key,
+    required int index,
+    required String label,
+    required int count,
+  }) {
+    final isSelected = _deliveriesFilterIndex == index;
+
+    return Expanded(
+      child: InkWell(
+        key: key,
+        onTap: () => setState(() => _deliveriesFilterIndex = index),
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.surface : Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : null,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                  color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+                  fontSize: 12,
+                ),
+              ),
+              const SizedBox(width: 5),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.primary.withValues(alpha: 0.12)
+                      : AppColors.border,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  count.toString(),
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPendingDeliveriesList() {
+    if (_pendingDeliveries.isEmpty) {
+      return _buildEmptyState(
+        icon: FeatherIcons.inbox,
+        title: 'No Pending Requests',
+        subtitle: 'When senders broadcast parcel orders along your corridor, they will appear here.',
+      );
+    }
+
+    return Column(
+      children: _pendingDeliveries.map((item) {
+        final isCounterOffered = item.status == DeliveryItemStatus.counterOffered;
+
+        return Container(
+          margin: const EdgeInsets.only(bottom: 14),
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: isCounterOffered ? AppColors.warning : AppColors.border,
+              width: isCounterOffered ? 1.4 : 1.0,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header: Order ID + Tag + Date
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        item.orderId,
+                        style: AppTextStyles.h3.copyWith(fontSize: 14, fontWeight: FontWeight.w800),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: AppColors.surfaceSubtle,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          item.packageItem.split('•').first.trim(),
+                          style: AppTextStyles.caption.copyWith(
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    item.dateText,
+                    style: AppTextStyles.caption.copyWith(fontSize: 11, color: AppColors.textMuted),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+
+              // Route Preview
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    children: [
+                      const Icon(FeatherIcons.circle, size: 9, color: AppColors.primary),
+                      Container(width: 1.5, height: 16, color: AppColors.borderMedium),
+                      const Icon(FeatherIcons.mapPin, size: 10, color: Color(0xFFEF4444)),
+                    ],
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.pickupTitle,
+                          style: AppTextStyles.caption.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          item.dropoffTitle,
+                          style: AppTextStyles.caption.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Divider(color: AppColors.border, height: 1),
+              const SizedBox(height: 8),
+
+              // Fee / Objection Status
+              if (isCounterOffered) ...[
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.warning.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: AppColors.warning.withValues(alpha: 0.3),
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(FeatherIcons.clock, size: 13, color: AppColors.warning),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          'Counter-Offer: ${item.riderProposedFee} (Waiting for Sender)',
+                          style: AppTextStyles.caption.copyWith(
+                            color: const Color(0xFFB45309),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+
+              // Price and Action Buttons Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Price
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        isCounterOffered ? 'Original Offer' : 'Sender Offer',
+                        style: AppTextStyles.caption.copyWith(fontSize: 10, color: AppColors.textMuted),
+                      ),
+                      Text(
+                        item.deliveryFee,
+                        style: AppTextStyles.h3.copyWith(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          color: isCounterOffered ? AppColors.textMuted : AppColors.primary,
+                          decoration: isCounterOffered ? TextDecoration.lineThrough : null,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Actions: Object / Propose & Accept Delivery
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      OutlinedButton.icon(
+                        key: Key('object_button_${item.orderId}'),
+                        onPressed: () => _proposeFareFor(item),
+                        icon: const Icon(FeatherIcons.edit2, size: 12),
+                        label: Text(isCounterOffered ? 'Edit Offer' : 'Object / Propose'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.textPrimary,
+                          side: const BorderSide(color: AppColors.borderMedium),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28),
+                          ),
+                          textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      ElevatedButton(
+                        key: Key('accept_button_${item.orderId}'),
+                        onPressed: () => _acceptSpecificDelivery(item),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.textInverse,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28),
+                          ),
+                        ),
+                        child: const Text(
+                          'Accept',
+                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 11.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildAcceptedDeliveriesList() {
+    if (_acceptedDeliveries.isEmpty) {
+      return _buildEmptyState(
+        icon: FeatherIcons.truck,
+        title: 'No Accepted Deliveries',
+        subtitle: 'Accepted corridor deliveries will appear here. Switch to Pending tab to accept requests.',
+      );
+    }
+
+    return Column(
+      children: _acceptedDeliveries.map((item) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 14),
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.2),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    item.orderId,
+                    style: AppTextStyles.h3.copyWith(fontSize: 14, fontWeight: FontWeight.w800),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryLight,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      'Accepted • On Route',
+                      style: AppTextStyles.caption.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary,
+                        fontSize: 10.5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+
+              // Route Preview
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    children: [
+                      const Icon(FeatherIcons.circle, size: 9, color: AppColors.primary),
+                      Container(width: 1.5, height: 16, color: AppColors.borderMedium),
+                      const Icon(FeatherIcons.mapPin, size: 10, color: Color(0xFFEF4444)),
+                    ],
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.pickupTitle,
+                          style: AppTextStyles.caption.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          item.dropoffTitle,
+                          style: AppTextStyles.caption.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Divider(color: AppColors.border, height: 1),
+              const SizedBox(height: 8),
+
+              // Payout & Resume Delivery Action
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Agreed Payout',
+                        style: AppTextStyles.caption.copyWith(fontSize: 10, color: AppColors.textMuted),
+                      ),
+                      Text(
+                        item.riderProposedFee ?? item.deliveryFee,
+                        style: AppTextStyles.h3.copyWith(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  ElevatedButton.icon(
+                    key: Key('resume_button_${item.orderId}'),
+                    onPressed: () => _resumeActiveDelivery(item),
+                    icon: const Icon(FeatherIcons.navigation, size: 12),
+                    label: const Text('Resume Delivery'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.textInverse,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildCompletedTripsList() {
+    return Column(
+      children: [
+        _buildTripCard(
+          orderId: '#BE12345',
+          pickup: '9ja Kitchen • Ring Road',
+          dropoff: 'John Deo • Jakpa Junction Stop',
+          fare: '₦ 800.00',
+          status: 'Delivered',
+          time: '12:45 PM',
+          isComplete: true,
+        ),
+        const SizedBox(height: 12),
+        _buildTripCard(
+          orderId: '#BE12344',
+          pickup: 'Warri Central Chemist',
+          dropoff: 'PTI Gate Roadside',
+          fare: '₦ 800.00',
+          status: 'Delivered',
+          time: '11:15 AM',
+          isComplete: true,
+        ),
+        const SizedBox(height: 12),
+        _buildTripCard(
+          orderId: '#BE12343',
+          pickup: 'Deco Road Provisions',
+          dropoff: 'Airport Road Express Stop',
+          fare: '₦ 800.00',
+          status: 'Delivered',
+          time: '09:40 AM',
+          isComplete: true,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyState({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.border, width: 1.0),
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            Icon(icon, size: 36, color: AppColors.textMuted),
+            const SizedBox(height: 12),
+            Text(
+              title,
+              style: AppTextStyles.h3.copyWith(fontSize: 15, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              subtitle,
+              style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

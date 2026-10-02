@@ -25,6 +25,7 @@ class RiderDeliveryDetailScreen extends StatelessWidget {
   final String corridorName;
   final VoidCallback? onAccept;
   final VoidCallback? onDecline;
+  final void Function(String proposedAmount, String? reason)? onCounterOffer;
 
   const RiderDeliveryDetailScreen({
     super.key,
@@ -43,6 +44,7 @@ class RiderDeliveryDetailScreen extends StatelessWidget {
     this.corridorName = 'Warri — Effurun Corridor',
     this.onAccept,
     this.onDecline,
+    this.onCounterOffer,
   });
 
   @override
@@ -180,6 +182,38 @@ class RiderDeliveryDetailScreen extends StatelessWidget {
               DeliveryCustomerNoteCard(note: customerNote),
             ],
             const SizedBox(height: 20),
+
+            // Counter-Offer / Fare Objection Button
+            OutlinedButton.icon(
+              key: const Key('object_propose_fare_button'),
+              onPressed: () {
+                ProposeFareSheet.show(
+                  context: context,
+                  orderId: orderId,
+                  currentFee: deliveryFee,
+                  onSendOffer: (proposedAmount, reason) {
+                    if (onCounterOffer != null) {
+                      onCounterOffer!(proposedAmount, reason);
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Proposed $proposedAmount sent to sender for $orderId!'),
+                        backgroundColor: AppColors.primary,
+                      ),
+                    );
+                  },
+                );
+              },
+              icon: const Icon(FeatherIcons.dollarSign, size: 15, color: AppColors.primary),
+              label: const Text('Object & Propose Fare Amount'),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(46),
+                side: const BorderSide(color: AppColors.primary, width: 1.2),
+                foregroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+              ),
+            ),
+            const SizedBox(height: 12),
 
             // Action Buttons
             DeliveryActionGroup(
