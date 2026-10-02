@@ -69,4 +69,19 @@ class AppTextStyles {
         color: AppColors.textMuted,
         letterSpacing: 0.5,
       );
+
+  /// Compact, refined top app bar header greeting typography.
+  static TextStyle get headerGreeting => GoogleFonts.urbanist(
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: AppColors.textInverse,
+        letterSpacing: -0.2,
+      );
+
+  /// Compact top app bar role / corridor subtitle typography.
+  static TextStyle get headerSubtitle => GoogleFonts.urbanist(
+        fontSize: 10,
+        fontWeight: FontWeight.w500,
+        color: AppColors.textInverse.withValues(alpha: 0.85),
+      );
 }

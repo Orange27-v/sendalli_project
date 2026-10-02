@@ -165,6 +165,10 @@ class AppTheme {
   static const LinearGradient topFadeGradient = AppColors.topFadeGradient;
   static const LinearGradient bottomFadeGradient = AppColors.bottomFadeGradient;
 
+  // Header typography defined in theme
+  static TextStyle get headerGreeting => AppTextStyles.headerGreeting;
+  static TextStyle get headerSubtitle => AppTextStyles.headerSubtitle;
+
   static TextTheme _buildTextTheme(TextTheme base, Color color) {
     final fontTheme = GoogleFonts.urbanistTextTheme(base);
     return fontTheme.copyWith(

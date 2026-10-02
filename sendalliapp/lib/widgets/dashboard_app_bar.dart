@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:feather_icons/feather_icons.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../core/constants/app_colors.dart';
+import '../core/constants/app_text_styles.dart';
 import '../core/models/user_profile.dart';
 import '../core/models/user_role.dart';
 import '../core/navigation/app_navigator.dart';
+import '../core/theme/app_theme.dart';
 import '../features/dashboard/screens/common/notifications_screen.dart';
 import '../features/dashboard/screens/common/profile_screen.dart';
 import '../features/dashboard/screens/common/settings_screen.dart';
@@ -13,8 +13,8 @@ import '../features/dashboard/screens/common/settings_screen.dart';
 /// Standardized fixed app header across all Sendalli dashboards (Rider, Sender, Receiver, Hub).
 ///
 /// Features:
-/// 1. Tappable User Avatar on the left with initial / photo leading directly to Profile.
-/// 2. Personalized greeting / role sub-header ("Hello John", Corridor / Shop / Hub status).
+/// 1. Tappable User Avatar and greeting properly docked to the far left.
+/// 2. Compact typography defined centrally in the theme tokens (AppTheme.headerGreeting & headerSubtitle).
 /// 3. Notification bell icon with unread badge indicator on the right.
 /// 4. Settings gear icon on the right for security and corridor preferences.
 /// 5. Clean Sendalli brand green (#009944) with crisp white typography and icons.
@@ -39,7 +39,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 6);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   String get _effectiveTitle {
     if (title != null && title!.isNotEmpty) return title!;
@@ -74,6 +74,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: AppColors.textInverse,
       elevation: 0,
       scrolledUnderElevation: 0,
+      centerTitle: false,
       automaticallyImplyLeading: false,
       systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -94,7 +95,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
               },
             )
           : null,
-      titleSpacing: showLeading ? 4 : 14,
+      titleSpacing: showLeading ? 4 : 16,
       title: InkWell(
         borderRadius: BorderRadius.circular(24),
         onTap: () {
@@ -103,31 +104,31 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
           );
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+          padding: const EdgeInsets.symmetric(vertical: 4),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // User Avatar
+              // User Avatar properly aligned to the left
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.white.withValues(alpha: 0.35), width: 1.5),
                 ),
                 child: CircleAvatar(
-                  radius: 17,
+                  radius: 15,
                   backgroundColor: AppColors.primaryLight,
                   child: Text(
                     _avatarInitial,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 14,
+                    style: AppTextStyles.caption.copyWith(
+                      fontSize: 12,
                       fontWeight: FontWeight.w800,
                       color: AppColors.primaryDark,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
-              // User Name & Corridor / Role subtitle
+              const SizedBox(width: 8),
+              // User Name & Corridor / Role subtitle with reduced font size defined in theme
               Flexible(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -135,22 +136,13 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
                   children: [
                     Text(
                       _effectiveTitle,
-                      style: GoogleFonts.plusJakartaSans(
-                        color: AppColors.textInverse,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -0.2,
-                      ),
+                      style: AppTheme.headerGreeting,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 1),
                     Text(
                       _effectiveSubtitle,
-                      style: GoogleFonts.plusJakartaSans(
-                        color: AppColors.textInverse.withValues(alpha: 0.85),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: AppTheme.headerSubtitle,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -201,7 +193,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
             );
           },
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 4),
       ],
     );
   }
