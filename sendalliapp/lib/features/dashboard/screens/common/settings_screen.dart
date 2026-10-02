@@ -7,6 +7,7 @@ import '../../../../core/models/user_role.dart';
 import '../../../../core/storage/session_manager.dart';
 import '../../../../widgets/custom_app_bar.dart';
 import '../../../onboarding/screens/welcome_screen.dart';
+import '../../../onboarding/screens/terms_and_conditions_screen.dart';
 
 /// Classy, comprehensive Settings screen tailored to each Sendalli user role.
 class SettingsScreen extends StatefulWidget {
@@ -244,7 +245,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   leading: const Icon(FeatherIcons.fileText, color: AppColors.primary, size: 20),
                   title: const Text('Terms of Roadside Transit'),
                   trailing: const Icon(FeatherIcons.chevronRight, size: 18, color: AppColors.textMuted),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const TermsAndConditionsScreen(isViewOnly: true),
+                      ),
+                    );
+                  },
                 ),
                 const Divider(color: AppColors.border, height: 1),
                 ListTile(

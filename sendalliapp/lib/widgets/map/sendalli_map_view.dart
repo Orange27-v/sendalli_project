@@ -4,10 +4,12 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../../core/constants/map_constants.dart';
+import 'full_screen_map_screen.dart';
 
 /// Production-ready map view widget integrating Google Maps with the API key from key.md.
 ///
 /// Features corridor route polylines, pickup/drop-off markers, rider location indicator,
+/// zoom in/out buttons, full-screen map expansion, minimise controls,
 /// and automated fallback for headless widget test environments.
 class SendalliMapView extends StatefulWidget {
   final LatLng initialCenter;
@@ -18,6 +20,8 @@ class SendalliMapView extends StatefulWidget {
   final bool showControls;
   final String? corridorName;
   final double? height;
+  final bool isFullScreen;
+  final VoidCallback? onMinimize;
 
   const SendalliMapView({
     super.key,
@@ -26,9 +30,11 @@ class SendalliMapView extends StatefulWidget {
     this.markers,
     this.polylines,
     this.showLiveRider = true,
-    this.showControls = false,
+    this.showControls = true,
     this.corridorName,
     this.height,
+    this.isFullScreen = false,
+    this.onMinimize,
   });
 
   @override
@@ -37,11 +43,63 @@ class SendalliMapView extends StatefulWidget {
 
 class _SendalliMapViewState extends State<SendalliMapView> {
   GoogleMapController? _mapController;
+  late double _currentZoom;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentZoom = widget.zoom;
+  }
+
+  @override
+  void didUpdateWidget(covariant SendalliMapView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.zoom != widget.zoom) {
+      _currentZoom = widget.zoom;
+    }
+  }
 
   @override
   void dispose() {
     _mapController?.dispose();
     super.dispose();
+  }
+
+  void _zoomIn() {
+    setState(() {
+      _currentZoom = (_currentZoom + 1.0).clamp(1.0, 21.0);
+    });
+    _mapController?.animateCamera(CameraUpdate.zoomIn());
+  }
+
+  void _zoomOut() {
+    setState(() {
+      _currentZoom = (_currentZoom - 1.0).clamp(1.0, 21.0);
+    });
+    _mapController?.animateCamera(CameraUpdate.zoomOut());
+  }
+
+  void _handleFullScreenToggle() {
+    if (widget.isFullScreen) {
+      if (widget.onMinimize != null) {
+        widget.onMinimize!();
+      } else {
+        Navigator.of(context).maybePop();
+      }
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => FullScreenMapScreen(
+            initialCenter: widget.initialCenter,
+            zoom: _currentZoom,
+            markers: widget.markers,
+            polylines: widget.polylines,
+            showLiveRider: widget.showLiveRider,
+            corridorName: widget.corridorName,
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -59,13 +117,13 @@ class _SendalliMapViewState extends State<SendalliMapView> {
         GoogleMap(
           initialCameraPosition: CameraPosition(
             target: widget.initialCenter,
-            zoom: widget.zoom,
+            zoom: _currentZoom,
           ),
           onMapCreated: (controller) => _mapController = controller,
           markers: widget.markers ?? _buildDefaultMarkers(),
           polylines: widget.polylines ?? _buildDefaultCorridorPolyline(),
           myLocationButtonEnabled: false,
-          zoomControlsEnabled: widget.showControls,
+          zoomControlsEnabled: false, // We use sleek custom floating zoom controls
           compassEnabled: true,
           mapToolbarEnabled: false,
         ),
@@ -80,7 +138,7 @@ class _SendalliMapViewState extends State<SendalliMapView> {
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                border: Border.all(color: AppColors.border, width: 1.0),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -98,8 +156,19 @@ class _SendalliMapViewState extends State<SendalliMapView> {
               ),
             ),
           ),
+
+        // Zoom & Full-Screen Floating Controls
+        if (widget.showControls) _buildFloatingControls(context),
       ],
     );
+
+    if (widget.isFullScreen) {
+      return SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: child,
+      );
+    }
 
     if (widget.height != null) {
       return SizedBox(
@@ -110,6 +179,88 @@ class _SendalliMapViewState extends State<SendalliMapView> {
     }
 
     return child;
+  }
+
+  Widget _buildFloatingControls(BuildContext context) {
+    final topOffset = widget.isFullScreen
+        ? MediaQuery.of(context).padding.top + 60
+        : 16.0;
+
+    return Positioned(
+      top: topOffset,
+      right: 16,
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AppColors.border, width: 1.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Zoom In Button
+              _buildControlButton(
+                key: const Key('map_zoom_in_button'),
+                icon: FeatherIcons.plus,
+                tooltip: 'Zoom In',
+                onTap: _zoomIn,
+              ),
+              Container(width: 30, height: 1, color: AppColors.border),
+              // Zoom Out Button
+              _buildControlButton(
+                key: const Key('map_zoom_out_button'),
+                icon: FeatherIcons.minus,
+                tooltip: 'Zoom Out',
+                onTap: _zoomOut,
+              ),
+              Container(width: 30, height: 1, color: AppColors.border),
+              // Full Screen / Minimise Button
+              _buildControlButton(
+                key: widget.isFullScreen
+                    ? const Key('map_minimize_button')
+                    : const Key('map_fullscreen_button'),
+                icon: widget.isFullScreen ? FeatherIcons.minimize2 : FeatherIcons.maximize2,
+                tooltip: widget.isFullScreen ? 'Minimise Map' : 'Full Screen Map',
+                onTap: _handleFullScreenToggle,
+                iconColor: widget.isFullScreen ? AppColors.primary : AppColors.textPrimary,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildControlButton({
+    required Key key,
+    required IconData icon,
+    required String tooltip,
+    required VoidCallback onTap,
+    Color? iconColor,
+  }) {
+    return InkWell(
+      key: key,
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Tooltip(
+        message: tooltip,
+        child: Container(
+          width: 36,
+          height: 36,
+          alignment: Alignment.center,
+          child: Icon(icon, size: 16, color: iconColor ?? AppColors.textPrimary),
+        ),
+      ),
+    );
   }
 
   Set<Marker> _buildDefaultMarkers() {
@@ -153,59 +304,72 @@ class _SendalliMapViewState extends State<SendalliMapView> {
 
   /// High-fidelity vector street corridor map matching Screen 1 in 1790931049695.jpg
   Widget _buildVectorCorridorFallback() {
-    final container = Container(
+    final double zoomScale = (_currentZoom / MapConstants.defaultZoom).clamp(0.6, 2.5);
+
+    return Container(
       width: double.infinity,
-      height: widget.height,
+      height: widget.isFullScreen ? double.infinity : widget.height,
       decoration: const BoxDecoration(
         color: Color(0xFFF1F5F9), // Light map canvas
       ),
       child: Stack(
         children: [
-          // Street grid pattern
-          CustomPaint(
-            size: Size.infinite,
-            painter: _StreetGridPainter(),
-          ),
+          // Scaled vector street layers
+          ClipRect(
+            child: Transform.scale(
+              scale: zoomScale,
+              alignment: Alignment.center,
+              child: Stack(
+                children: [
+                  // Street grid pattern
+                  CustomPaint(
+                    size: Size.infinite,
+                    painter: _StreetGridPainter(),
+                  ),
 
-          // Corridor Highway Line
-          CustomPaint(
-            size: Size.infinite,
-            painter: _CorridorRoutePainter(),
-          ),
+                  // Corridor Highway Line
+                  CustomPaint(
+                    size: Size.infinite,
+                    painter: _CorridorRoutePainter(),
+                  ),
 
-          // Pickup Pin
-          Positioned(
-            left: 60,
-            top: 140,
-            child: _MapPinBadge(
-              label: '9ja Kitchen',
-              isPickup: true,
-            ),
-          ),
+                  // Pickup Pin
+                  const Positioned(
+                    left: 60,
+                    top: 140,
+                    child: _MapPinBadge(
+                      label: '9ja Kitchen',
+                      isPickup: true,
+                    ),
+                  ),
 
-          // Rider Keke Pin
-          if (widget.showLiveRider)
-            Positioned(
-              left: 170,
-              top: 100,
-              child: Container(
-                padding: const EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
-                ),
-                child: const Icon(FeatherIcons.truck, size: 14, color: Colors.white),
+                  // Rider Keke Pin
+                  if (widget.showLiveRider)
+                    Positioned(
+                      left: 170,
+                      top: 100,
+                      child: Container(
+                        padding: const EdgeInsets.all(7),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                        child: const Icon(FeatherIcons.truck, size: 14, color: Colors.white),
+                      ),
+                    ),
+
+                  // Drop-off Pin
+                  const Positioned(
+                    right: 50,
+                    top: 70,
+                    child: _MapPinBadge(
+                      label: 'Effurun Stop',
+                      isPickup: false,
+                    ),
+                  ),
+                ],
               ),
-            ),
-
-          // Drop-off Pin
-          Positioned(
-            right: 50,
-            top: 70,
-            child: _MapPinBadge(
-              label: 'Effurun Stop',
-              isPickup: false,
             ),
           ),
 
@@ -218,7 +382,7 @@ class _SendalliMapViewState extends State<SendalliMapView> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                border: Border.all(color: AppColors.border, width: 1.0),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -236,11 +400,12 @@ class _SendalliMapViewState extends State<SendalliMapView> {
               ),
             ),
           ),
+
+          // Floating Controls Overlay (Zoom In, Zoom Out, Full Screen / Minimise)
+          if (widget.showControls) _buildFloatingControls(context),
         ],
       ),
     );
-
-    return container;
   }
 }
 
@@ -260,7 +425,7 @@ class _MapPinBadge extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+            border: Border.all(color: AppColors.border, width: 1.0),
           ),
           child: Text(
             label,

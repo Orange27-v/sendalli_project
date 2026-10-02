@@ -9,6 +9,7 @@ import '../../dashboard/screens/receiver/receiver_home_screen.dart';
 import 'role_gateway_screen.dart';
 import 'track_parcel_screen.dart';
 import 'onboarding_walkthrough_screen.dart';
+import 'terms_and_conditions_screen.dart';
 
 /// Clean, spacious, and uncluttered Welcome Screen.
 /// Highlights:
@@ -253,6 +254,26 @@ class WelcomeScreen extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 fontSize: 12,
                 color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Center(
+          child: TextButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const TermsAndConditionsScreen(isViewOnly: true),
+                ),
+              );
+            },
+            child: Text(
+              'Terms of Service & Corridor Agreement',
+              style: AppTextStyles.caption.copyWith(
+                fontSize: 11,
+                color: AppColors.textMuted,
+                decoration: TextDecoration.underline,
               ),
             ),
           ),

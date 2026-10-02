@@ -6,7 +6,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/navigation/app_navigator.dart';
 import '../../../widgets/custom_app_bar.dart';
-import 'name_input_screen.dart';
+import 'terms_and_conditions_screen.dart';
 import 'phone_input_screen.dart';
 
 /// Dedicated, spacious Role Gateway Screen.
@@ -49,7 +49,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
   void _proceedToRegistration() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => NameInputScreen(targetRole: _selectedRole),
+        builder: (_) => TermsAndConditionsScreen(targetRole: _selectedRole),
       ),
     );
   }
