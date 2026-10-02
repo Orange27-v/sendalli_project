@@ -53,7 +53,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
       context: context,
       icon: FeatherIcons.bell,
       title: 'Turn on Notifications',
-      description: 'Get real-time updates when a keke rider accepts and arrives with your parcel.',
+      description: 'Get a message when a rider picks up and brings your parcel.',
       primaryButtonText: 'Turn On Notifications',
     );
 
@@ -77,7 +77,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
     // Display profile completed modal (Modal - Location-2.png)
     ProfileCompletedDialog.show(
       context: context,
-      subtitle: 'Your merchant account is ready. Start sending parcels along Warri corridors!',
+      subtitle: 'You\'re all set! Start sending parcels now.',
       onContinue: () {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => SenderHomeScreen(user: user)),
@@ -115,7 +115,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
               Text('Business Details', style: AppTextStyles.h1),
               const SizedBox(height: 8),
               Text(
-                'Enter your shop or brand name so riders can identify you at the roadside pickup point.',
+                'Tell us your shop name so riders know where to pick up.',
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 32),

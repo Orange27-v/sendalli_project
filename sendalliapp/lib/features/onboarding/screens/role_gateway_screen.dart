@@ -108,7 +108,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
               Text('How will you use Sendalli?', style: AppTextStyles.h1),
               const SizedBox(height: 6),
               Text(
-                'Select your operator profile. Receivers track directly without an account.',
+                'Pick what you want to do. If you are receiving a parcel, you can track it from the home screen without an account.',
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 20),
@@ -119,7 +119,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                 icon: FeatherIcons.shoppingBag,
                 title: 'Merchant / Sender',
                 badgeText: 'Send Parcels',
-                description: 'I run a market stall, pharmacy, boutique, or need parcels delivered along the corridor.',
+                description: 'I sell things or need to send parcels to customers.',
               ),
               const SizedBox(height: 12),
 
@@ -129,7 +129,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                 icon: FeatherIcons.navigation,
                 title: 'Keke / Dispatch Rider',
                 badgeText: 'Earn on Route',
-                description: 'Deliver parcels while traveling your regular passenger route between Warri and Effurun.',
+                description: 'Carry parcels while driving your usual route and earn extra money.',
               ),
               const SizedBox(height: 12),
 
@@ -139,7 +139,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                 icon: FeatherIcons.home,
                 title: 'Drop Hub Partner',
                 badgeText: '₦500 / parcel',
-                description: 'Monetize your roadside store, kiosk, or pharmacy as a safe parcel drop-off and pickup point.',
+                description: 'Turn your shop into a parcel drop-off and pickup point. Earn money for each parcel you hold.',
               ),
               const SizedBox(height: 28),
 
@@ -147,7 +147,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
               ElevatedButton.icon(
                 onPressed: _proceedToRegistration,
                 icon: const Icon(FeatherIcons.arrowRight, size: 16, color: AppColors.textPrimary),
-                label: Text('Quick Onboard as $_roleTitle'),
+                label: Text('Sign Up as $_roleTitle'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.textPrimary,
@@ -167,7 +167,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
                 ),
-                child: Text('Sign In as $_roleTitle • Phone & PIN'),
+                child: Text('Sign In as $_roleTitle'),
               ),
               const SizedBox(height: 16),
             ],

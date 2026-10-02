@@ -71,7 +71,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
       context: context,
       icon: FeatherIcons.mapPin,
       title: 'Share your Location',
-      description: 'Sendalli needs your location to broadcast orders matching your active transit corridor in real-time.',
+      description: 'We need your location to send you nearby delivery jobs.',
       primaryButtonText: 'Allow Location Access',
     );
 
@@ -99,7 +99,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
     // Celebration modal (Modal - Location-2.png)
     ProfileCompletedDialog.show(
       context: context,
-      subtitle: 'Your Rider profile is approved with a starting Trust Score of 80% (Pioneer Verified).',
+      subtitle: 'Your Rider account is ready! You start with a Trust Score of 80%.',
       onContinue: () {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => RiderHomeScreen(user: user)),
@@ -123,7 +123,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
             icon: const Icon(FeatherIcons.arrowLeft),
             onPressed: () => AppNavigator.safePop(context),
           ),
-          title: Text('Rider Vetting', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          title: Text('Rider Setup', style: AppTextStyles.caption.copyWith(fontSize: 13)),
           actions: [
             RandomizeButton(onRandomize: _randomize),
           ],
@@ -134,10 +134,10 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Vehicle & Corridor', style: AppTextStyles.h1),
+              Text('Your Vehicle & Route', style: AppTextStyles.h1),
               const SizedBox(height: 8),
               Text(
-                'Register your vehicle details and main route to receive corridor delivery broadcasts.',
+                'Add your vehicle details and your usual route to get delivery jobs.',
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 24),

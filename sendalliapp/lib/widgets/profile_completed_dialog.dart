@@ -14,7 +14,7 @@ class ProfileCompletedDialog extends StatelessWidget {
     super.key,
     this.title = 'Profile Completed!',
     required this.subtitle,
-    this.buttonText = 'Enter Sendalli',
+    this.buttonText = 'Let\'s Go',
     required this.onContinue,
   });
 

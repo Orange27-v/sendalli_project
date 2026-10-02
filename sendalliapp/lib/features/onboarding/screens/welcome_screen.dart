@@ -52,7 +52,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Corridor Parcel Logistics • Warri & Effurun',
+                    'Local Parcel Delivery • Warri & Effurun',
                     style: AppTextStyles.caption.copyWith(
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary.withValues(alpha: 0.85),
@@ -89,7 +89,7 @@ class WelcomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
-                      'Move items rapidly across transit routes in 10 minutes',
+                      'Send items across town in 10 minutes',
                       style: AppTextStyles.caption.copyWith(
                         color: AppColors.textPrimary,
                         fontSize: 11,
@@ -217,7 +217,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      'Track live ETA and get your pickup release code.',
+                      'See where your parcel is and get your pickup code.',
                       style: AppTextStyles.caption.copyWith(
                         fontSize: 12,
                         color: AppColors.textSecondary,
@@ -263,7 +263,7 @@ class WelcomeScreen extends StatelessWidget {
                     );
                   },
                   icon: const Icon(FeatherIcons.mapPin, size: 15, color: AppColors.textPrimary),
-                  label: const Text('Receiver Portal'),
+                  label: const Text('My Parcels'),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size.fromHeight(44),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -294,7 +294,7 @@ class WelcomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text(
-                'OPERATORS: SENDERS • RIDERS • HUBS',
+                'FOR: SENDERS • RIDERS • HUBS',
                 style: AppTextStyles.caption.copyWith(
                   letterSpacing: 1.0,
                   fontWeight: FontWeight.w700,
@@ -326,7 +326,7 @@ class WelcomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Choose Role to Enter',
+                'Get Started',
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.textPrimary),
               ),
               SizedBox(width: 8),
@@ -350,7 +350,7 @@ class WelcomeScreen extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
           ),
-          child: const Text('Operator Sign In • Phone & PIN'),
+          child: const Text('Already have an account? Sign In'),
         ),
         const SizedBox(height: 16),
 
@@ -364,7 +364,7 @@ class WelcomeScreen extends StatelessWidget {
             },
             icon: const Icon(FeatherIcons.compass, size: 14, color: AppColors.textSecondary),
             label: Text(
-              'How Sendalli Works • Explore 4 Corridors',
+              'How Sendalli Works',
               style: AppTextStyles.caption.copyWith(
                 fontWeight: FontWeight.w700,
                 fontSize: 12,

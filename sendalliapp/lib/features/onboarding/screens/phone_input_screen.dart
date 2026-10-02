@@ -158,7 +158,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
               ),
               const SizedBox(height: 6),
               Text(
-                'We will send a 4-digit SMS verification code to verify your SIM line.',
+                'We\'ll text you a 4-digit code to make sure it\'s your number.',
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 28),
@@ -326,7 +326,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      'Protected by Sendalli SIM Auth • Used for handover release PINs',
+                      'Your number is safe with us',
                       style: AppTextStyles.caption.copyWith(fontSize: 11, color: AppColors.textMuted),
                     ),
                   ),

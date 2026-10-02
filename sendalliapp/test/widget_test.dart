@@ -21,13 +21,13 @@ void main() {
 
     // Verify brand name and options
     expect(find.text('SENDALLI'), findsOneWidget);
-    expect(find.text('Corridor Parcel Logistics • Warri & Effurun'), findsOneWidget);
+    expect(find.text('Local Parcel Delivery • Warri & Effurun'), findsOneWidget);
     expect(find.text('Receiving a Parcel?'), findsOneWidget);
     expect(find.text('Track by ID'), findsOneWidget);
-    expect(find.text('Receiver Portal'), findsOneWidget);
-    expect(find.text('OPERATORS: SENDERS • RIDERS • HUBS'), findsOneWidget);
-    expect(find.text('Choose Role to Enter'), findsOneWidget);
-    expect(find.text('Operator Sign In • Phone & PIN'), findsOneWidget);
+    expect(find.text('My Parcels'), findsOneWidget);
+    expect(find.text('FOR: SENDERS • RIDERS • HUBS'), findsOneWidget);
+    expect(find.text('Get Started'), findsOneWidget);
+    expect(find.text('Already have an account? Sign In'), findsOneWidget);
   });
 
   testWidgets('RoleGatewayScreen renders the 3 operator roles and fast onboarding actions', (WidgetTester tester) async {
@@ -42,8 +42,8 @@ void main() {
     expect(find.text('Merchant / Sender'), findsOneWidget);
     expect(find.text('Keke / Dispatch Rider'), findsOneWidget);
     expect(find.text('Drop Hub Partner'), findsOneWidget);
-    expect(find.text('Quick Onboard as Sender / Merchant'), findsOneWidget);
-    expect(find.text('Sign In as Sender / Merchant • Phone & PIN'), findsOneWidget);
+    expect(find.text('Sign Up as Sender / Merchant'), findsOneWidget);
+    expect(find.text('Sign In as Sender / Merchant'), findsOneWidget);
   });
 
   testWidgets('NameInputScreen validates name before enabling button', (WidgetTester tester) async {
@@ -164,7 +164,7 @@ void main() {
     expect(find.text('NO LOGIN'), findsOneWidget);
     expect(find.text('TRACKING NUMBER'), findsOneWidget);
     expect(find.text('Track Live Delivery'), findsOneWidget);
-    expect(find.text('Open Receiver Portal & Hubs'), findsOneWidget);
+    expect(find.text('Go to My Parcels'), findsOneWidget);
 
     // Tap sample chip
     expect(find.widgetWithText(InkWell, 'SND-WAR-8492'), findsOneWidget);
@@ -182,8 +182,8 @@ void main() {
     await tester.pump();
 
     // Slide 1: Send Parcels context
-    expect(find.text('CORRIDOR PARCEL NETWORK'), findsOneWidget);
-    expect(find.text('Move Parcels Across Warri & Effurun'), findsOneWidget);
+    expect(find.text('LOCAL DELIVERY'), findsOneWidget);
+    expect(find.text('Send Parcels Across Warri & Effurun'), findsOneWidget);
     expect(find.text('Skip'), findsOneWidget);
     expect(find.text('Next'), findsOneWidget);
 
@@ -191,8 +191,8 @@ void main() {
     await tester.tap(find.text('Next'));
     await tester.pump();
 
-    expect(find.text('ROUTE-POOLED TRANSIT'), findsOneWidget);
-    expect(find.text('Tricycle Drivers Earn on Passenger Routes'), findsOneWidget);
+    expect(find.text('RIDERS EARN MORE'), findsOneWidget);
+    expect(find.text('Keke Drivers Earn Extra on Their Route'), findsOneWidget);
   });
 
   testWidgets('AppNavigator.safePop navigates to WelcomeScreen when route cannot pop', (WidgetTester tester) async {

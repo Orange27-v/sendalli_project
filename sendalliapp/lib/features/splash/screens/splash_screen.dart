@@ -135,7 +135,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               ),
               const SizedBox(height: 6),
               Text(
-                'Transit-Logistics Network',
+                'Local Parcel Delivery',
                 style: AppTextStyles.bodySmall.copyWith(
                   letterSpacing: 0.8,
                   fontWeight: FontWeight.w600,

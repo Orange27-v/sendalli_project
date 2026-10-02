@@ -64,7 +64,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
       context: context,
       icon: FeatherIcons.bell,
       title: 'Turn on Notifications',
-      description: 'Receive immediate alerts when a keke rider needs to drop off a parcel at your store.',
+      description: 'Get a message when a rider is coming to drop off a parcel at your shop.',
       primaryButtonText: 'Allow Notifications',
     );
 
@@ -90,7 +90,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
     // Celebration modal (Modal - Location-2.png)
     ProfileCompletedDialog.show(
       context: context,
-      subtitle: 'Your Drop Hub is registered! You can now earn ₦500 per parcel held for roadside receivers.',
+      subtitle: 'Your Drop Hub is set up! You can now earn ₦500 for each parcel you hold.',
       onContinue: () {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => HubHomeScreen(user: user)),
@@ -128,7 +128,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
               Text('Store & Location', style: AppTextStyles.h1),
               const SizedBox(height: 8),
               Text(
-                'Register your storefront to act as a micro-fulfillment hub along active transit roads.',
+                'Add your store details to start earning as a parcel drop-off point.',
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 32),

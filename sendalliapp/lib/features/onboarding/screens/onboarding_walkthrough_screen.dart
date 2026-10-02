@@ -23,36 +23,36 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
 
   final List<_WalkthroughSlideData> _slides = const [
     _WalkthroughSlideData(
-      badge: 'CORRIDOR PARCEL NETWORK',
-      title: 'Move Parcels Across Warri & Effurun',
+      badge: 'LOCAL DELIVERY',
+      title: 'Send Parcels Across Warri & Effurun',
       description:
-          'Eliminate exorbitant courier fees. Send goods, boutique orders, and documents along fixed transit corridors for a flat, predictable fare.',
+          'No more high delivery fees. Send goods, shop orders, and documents along set routes for one simple price.',
       svgPath: 'assets/svg/take-out-boxes.svg',
-      highlightTag: 'Flat ₦1,200 Corridor Rate',
+      highlightTag: 'Just ₦1,200 per delivery',
     ),
     _WalkthroughSlideData(
-      badge: 'ROUTE-POOLED TRANSIT',
-      title: 'Tricycle Drivers Earn on Passenger Routes',
+      badge: 'RIDERS EARN MORE',
+      title: 'Keke Drivers Earn Extra on Their Route',
       description:
-          'Commercial keke drivers carry parcels alongside passengers along Refinery, PTI, and Airport roads. Zero detours, extra income.',
+          'Keke drivers carry parcels along with their passengers on Refinery, PTI, and Airport roads. No extra trips, just extra money.',
       svgPath: 'assets/svg/logistics.svg',
-      highlightTag: 'Earn ₦800 per delivery leg',
+      highlightTag: 'Earn ₦800 per trip',
     ),
     _WalkthroughSlideData(
-      badge: 'COMMUNITY MICRO-HUBS',
-      title: 'Roadside Shops Earn As Verified Drop Hubs',
+      badge: 'PICKUP POINTS',
+      title: 'Local Shops Earn as Parcel Drop-off Spots',
       description:
-          'Roadside pharmacies, supermarkets, and provision stores safely hold parcels for convenient receiver collection.',
+          'Pharmacies, supermarkets, and small shops hold parcels safely for people to pick up nearby.',
       svgPath: 'assets/svg/order-delivered.svg',
-      highlightTag: '₦500 per parcel stored',
+      highlightTag: '₦500 per parcel held',
     ),
     _WalkthroughSlideData(
-      badge: 'ZERO-LOGIN TRACKING',
-      title: 'Instant Receiver Handover with PIN',
+      badge: 'EASY TRACKING',
+      title: 'Track Your Parcel and Pick Up with a PIN',
       description:
-          'Receivers track arrivals in real-time with countdown timers. Hand over safely using high-contrast 6-digit release codes.',
+          'See when your parcel is arriving. Pick it up safely using a simple 6-digit code. No account needed.',
       svgPath: 'assets/svg/delivery-location.svg',
-      highlightTag: 'No account needed for receivers',
+      highlightTag: 'No sign-up needed to track',
     ),
   ];
 
@@ -209,7 +209,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
                     const Icon(FeatherIcons.globe, size: 12, color: AppColors.textPrimary),
                     const SizedBox(width: 6),
                     Text(
-                      'Warri & Effurun Transit Corridors',
+                      'Warri & Effurun Routes',
                       style: AppTextStyles.caption.copyWith(
                         fontSize: 11,
                         color: AppColors.textPrimary,

@@ -143,7 +143,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
               ),
               const SizedBox(height: 6),
               Text(
-                'Enter the 10-digit Tracking ID shared by the sender or from your SMS arrival link.',
+                'Type the tracking number from your SMS or from the sender.',
                 style: AppTextStyles.bodyMedium,
               ),
               const SizedBox(height: 24),
@@ -264,7 +264,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
               OutlinedButton.icon(
                 onPressed: _openReceiverPortal,
                 icon: const Icon(FeatherIcons.mapPin, size: 16),
-                label: const Text('Open Receiver Portal & Hubs'),
+                label: const Text('Go to My Parcels'),
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size.fromHeight(48),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
