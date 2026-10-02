@@ -7,7 +7,7 @@ import '../../../core/navigation/app_navigator.dart';
 
 /// Full-featured, multi-screen Onboarding Walkthrough.
 /// Each business model context is separated into its own full, dedicated screen:
-/// 1. Senders & Merchants (take-out-boxes.svg)
+/// 1. Senders (take-out-boxes.svg)
 /// 2. Keke Transit Fleet (logistics.svg)
 /// 3. Roadside Drop Hubs (order-delivered.svg)
 /// 4. Receiver Live Tracking (delivery-location.svg)

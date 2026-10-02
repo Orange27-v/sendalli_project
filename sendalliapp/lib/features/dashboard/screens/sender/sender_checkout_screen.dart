@@ -72,7 +72,7 @@ class _SenderCheckoutScreenState extends State<SenderCheckoutScreen> {
       MaterialPageRoute(
         builder: (_) => SenderOrderTrackingScreen(
           orderId: orderId,
-          merchantName: widget.user.shopName ?? _pickupStore,
+          senderName: widget.user.shopName ?? _pickupStore,
           pickupAddress: '$_pickupStore (Pickup Location)',
           dropoffAddress: '$_dropoffTitle, $_dropoffAddress',
           totalAmount: '₦ ${_orderTotal.toStringAsFixed(2)}',

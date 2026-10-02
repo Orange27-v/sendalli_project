@@ -39,11 +39,11 @@ void main() {
     );
 
     expect(find.text('How will you use Sendalli?'), findsOneWidget);
-    expect(find.text('Merchant / Sender'), findsOneWidget);
+    expect(find.text('Sender'), findsOneWidget);
     expect(find.text('Keke / Dispatch Rider'), findsOneWidget);
     expect(find.text('Drop Hub Partner'), findsOneWidget);
-    expect(find.text('Sign Up as Sender / Merchant'), findsOneWidget);
-    expect(find.text('Sign In as Sender / Merchant'), findsOneWidget);
+    expect(find.text('Sign Up as Sender'), findsOneWidget);
+    expect(find.text('Sign In as Sender'), findsOneWidget);
   });
 
   testWidgets('NameInputScreen validates name before enabling button', (WidgetTester tester) async {

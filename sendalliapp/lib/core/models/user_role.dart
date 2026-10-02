@@ -8,7 +8,7 @@ enum UserRole {
   String get displayName {
     switch (this) {
       case UserRole.sender:
-        return 'Sender / Merchant';
+        return 'Sender';
       case UserRole.rider:
         return 'Rider (Keke / Bus)';
       case UserRole.hub:
@@ -34,7 +34,7 @@ enum UserRole {
   String get description {
     switch (this) {
       case UserRole.sender:
-        return 'I want to send packages across town on keke corridors.';
+        return 'Anybody can send parcels or items across town on keke corridors.';
       case UserRole.rider:
         return 'I drive commercial routes and want to earn extra on small packages.';
       case UserRole.hub:

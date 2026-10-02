@@ -53,7 +53,7 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
       case UserRole.rider:
         return user.corridor ?? 'Corridor Active';
       case UserRole.sender:
-        return user.shopName ?? 'Sendalli Merchant';
+        return user.shopName ?? 'Sendalli Sender';
       case UserRole.receiver:
         return user.id.startsWith('GUEST') ? 'Roadside Guest' : 'Verified Recipient';
       case UserRole.hub:

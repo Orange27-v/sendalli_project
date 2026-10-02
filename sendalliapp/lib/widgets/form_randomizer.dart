@@ -69,7 +69,8 @@ class FormSampleData {
     'Jakpa Road Keke Station',
   ];
 
-  static const List<String> merchantShops = [
+  static const List<String> merchantShops = senderShops;
+  static const List<String> senderShops = [
     'Warri Glow Boutique & Cosmetics',
     'Ekpan Fresh Provisions & Drinks',
     'Midwest Electronics & Gadgets',
@@ -128,7 +129,8 @@ class FormSampleData {
   static String randomPlateNumber() => _pick(plateNumbers);
   static String randomCorridor() => _pick(CorridorConstants.pilotCorridors);
   static String randomPark() => _pick(parkNames);
-  static String randomMerchantShop() => _pick(merchantShops);
+  static String randomSenderShop() => _pick(senderShops);
+  static String randomMerchantShop() => randomSenderShop();
   static String randomHubStore() => _pick(hubStores);
   static String randomLandmark() => _pick(roadsideLandmarks);
   static String randomAddress() => _pick(deliveryAddresses);

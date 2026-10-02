@@ -265,7 +265,7 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
                           ),
                           const SizedBox(height: 3),
                           Text(
-                            'Any merchant in Warri or Effurun sending to ${widget.phoneNumber} will automatically appear in your active shipments.',
+                            'Anyone sending items in Warri or Effurun to ${widget.phoneNumber} will automatically appear in your active shipments.',
                             style: AppTextStyles.caption.copyWith(
                               color: AppColors.textSecondary,
                               height: 1.4,

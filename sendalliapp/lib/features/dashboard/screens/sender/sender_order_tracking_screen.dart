@@ -10,10 +10,10 @@ import '../../../../widgets/map/sendalli_map_view.dart';
 /// Live Order Status & Tracking Screen matching Screen 3 of the design.
 ///
 /// Features ETA time window, multi-step milestone progress tracker,
-/// merchant favorite bookmarking, and route address summary.
+/// sender favorite bookmarking, and route address summary.
 class SenderOrderTrackingScreen extends StatefulWidget {
   final String orderId;
-  final String merchantName;
+  final String senderName;
   final String pickupAddress;
   final String dropoffAddress;
   final String totalAmount;
@@ -24,7 +24,7 @@ class SenderOrderTrackingScreen extends StatefulWidget {
   const SenderOrderTrackingScreen({
     super.key,
     required this.orderId,
-    required this.merchantName,
+    required this.senderName,
     required this.pickupAddress,
     required this.dropoffAddress,
     required this.totalAmount,
@@ -43,7 +43,7 @@ class _SenderOrderTrackingScreenState extends State<SenderOrderTrackingScreen> {
   bool _isSummaryExpanded = false;
 
   final List<String> _stepMessages = [
-    "We've received your order and notified the merchant.",
+    "We've received your order and notified the sender.",
     "Order is being prepared and packed at the hub.",
     "A corridor rider is en route to deliver your parcel.",
     "Parcel delivered safely to the roadside drop point!",
@@ -244,7 +244,7 @@ class _SenderOrderTrackingScreenState extends State<SenderOrderTrackingScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Merchant / Store Card with Favorite Action
+            // Sender / Store Card with Favorite Action
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -263,7 +263,7 @@ class _SenderOrderTrackingScreenState extends State<SenderOrderTrackingScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        widget.merchantName.isNotEmpty ? widget.merchantName[0].toUpperCase() : 'M',
+                        widget.senderName.isNotEmpty ? widget.senderName[0].toUpperCase() : 'S',
                         style: AppTextStyles.h3.copyWith(color: Colors.white),
                       ),
                     ),
@@ -274,12 +274,12 @@ class _SenderOrderTrackingScreenState extends State<SenderOrderTrackingScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.merchantName,
+                          widget.senderName,
                           style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w700),
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          'Save this restaurant to Favorites and find it quickly next time.',
+                          'Save this sender to Favorites and find it quickly next time.',
                           style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
                         ),
                       ],
@@ -296,7 +296,7 @@ class _SenderOrderTrackingScreenState extends State<SenderOrderTrackingScreen> {
                         SnackBar(
                           content: Text(
                             _isFavorite
-                                ? 'Added ${widget.merchantName} to favorites!'
+                                ? 'Added ${widget.senderName} to favorites!'
                                 : 'Removed from favorites',
                           ),
                           duration: const Duration(seconds: 1),

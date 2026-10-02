@@ -36,7 +36,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
   String get _roleTitle {
     switch (_selectedRole) {
       case UserRole.sender:
-        return 'Sender / Merchant';
+        return 'Sender';
       case UserRole.rider:
         return 'Keke Rider';
       case UserRole.hub:
@@ -104,13 +104,13 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Role Card 1: Sender / Merchant
+              // Role Card 1: Sender (Send Items)
               _buildRoleOptionCard(
                 role: UserRole.sender,
                 icon: FeatherIcons.shoppingBag,
-                title: 'Merchant / Sender',
+                title: 'Sender',
                 badgeText: 'Send Parcels',
-                description: 'I sell things or need to send parcels to customers.',
+                description: 'Anybody can send parcels or items across town on keke corridors.',
               ),
               const SizedBox(height: 12),
 

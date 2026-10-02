@@ -108,7 +108,7 @@ void main() {
         theme: AppTheme.lightTheme,
         home: const SenderOrderTrackingScreen(
           orderId: '#SE12345',
-          merchantName: 'Amaka Kitchen & Grills',
+          senderName: 'Amaka Kitchen & Grills',
           pickupAddress: 'Warri Central Kitchen',
           dropoffAddress: 'Effurun Market Plaza, Shop 14B',
           totalAmount: '₦ 1,850.00',
@@ -120,7 +120,7 @@ void main() {
     );
 
     expect(find.text('10:20 - 10:30 PM'), findsOneWidget);
-    expect(find.text("We've received your order and notified the merchant."), findsOneWidget);
+    expect(find.text("We've received your order and notified the sender."), findsOneWidget);
 
     // Tap simulate next step
     await tester.tap(find.text('Simulate Next Step'));

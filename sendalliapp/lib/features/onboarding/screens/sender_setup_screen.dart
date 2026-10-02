@@ -15,7 +15,7 @@ import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
 import '../../dashboard/screens/sender/sender_home_screen.dart';
 
-/// Branch A: Sender / Merchant Setup Screen.
+/// Branch A: Sender Setup Screen.
 class SenderSetupScreen extends StatefulWidget {
   final String phoneNumber;
   final String firstName;
@@ -49,7 +49,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
 
   void _randomize() {
     setState(() {
-      _shopNameController.text = FormSampleData.randomMerchantShop();
+      _shopNameController.text = FormSampleData.randomSenderShop();
       _selectedCorridor = FormSampleData.randomCorridor();
     });
   }
@@ -113,7 +113,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
       },
       child: Scaffold(
         appBar: CustomAppBar(
-          title: 'Merchant Profile',
+          title: 'Sender Profile',
           actions: [
             RandomizeButton(onRandomize: _randomize),
           ],
@@ -124,15 +124,15 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Business Details', style: AppTextStyles.h1),
+                Text('Sender Details', style: AppTextStyles.h1),
                 const SizedBox(height: 6),
                 Text(
-                  'Tell us your shop name and dispatch corridor so keke riders know where to pick up.',
+                  'Tell us your name or business name and dispatch corridor so keke riders know where to pick up.',
                   style: AppTextStyles.bodyMedium,
                 ),
                 const SizedBox(height: 20),
 
-                // Merchant Header Preview Card
+                // Sender Header Preview Card
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -218,7 +218,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
                     children: [
                       CustomTextField(
                         controller: _shopNameController,
-                        labelText: 'Shop / Business Name',
+                        labelText: 'Sender / Business Name',
                         hintText: 'e.g. Warri Central Kitchen',
                         textCapitalization: TextCapitalization.words,
                         prefixIcon: FeatherIcons.shoppingBag,

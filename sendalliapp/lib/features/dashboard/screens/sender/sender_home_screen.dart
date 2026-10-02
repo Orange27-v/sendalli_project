@@ -11,7 +11,7 @@ import '../common/profile_screen.dart';
 import 'sender_checkout_screen.dart';
 import 'sender_order_tracking_screen.dart';
 
-/// Sender / Merchant Home Dashboard.
+/// Sender Home Dashboard.
 class SenderHomeScreen extends StatelessWidget {
   final UserProfile user;
 
@@ -29,7 +29,7 @@ class SenderHomeScreen extends StatelessWidget {
         appBar: DashboardAppBar(
           user: user,
           title: 'Hello ${user.firstName}',
-          subtitle: user.shopName ?? 'Sendalli Merchant',
+          subtitle: user.shopName ?? 'Sendalli Sender',
         ),
         body: SafeArea(
           top: false,
@@ -72,7 +72,7 @@ class SenderHomeScreen extends StatelessWidget {
                         children: [
                           Text('Welcome back,', style: AppTextStyles.bodySmall),
                           Text(user.shopName ?? user.fullName, style: AppTextStyles.h3),
-                          Text('Merchant • Corridor Active', style: AppTextStyles.caption),
+                          Text('Sender • Corridor Active', style: AppTextStyles.caption),
                         ],
                       ),
                     ),
@@ -297,7 +297,7 @@ class SenderHomeScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => SenderOrderTrackingScreen(
                       orderId: '#SND-WAR-8492',
-                      merchantName: user.shopName ?? 'Amaka Kitchen & Grills',
+                      senderName: user.shopName ?? 'Amaka Kitchen & Grills',
                       pickupAddress: 'Warri Central Kitchen (Pickup Location)',
                       dropoffAddress: 'Effurun Market Plaza, Shop 14B',
                       totalAmount: '₦ 1,850.00',

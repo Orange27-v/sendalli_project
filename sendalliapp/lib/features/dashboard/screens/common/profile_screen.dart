@@ -20,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
       case UserRole.rider:
         return 'Pioneer Corridor Rider';
       case UserRole.sender:
-        return 'Verified Merchant';
+        return 'Verified Sender';
       case UserRole.receiver:
         return 'Roadside Receiver';
       case UserRole.hub:
@@ -283,7 +283,7 @@ class ProfileScreen extends StatelessWidget {
             const Divider(color: AppColors.border, height: 20),
             _buildDetailRow(FeatherIcons.checkCircle, 'Driver License', 'Verified & In Good Standing'),
           ] else if (user.role == UserRole.sender) ...[
-            _buildDetailRow(FeatherIcons.shoppingBag, 'Business Name', user.shopName ?? 'Warri Central Merchant'),
+            _buildDetailRow(FeatherIcons.shoppingBag, 'Sender / Business Name', user.shopName ?? 'Warri Central Sender'),
             const Divider(color: AppColors.border, height: 20),
             _buildDetailRow(FeatherIcons.mapPin, 'Corridor Landmark', user.landmark ?? 'Main Market Waypoint, Warri'),
             const Divider(color: AppColors.border, height: 20),
