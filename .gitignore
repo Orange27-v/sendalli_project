@@ -25,3 +25,8 @@ vendor/
 .env
 .env.backup
 .env.production
+
+# Keys and Secrets
+key.md
+*.key
+
