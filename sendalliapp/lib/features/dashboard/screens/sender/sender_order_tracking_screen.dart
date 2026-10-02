@@ -3,6 +3,7 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../widgets/checkout/order_step_progress.dart';
+import '../../../../widgets/verification/verification_widgets.dart';
 import '../../../../widgets/delivery/delivery_widgets.dart';
 import '../../../../widgets/map/sendalli_map_view.dart';
 
@@ -459,6 +460,63 @@ class _SenderOrderTrackingScreenState extends State<SenderOrderTrackingScreen> {
                         ),
                       ),
                     ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Handover Verification (QR Code & PIN)
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(AppDimens.radius),
+                border: Border.all(color: AppColors.primary.withValues(alpha: 0.35), width: 1.2),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryLight,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(FeatherIcons.maximize, size: 20, color: AppColors.primary),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Handover Verification (QR / PIN)',
+                          style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          'Authenticate rider pickup or scan driver badge',
+                          style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      SendalliVerificationModal.show(
+                        context: context,
+                        title: 'Sender Handover Verification',
+                        subtitle: 'Scan Rider QR code or show release PIN: 849201',
+                        expectedPin: '849201',
+                        qrPayload: 'SND-WAR-8492-849201',
+                        showPresentationTab: true,
+                        pinLength: 6,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(78, 36),
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                    ),
+                    child: const Text('Verify'),
                   ),
                 ],
               ),

@@ -6,6 +6,7 @@ import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/models/user_profile.dart';
 import '../../../../widgets/dashboard_app_bar.dart';
 import '../../../../widgets/delivery/delivery_code_banner.dart';
+import '../../../../widgets/verification/verification_widgets.dart';
 import '../../../../widgets/map/sendalli_map_view.dart';
 import '../common/profile_screen.dart';
 
@@ -55,7 +56,39 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
             ),
             const SizedBox(height: 8),
             Text('Scan QR or enter the Tracking ID handed over by the keke rider:', style: AppTextStyles.bodySmall),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              onPressed: () async {
+                Navigator.pop(ctx);
+                final verified = await SendalliVerificationModal.show(
+                  context: context,
+                  title: 'Scan Keke Rider QR',
+                  subtitle: 'Align rider QR code within frame or enter PIN',
+                  expectedPin: '8492',
+                  pinLength: 4,
+                );
+                if (verified == true && mounted) {
+                  setState(() {
+                    _heldPackageCount++;
+                    _custodyEarnings += 500.0;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Package SND-WAR-8492 verified & taken into custody. +₦500 credited.'),
+                      backgroundColor: AppColors.primary,
+                    ),
+                  );
+                }
+              },
+              icon: const Icon(FeatherIcons.maximize, size: 16),
+              label: const Text('Open QR Code Scanner'),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(44),
+                foregroundColor: AppColors.primary,
+                side: const BorderSide(color: AppColors.primary, width: 1.2),
+              ),
+            ),
+            const SizedBox(height: 12),
             TextField(
               controller: controller,
               textCapitalization: TextCapitalization.characters,
@@ -91,52 +124,26 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
     );
   }
 
-  void _showReleasePackageDialog() {
-    final pinController = TextEditingController();
-
-    showDialog(
+  void _showReleasePackageDialog() async {
+    final verified = await SendalliVerificationModal.show(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Release Package to Customer'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Ask the recipient for their 6-digit handover PIN to verify release:'),
-            const SizedBox(height: 14),
-            TextField(
-              controller: pinController,
-              keyboardType: TextInputType.number,
-              maxLength: 6,
-              style: AppTextStyles.h2.copyWith(letterSpacing: 4),
-              decoration: const InputDecoration(
-                labelText: '6-Digit PIN',
-                hintText: '849201',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              if (_heldPackageCount > 0) {
-                setState(() => _heldPackageCount--);
-              }
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('PIN verified. Package released to customer safely.'),
-                  backgroundColor: AppColors.primary,
-                ),
-              );
-            },
-            child: const Text('Verify & Release'),
-          ),
-        ],
-      ),
+      title: 'Release Package to Recipient',
+      subtitle: 'Scan recipient QR or enter 6-digit release PIN',
+      expectedPin: '849201',
+      pinLength: 6,
     );
+
+    if (verified == true && mounted) {
+      if (_heldPackageCount > 0) {
+        setState(() => _heldPackageCount--);
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('PIN verified. Package released to customer safely.'),
+          backgroundColor: AppColors.primary,
+        ),
+      );
+    }
   }
 
   @override

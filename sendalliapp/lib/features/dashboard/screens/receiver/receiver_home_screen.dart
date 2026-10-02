@@ -10,6 +10,7 @@ import '../../../../widgets/custom_text_field.dart';
 import '../../../../widgets/form_randomizer.dart';
 import '../../../../widgets/map/sendalli_map_view.dart';
 import '../../../../widgets/settings_kit.dart';
+import '../../../../widgets/verification/verification_widgets.dart';
 
 /// Clean, simplified, and well-organized Receiver Tracking & Portal Screen.
 /// Built with Nelo quiet aesthetics, zero elevation, and hairline borders.
@@ -287,50 +288,73 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
             ),
           ),
 
-          // 6-digit Release Code Box
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
-            padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16.0),
-            decoration: BoxDecoration(
-              color: AppColors.surfaceSubtle,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'HANDOVER RELEASE CODE',
-                      style: AppTextStyles.caption.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 10,
-                        letterSpacing: 0.8,
+          // 6-digit Release Code Box with QR & PIN verification
+          InkWell(
+            borderRadius: BorderRadius.circular(AppDimens.radius),
+            onTap: () {
+              SendalliVerificationModal.show(
+                context: context,
+                title: 'Recipient Verification',
+                subtitle: 'Show your release QR & PIN or scan the rider',
+                expectedPin: '849201',
+                qrPayload: 'SND-WAR-8492-849201',
+                showPresentationTab: true,
+                pinLength: 6,
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16.0),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceSubtle,
+                borderRadius: BorderRadius.circular(AppDimens.radius),
+                border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.2),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'HANDOVER RELEASE CODE',
+                        style: AppTextStyles.caption.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 10,
+                          letterSpacing: 0.8,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '849 201',
-                      style: AppTextStyles.displayLarge.copyWith(
-                        fontSize: 24,
-                        letterSpacing: 4,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.primaryDark,
+                      const SizedBox(height: 2),
+                      Text(
+                        '849 201',
+                        style: AppTextStyles.displayLarge.copyWith(
+                          fontSize: 24,
+                          letterSpacing: 4,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.primaryDark,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
+                      const SizedBox(height: 2),
+                      Text(
+                        'Tap to show QR code & scanner',
+                        style: AppTextStyles.caption.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
                   ),
-                  child: const Icon(FeatherIcons.check, size: 16, color: AppColors.primaryDark),
-                ),
-              ],
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryLight,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(FeatherIcons.maximize, size: 18, color: AppColors.primaryDark),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 14),

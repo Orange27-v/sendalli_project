@@ -5,6 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/models/user_profile.dart';
 import '../../../../widgets/dashboard_app_bar.dart';
+import '../../../../widgets/verification/verification_widgets.dart';
 import '../../../../widgets/map/sendalli_map_view.dart';
 import '../common/profile_screen.dart';
 import 'sender_checkout_screen.dart';
@@ -362,6 +363,27 @@ class SenderHomeScreen extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 10),
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        SendalliVerificationModal.show(
+                          context: context,
+                          title: 'Sender Handover Verification',
+                          subtitle: 'Scan Rider QR or show your 6-digit release PIN: 849201',
+                          expectedPin: '849201',
+                          qrPayload: 'SND-WAR-8492-849201',
+                          showPresentationTab: true,
+                          pinLength: 6,
+                        );
+                      },
+                      icon: const Icon(FeatherIcons.maximize, size: 14),
+                      label: const Text('Show Handover QR & Scanner'),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(38),
+                        foregroundColor: AppColors.primary,
+                        side: const BorderSide(color: AppColors.primary, width: 1.2),
+                      ),
                     ),
                   ],
                 ),

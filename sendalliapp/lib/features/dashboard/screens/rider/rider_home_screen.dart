@@ -9,6 +9,7 @@ import '../../../../widgets/delivery/delivery_widgets.dart';
 import '../../../../widgets/map/sendalli_map_view.dart';
 import '../../../../widgets/dashboard_app_bar.dart';
 import 'rider_delivery_detail_screen.dart';
+import '../../../../widgets/verification/verification_widgets.dart';
 import '../../../onboarding/screens/welcome_screen.dart';
 import '../common/notifications_screen.dart';
 import '../common/profile_screen.dart';
@@ -562,6 +563,88 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           // Handover Release Code Banner
           DeliveryCodeBanner(
             code: _handoverCode,
+          ),
+          const SizedBox(height: 10),
+
+          // Step Verification: QR Code Scanner & PIN Verification
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.primaryLight,
+              borderRadius: BorderRadius.circular(AppDimens.radius),
+              border: Border.all(
+                color: AppColors.primary.withValues(alpha: 0.3),
+                width: AppDimens.borderWidth,
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(FeatherIcons.maximize, size: 16, color: Colors.white),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _deliveryStatus == 'Pickup'
+                            ? 'Step 1: Verify Pickup'
+                            : 'Step 2: Verify Handover',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primaryDark,
+                        ),
+                      ),
+                      Text(
+                        'Scan QR code or enter recipient PIN ()',
+                        style: AppTextStyles.caption.copyWith(fontSize: 11),
+                      ),
+                    ],
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final verified = await SendalliVerificationModal.show(
+                      context: context,
+                      title: _deliveryStatus == 'Pickup' ? 'Verify Parcel Pickup' : 'Verify Handover',
+                      subtitle: 'Scan QR or enter PIN: $_handoverCode',
+                      expectedPin: _handoverCode,
+                      pinLength: 4,
+                    );
+                    if (verified == true && mounted) {
+                      setState(() {
+                        if (_deliveryStatus == 'Pickup') {
+                          _deliveryStatus = 'In Transit';
+                        } else {
+                          _deliveryStatus = 'Delivered';
+                        }
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            _deliveryStatus == 'In Transit'
+                                ? 'Pickup verified! En route to delivery stop.'
+                                : 'Handover verified! Ready to complete order.',
+                          ),
+                          backgroundColor: AppColors.primary,
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(78, 36),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                  ),
+                  child: const Text('Verify'),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 14),
 

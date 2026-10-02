@@ -8,6 +8,7 @@ import '../../../../widgets/checkout/order_step_progress.dart';
 import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/delivery/delivery_widgets.dart';
 import '../../../../widgets/map/sendalli_map_view.dart';
+import '../../../../widgets/verification/verification_widgets.dart';
 
 /// Friction-free guest tracking screen for parcel recipients.
 class ReceiverTrackingScreen extends StatelessWidget {
@@ -175,6 +176,27 @@ class ReceiverTrackingScreen extends StatelessWidget {
                     'Read this code to the keke rider upon roadside handover to receive your parcel.',
                     style: AppTextStyles.bodySmall,
                     textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 14),
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      SendalliVerificationModal.show(
+                        context: context,
+                        title: 'Receiver Delivery Verification',
+                        subtitle: 'Show your release QR or scan package QR',
+                        expectedPin: '849201',
+                        qrPayload: 'SND-WAR-8492-849201',
+                        showPresentationTab: true,
+                        pinLength: 6,
+                      );
+                    },
+                    icon: const Icon(FeatherIcons.maximize, size: 16),
+                    label: const Text('Show Handover QR & Scanner'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.primary,
+                      side: const BorderSide(color: AppColors.primary, width: 1.2),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                    ),
                   ),
                 ],
               ),
