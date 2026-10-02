@@ -5,7 +5,7 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
-import '../../dashboard/screens/receiver_home_screen.dart';
+import '../../dashboard/screens/receiver/receiver_home_screen.dart';
 import 'role_gateway_screen.dart';
 import 'track_parcel_screen.dart';
 import 'onboarding_walkthrough_screen.dart';
@@ -28,13 +28,13 @@ class WelcomeScreen extends StatelessWidget {
         SystemNavigator.pop();
       },
       child: Scaffold(
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.background,
         body: SafeArea(
           bottom: false,
           child: Column(
           children: [
             // ==========================================
-            // TOP HERO SECTION (Sendalli Default Vibrant Lime)
+            // TOP HERO SECTION (Clean Black & White with Deep Green Accent)
             // ==========================================
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
@@ -55,21 +55,21 @@ class WelcomeScreen extends StatelessWidget {
                     'Local Parcel Delivery • Warri & Effurun',
                     style: AppTextStyles.caption.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary.withValues(alpha: 0.85),
+                      color: AppColors.textSecondary,
                       fontSize: 13,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
 
-                  // Hero Graphic in soft circle container
+                  // Hero Graphic in clean white container
                   Container(
                     width: 140,
                     height: 110,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.45),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.08), width: 1.0),
+                      border: Border.all(color: AppColors.border, width: 1.0),
                     ),
                     padding: const EdgeInsets.all(12),
                     child: Center(
@@ -81,17 +81,18 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
 
-                  // Punchy Value Prop Badge
+                  // Punchy Value Prop Badge with subtle deep green accent
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
-                      color: AppColors.textPrimary.withValues(alpha: 0.08),
+                      color: AppColors.deepGreenLight,
                       borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.deepGreen.withValues(alpha: 0.25), width: 1.0),
                     ),
                     child: Text(
                       'Send items across town in 10 minutes',
                       style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textPrimary,
+                        color: AppColors.deepGreen,
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
                       ),
@@ -163,9 +164,9 @@ class WelcomeScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primaryLight,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.6), width: 1.2),
+        border: Border.all(color: AppColors.border, width: 1.2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,12 +178,12 @@ class WelcomeScreen extends StatelessWidget {
                 height: 44,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: AppColors.deepGreenLight,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(
                   FeatherIcons.package,
-                  color: AppColors.textPrimary,
+                  color: AppColors.deepGreen,
                   size: 20,
                 ),
               ),
@@ -201,7 +202,7 @@ class WelcomeScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: AppColors.textPrimary,
+                            color: AppColors.primary,
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
@@ -209,7 +210,7 @@ class WelcomeScreen extends StatelessWidget {
                             style: AppTextStyles.caption.copyWith(
                               fontSize: 9,
                               fontWeight: FontWeight.w700,
-                              color: AppColors.primary,
+                              color: AppColors.textInverse,
                             ),
                           ),
                         ),
@@ -238,15 +239,19 @@ class WelcomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => const TrackParcelScreen()),
                     );
                   },
-                  icon: const Icon(FeatherIcons.search, size: 15, color: AppColors.textPrimary),
+                  icon: const Icon(FeatherIcons.search, size: 15, color: AppColors.textInverse),
                   label: const Text('Track by ID'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.textPrimary,
+                    foregroundColor: AppColors.textInverse,
                     elevation: 0,
                     minimumSize: const Size.fromHeight(44),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    textStyle: AppTextStyles.button.copyWith(fontSize: 13, fontWeight: FontWeight.w700),
+                    textStyle: AppTextStyles.button.copyWith(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textInverse,
+                    ),
                   ),
                 ),
               ),
@@ -267,7 +272,8 @@ class WelcomeScreen extends StatelessWidget {
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size.fromHeight(44),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    side: const BorderSide(color: AppColors.primaryDark, width: 1.2),
+                    side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
+                    foregroundColor: AppColors.textPrimary,
                     textStyle: AppTextStyles.button.copyWith(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
@@ -308,7 +314,7 @@ class WelcomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // Primary action to navigate to spread-out Role Gateway Screen (Default Lime)
+        // Primary action to navigate to spread-out Role Gateway Screen (Solid Black)
         ElevatedButton(
           onPressed: () {
             Navigator.of(context).push(
@@ -318,7 +324,7 @@ class WelcomeScreen extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             minimumSize: const Size.fromHeight(50),
             backgroundColor: AppColors.primary,
-            foregroundColor: AppColors.textPrimary,
+            foregroundColor: AppColors.textInverse,
             elevation: 0,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -327,10 +333,10 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               Text(
                 'Get Started',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.textPrimary),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.textInverse),
               ),
               SizedBox(width: 8),
-              Icon(FeatherIcons.arrowRight, size: 17, color: AppColors.textPrimary),
+              Icon(FeatherIcons.arrowRight, size: 17, color: AppColors.textInverse),
             ],
           ),
         ),
@@ -349,6 +355,7 @@ class WelcomeScreen extends StatelessWidget {
             minimumSize: const Size.fromHeight(48),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
+            foregroundColor: AppColors.textPrimary,
           ),
           child: const Text('Already have an account? Sign In'),
         ),

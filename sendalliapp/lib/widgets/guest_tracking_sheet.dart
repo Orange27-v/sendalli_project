@@ -4,7 +4,7 @@ import 'package:feather_icons/feather_icons.dart';
 import '../core/constants/app_colors.dart';
 import '../core/constants/app_text_styles.dart';
 import '../core/storage/session_manager.dart';
-import '../features/dashboard/screens/receiver_tracking_screen.dart';
+import '../features/dashboard/screens/receiver/receiver_tracking_screen.dart';
 import 'custom_text_field.dart';
 import 'form_randomizer.dart';
 

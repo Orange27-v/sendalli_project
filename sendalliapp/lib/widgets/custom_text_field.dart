@@ -179,7 +179,7 @@ class CustomTextField extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(borderRadius),
               borderSide: const BorderSide(
-                color: AppColors.primaryDark,
+                color: AppColors.deepGreen,
                 width: 1.5,
               ),
             ),
@@ -268,7 +268,7 @@ class CustomDropdownField<T> extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.primaryDark, width: 1.5),
+              borderSide: const BorderSide(color: AppColors.deepGreen, width: 1.5),
             ),
             isDense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

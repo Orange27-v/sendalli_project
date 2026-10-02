@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:feather_icons/feather_icons.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
-import '../../../core/models/user_profile.dart';
-import '../../../core/storage/session_manager.dart';
-import '../../onboarding/screens/welcome_screen.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/models/user_profile.dart';
+import '../../../../core/storage/session_manager.dart';
+import '../../../onboarding/screens/welcome_screen.dart';
 
 /// Rider Home Dashboard with On Route toggle & Autonomous Trust Score display.
 class RiderHomeScreen extends StatefulWidget {

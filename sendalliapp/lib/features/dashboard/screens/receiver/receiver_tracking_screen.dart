@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
-import '../../../core/navigation/app_navigator.dart';
-import '../../../core/storage/session_manager.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_text_styles.dart';
+import '../../../../core/navigation/app_navigator.dart';
+import '../../../../core/storage/session_manager.dart';
 
 /// Friction-free guest tracking screen for parcel recipients.
 class ReceiverTrackingScreen extends StatelessWidget {

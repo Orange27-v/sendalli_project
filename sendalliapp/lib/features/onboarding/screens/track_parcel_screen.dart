@@ -7,8 +7,8 @@ import '../../../core/models/user_profile.dart';
 import '../../../core/navigation/app_navigator.dart';
 import '../../../core/storage/session_manager.dart';
 import '../../../widgets/form_randomizer.dart';
-import '../../dashboard/screens/receiver_home_screen.dart';
-import '../../dashboard/screens/receiver_tracking_screen.dart';
+import '../../dashboard/screens/receiver/receiver_home_screen.dart';
+import '../../dashboard/screens/receiver/receiver_tracking_screen.dart';
 
 /// Dedicated, separate screen for the Receiver context.
 /// Zero login required. Allows users to track parcels with live ETA and handover PIN.
@@ -168,7 +168,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                   border: Border.all(
                     color: _errorMessage != null
                         ? AppColors.danger
-                        : (_isFocused ? AppColors.primaryDark : AppColors.borderMedium),
+                        : (_isFocused ? AppColors.deepGreen : AppColors.borderMedium),
                     width: _isFocused ? 1.6 : 1.4,
                   ),
                 ),

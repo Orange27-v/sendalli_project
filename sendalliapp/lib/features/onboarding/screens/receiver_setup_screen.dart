@@ -11,7 +11,7 @@ import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
 import '../../../widgets/settings_kit.dart';
-import '../../dashboard/screens/receiver_home_screen.dart';
+import '../../dashboard/screens/receiver/receiver_home_screen.dart';
 
 /// Branch D: Receiver Setup Screen — Clean Nelo UI Design Flow.
 class ReceiverSetupScreen extends StatefulWidget {

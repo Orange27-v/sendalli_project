@@ -62,11 +62,11 @@ class PermissionDialog extends StatelessWidget {
               Container(
                 width: 72,
                 height: 72,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
+                decoration: const BoxDecoration(
+                  color: AppColors.deepGreenLight,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, size: 36, color: AppColors.primary),
+                child: Icon(icon, size: 36, color: AppColors.deepGreen),
               ),
               const SizedBox(height: 20),
               Text(

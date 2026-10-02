@@ -164,11 +164,11 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryLight : AppColors.surface,
+          color: isSelected ? AppColors.surface : AppColors.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.border,
-            width: isSelected ? 2 : 1,
+            color: isSelected ? AppColors.deepGreen : AppColors.border,
+            width: isSelected ? 1.8 : 1,
           ),
         ),
         child: Row(
@@ -177,12 +177,12 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary : AppColors.primary.withValues(alpha: 0.12),
+                color: isSelected ? AppColors.deepGreenLight : AppColors.surfaceSubtle,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 icon,
-                color: isSelected ? AppColors.textPrimary : AppColors.primaryDark,
+                color: isSelected ? AppColors.deepGreen : AppColors.textSecondary,
                 size: 22,
               ),
             ),
@@ -194,7 +194,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
                   Text(
                     title,
                     style: AppTextStyles.h3.copyWith(
-                      color: isSelected ? AppColors.primaryDark : AppColors.textPrimary,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -214,15 +214,15 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
               height: 22,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isSelected ? AppColors.primary : Colors.transparent,
+                color: isSelected ? AppColors.deepGreen : Colors.transparent,
                 border: Border.all(
-                  color: isSelected ? AppColors.primary : AppColors.border,
-                  width: 2,
+                  color: isSelected ? AppColors.deepGreen : AppColors.border,
+                  width: 1.8,
                 ),
               ),
               child: isSelected
                   ? const Center(
-                      child: Icon(FeatherIcons.check, size: 13, color: AppColors.textPrimary),
+                      child: Icon(FeatherIcons.check, size: 13, color: Colors.white),
                     )
                   : null,
             ),

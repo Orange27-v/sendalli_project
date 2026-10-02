@@ -91,7 +91,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.surface,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -126,14 +126,14 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.35), width: 1.0),
+                  border: Border.all(color: AppColors.borderMedium, width: 1.0),
                 ),
                 child: Text(
                   'Skip',
                   style: AppTextStyles.caption.copyWith(
                     fontWeight: FontWeight.w700,
                     fontSize: 12,
-                    color: AppColors.textPrimary,
+                    color: AppColors.textSecondary,
                   ),
                 ),
               ),
@@ -151,7 +151,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
                 child: _buildSlide(_slides[_currentPage]),
               ),
 
-              // Dot Indicators (Dark contrast pills/dots on vibrant lime)
+              // Dot Indicators (Deep Green accent active dot, subtle inactive dots)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
@@ -162,7 +162,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
                     width: _currentPage == i ? 22 : 7,
                     height: 7,
                     decoration: BoxDecoration(
-                      color: _currentPage == i ? AppColors.textPrimary : AppColors.textPrimary.withValues(alpha: 0.25),
+                      color: _currentPage == i ? AppColors.deepGreen : AppColors.borderMedium,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
@@ -170,15 +170,15 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
               ),
               const SizedBox(height: 20),
 
-              // Full-Width Contrast Dark Button on Lime Background
+              // Full-Width Solid Black Button with White Text
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _onNext,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.textPrimary,
-                    foregroundColor: AppColors.primary,
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.textInverse,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -187,8 +187,8 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
                   child: Text(
                     _currentPage == _slides.length - 1 ? 'Get Started' : 'Next',
                     style: AppTextStyles.button.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w800,
+                      color: AppColors.textInverse,
+                      fontWeight: FontWeight.w700,
                       fontSize: 16,
                     ),
                   ),
@@ -201,18 +201,18 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.25), width: 0.8),
+                  border: Border.all(color: AppColors.border, width: 1.0),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(FeatherIcons.globe, size: 12, color: AppColors.textPrimary),
+                    const Icon(FeatherIcons.globe, size: 12, color: AppColors.textSecondary),
                     const SizedBox(width: 6),
                     Text(
                       'Warri & Effurun Routes',
                       style: AppTextStyles.caption.copyWith(
                         fontSize: 11,
-                        color: AppColors.textPrimary,
+                        color: AppColors.textSecondary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -240,9 +240,9 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
             width: 220,
             height: 200,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.45),
+              color: AppColors.surfaceSubtle,
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.08), width: 1.0),
+              border: Border.all(color: AppColors.border, width: 1.0),
             ),
             padding: const EdgeInsets.all(22),
             child: Center(
@@ -254,12 +254,13 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
           ),
           const SizedBox(height: 22),
 
-          // Context Category Badge
+          // Context Category Badge (Deep Green Accent)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.textPrimary.withValues(alpha: 0.08),
+              color: AppColors.deepGreenLight,
               borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.deepGreen.withValues(alpha: 0.25), width: 1.0),
             ),
             child: Text(
               slide.badge,
@@ -267,7 +268,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
                 fontSize: 10,
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0.8,
-                color: AppColors.textPrimary,
+                color: AppColors.deepGreen,
               ),
             ),
           ),
@@ -290,7 +291,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
             slide.description,
             style: AppTextStyles.bodyMedium.copyWith(
               fontSize: 14,
-              color: AppColors.textPrimary.withValues(alpha: 0.85),
+              color: AppColors.textSecondary,
               height: 1.45,
             ),
             textAlign: TextAlign.center,
@@ -301,14 +302,14 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.5),
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.15), width: 0.8),
+              border: Border.all(color: AppColors.border, width: 1.0),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(FeatherIcons.checkCircle, size: 14, color: AppColors.textPrimary),
+                const Icon(FeatherIcons.checkCircle, size: 14, color: AppColors.deepGreen),
                 const SizedBox(width: 6),
                 Text(
                   slide.highlightTag,

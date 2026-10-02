@@ -11,7 +11,7 @@ import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
-import '../../dashboard/screens/rider_home_screen.dart';
+import '../../dashboard/screens/rider/rider_home_screen.dart';
 
 /// Branch B: Rider Vetting & Vehicle Setup Screen (Onboarding-8.png / Onboarding-9.png).
 class RiderSetupScreen extends StatefulWidget {
@@ -150,11 +150,11 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
                       children: [
                         CircleAvatar(
                           radius: 46,
-                          backgroundColor: AppColors.primaryLight,
+                          backgroundColor: AppColors.surfaceSubtle,
                           child: Icon(
                             _selfieCaptured ? FeatherIcons.checkCircle : FeatherIcons.user,
                             size: 40,
-                            color: AppColors.primaryDark,
+                            color: _selfieCaptured ? AppColors.deepGreen : AppColors.textPrimary,
                           ),
                         ),
                         Positioned(
@@ -166,7 +166,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
                               color: AppColors.primary,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(FeatherIcons.camera, color: AppColors.textPrimary, size: 14),
+                            child: const Icon(FeatherIcons.camera, color: AppColors.textInverse, size: 14),
                           ),
                         ),
                       ],

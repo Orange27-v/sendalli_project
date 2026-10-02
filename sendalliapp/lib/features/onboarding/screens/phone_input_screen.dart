@@ -107,7 +107,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
     if (isComplete) {
       fieldBorderColor = AppColors.success;
     } else if (_isFocused) {
-      fieldBorderColor = AppColors.primaryDark;
+      fieldBorderColor = AppColors.deepGreen;
     } else {
       fieldBorderColor = AppColors.borderMedium;
     }
@@ -220,7 +220,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                       color: AppColors.surface,
                       borderRadius: BorderRadius.circular(6), // Modern square radius
                       border: Border.all(
-                        color: _isFocused ? AppColors.primaryDark : AppColors.borderMedium,
+                        color: _isFocused ? AppColors.deepGreen : AppColors.borderMedium,
                         width: 1.4,
                       ),
                     ),

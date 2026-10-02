@@ -53,13 +53,13 @@ class ProfileCompletedDialog extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: const BoxDecoration(
-                  color: AppColors.primaryLight,
+                  color: AppColors.deepGreenLight,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   FeatherIcons.checkCircle,
                   size: 40,
-                  color: AppColors.primaryDark,
+                  color: AppColors.deepGreen,
                 ),
               ),
               const SizedBox(height: 20),

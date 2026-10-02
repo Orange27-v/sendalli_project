@@ -5,11 +5,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
 import '../../onboarding/screens/welcome_screen.dart';
-import '../../dashboard/screens/sender_home_screen.dart';
-import '../../dashboard/screens/rider_home_screen.dart';
-import '../../dashboard/screens/hub_home_screen.dart';
-import '../../dashboard/screens/receiver_tracking_screen.dart';
-import '../../dashboard/screens/receiver_home_screen.dart';
+import '../../dashboard/screens/screens.dart';
 
 /// Cold-start splash screen with automated session verification and routing.
 class SplashScreen extends StatefulWidget {
@@ -115,13 +111,13 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 width: 96,
                 height: 96,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
+                  color: AppColors.deepGreenLight,
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: const Icon(
                   FeatherIcons.package,
                   size: 48,
-                  color: AppColors.primaryDark,
+                  color: AppColors.deepGreen,
                 ),
               ),
               const SizedBox(height: 24),
@@ -130,7 +126,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 style: AppTextStyles.h1.copyWith(
                   letterSpacing: 3,
                   fontWeight: FontWeight.w900,
-                  color: AppColors.primaryDark,
+                  color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 6),
@@ -148,7 +144,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 height: 24,
                 child: CircularProgressIndicator(
                   strokeWidth: 2.5,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.deepGreen),
                 ),
               ),
             ],

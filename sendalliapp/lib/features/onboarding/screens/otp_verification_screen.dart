@@ -5,10 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/navigation/app_navigator.dart';
 import '../../../core/storage/session_manager.dart';
-import '../../dashboard/screens/sender_home_screen.dart';
-import '../../dashboard/screens/rider_home_screen.dart';
-import '../../dashboard/screens/hub_home_screen.dart';
-import '../../dashboard/screens/receiver_home_screen.dart';
+import '../../dashboard/screens/screens.dart';
 import '../../../core/models/user_role.dart';
 import 'pin_setup_screen.dart';
 
@@ -180,13 +177,13 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
                       maxLength: 1,
-                      style: AppTextStyles.h1.copyWith(color: AppColors.primaryDark),
+                      style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary),
                       decoration: InputDecoration(
                         counterText: '',
                         contentPadding: EdgeInsets.zero,
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                          borderSide: const BorderSide(color: AppColors.deepGreen, width: 2),
                         ),
                       ),
                       onChanged: (val) => _onDigitChanged(index, val),

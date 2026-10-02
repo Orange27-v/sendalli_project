@@ -10,7 +10,7 @@ import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
-import '../../dashboard/screens/hub_home_screen.dart';
+import '../../dashboard/screens/hub/hub_home_screen.dart';
 
 /// Branch C: Drop Hub Partner Setup Screen.
 class HubSetupScreen extends StatefulWidget {

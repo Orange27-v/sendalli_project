@@ -10,7 +10,7 @@ import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
-import '../../dashboard/screens/sender_home_screen.dart';
+import '../../dashboard/screens/sender/sender_home_screen.dart';
 
 /// Branch A: Sender / Merchant Setup Screen.
 class SenderSetupScreen extends StatefulWidget {

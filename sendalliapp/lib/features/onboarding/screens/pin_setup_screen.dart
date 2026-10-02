@@ -213,7 +213,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
                       shape: BoxShape.circle,
                       color: isFilled ? AppColors.primary : AppColors.surface,
                       border: Border.all(
-                        color: isFilled ? AppColors.primary : AppColors.borderFocus,
+                        color: isFilled ? AppColors.primary : AppColors.borderMedium,
                         width: 2,
                       ),
                     ),
