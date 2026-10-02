@@ -333,7 +333,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
                 onPressed: _isValid ? _proceed : null,
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,

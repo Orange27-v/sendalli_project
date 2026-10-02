@@ -226,7 +226,7 @@ class _SaveLocationSheetState extends State<SaveLocationSheet> {
                           foregroundColor: AppColors.textInverse,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(28),
                           ),
                         ),
                         child: Text(
@@ -256,7 +256,7 @@ class _SaveLocationSheetState extends State<SaveLocationSheet> {
                           foregroundColor: AppColors.textPrimary,
                           side: const BorderSide(color: AppColors.border, width: 1.2),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(28),
                           ),
                         ),
                         child: Text(

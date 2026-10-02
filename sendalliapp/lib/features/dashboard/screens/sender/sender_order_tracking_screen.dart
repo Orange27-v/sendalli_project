@@ -499,7 +499,7 @@ class _SenderOrderTrackingScreenState extends State<SenderOrderTrackingScreen> {
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(46),
                 side: const BorderSide(color: AppColors.danger),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
               ),
             ),
             const SizedBox(height: 32),

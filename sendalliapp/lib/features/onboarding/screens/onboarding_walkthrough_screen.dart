@@ -186,7 +186,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
                     foregroundColor: AppColors.textInverse,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(28),
                     ),
                   ),
                   child: Text(

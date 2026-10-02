@@ -251,7 +251,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                 label: const Text('Track Live Delivery'),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                 ),
               ),
               const SizedBox(height: 12),
@@ -263,7 +263,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                 label: const Text('Go to My Parcels'),
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size.fromHeight(48),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                   side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
                 ),
               ),

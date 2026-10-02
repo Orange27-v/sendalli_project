@@ -144,7 +144,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                   foregroundColor: AppColors.textInverse,
                   elevation: 0,
                   minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                   textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                 ),
               ),
@@ -155,7 +155,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                 onPressed: _proceedToLogin,
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size.fromHeight(48),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                   side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
                   foregroundColor: AppColors.textPrimary,
                 ),

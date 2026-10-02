@@ -199,7 +199,7 @@ class WelcomeScreen extends StatelessWidget {
             backgroundColor: AppColors.primary,
             foregroundColor: AppColors.textInverse,
             elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
           ),
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -226,7 +226,7 @@ class WelcomeScreen extends StatelessWidget {
           },
           style: OutlinedButton.styleFrom(
             minimumSize: const Size.fromHeight(48),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
             side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
             foregroundColor: AppColors.textPrimary,
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
+import '../../core/theme/app_theme.dart';
 
 /// Reusable primary action button styled after the rider delivery design.
 ///
@@ -40,7 +41,7 @@ class DeliveryPrimaryButton extends StatelessWidget {
             disabledForegroundColor: AppColors.textInverse,
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppDimens.radiusButton),
             ),
           ),
           child: isLoading
@@ -107,7 +108,7 @@ class DeliverySecondaryButton extends StatelessWidget {
             foregroundColor: AppColors.textPrimary,
             side: const BorderSide(color: AppColors.border, width: 1.2),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(AppDimens.radiusButton),
             ),
           ),
           child: Row(

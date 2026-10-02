@@ -5,14 +5,11 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/models/user_profile.dart';
 import '../../../../core/navigation/app_navigator.dart';
-import '../../../../widgets/custom_app_bar.dart';
+import '../../../../widgets/dashboard_app_bar.dart';
 import '../../../../widgets/custom_text_field.dart';
 import '../../../../widgets/form_randomizer.dart';
 import '../../../../widgets/map/sendalli_map_view.dart';
 import '../../../../widgets/settings_kit.dart';
-import '../common/notifications_screen.dart';
-import '../common/profile_screen.dart';
-import '../common/settings_screen.dart';
 
 /// Clean, simplified, and well-organized Receiver Tracking & Portal Screen.
 /// Built with Nelo quiet aesthetics, zero elevation, and hairline borders.
@@ -69,57 +66,12 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
-        appBar: CustomAppBar(
-          centerTitle: false,
-          onLeadingPressed: _safeExit,
-          title: 'Package Tracker',
+        appBar: DashboardAppBar(
+          user: widget.user,
+          title: _isGuest ? 'Package Tracker' : 'Hello ${widget.user.firstName}',
           subtitle: _isGuest ? 'Roadside Guest Access • No login' : widget.user.fullName,
-          actions: [
-            Stack(
-              alignment: Alignment.topRight,
-              children: [
-                IconButton(
-                  icon: const Icon(FeatherIcons.bell, size: 20, color: AppColors.textInverse),
-                  tooltip: 'Notifications',
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => NotificationsScreen(user: widget.user)),
-                    );
-                  },
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFEF4444),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            IconButton(
-              icon: const Icon(FeatherIcons.user, size: 20, color: AppColors.textInverse),
-              tooltip: 'Profile',
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => ProfileScreen(user: widget.user)),
-                );
-              },
-            ),
-            IconButton(
-              icon: const Icon(FeatherIcons.settings, size: 20, color: AppColors.textInverse),
-              tooltip: 'Settings',
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => SettingsScreen(user: widget.user)),
-                );
-              },
-            ),
-          ],
+          showLeading: _isGuest,
+          onLeadingPressed: _safeExit,
         ),
         body: SafeArea(
           top: false,
@@ -196,7 +148,7 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(60, 48),
                   padding: const EdgeInsets.symmetric(horizontal: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                 ),
                 child: const Text('Track'),
               ),

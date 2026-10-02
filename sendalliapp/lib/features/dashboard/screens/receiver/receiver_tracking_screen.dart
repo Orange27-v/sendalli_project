@@ -283,7 +283,7 @@ class ReceiverTrackingScreen extends StatelessWidget {
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(46),
                 side: const BorderSide(color: AppColors.borderMedium),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
               ),
             ),
             const SizedBox(height: 10),

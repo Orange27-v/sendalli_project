@@ -14,6 +14,8 @@ class AppDimens {
   static const double radiusSmall = 4.0;   // Badges, tags, tiny chips
   static const double radius = 12.0;        // Default: cards, inputs, dialogs
   static const double radiusLarge = 12.0;   // Sheets, modals (same as default for flat look)
+  static const double radiusButton = 28.0;  // Pill rounded buttons matching brand spec (button.png)
+  static const double radiusPill = 28.0;    // Full pill / stadium radius
 
   // --- Border Width ---
   static const double borderWidth = 0.5;       // Hairline card/container borders
@@ -263,7 +265,7 @@ class AppTheme {
           elevation: 0,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppDimens.radiusButton),
           ),
           textStyle: AppTextStyles.button.copyWith(
             color: AppColors.textInverse,
@@ -279,7 +281,7 @@ class AppTheme {
           elevation: 0,
           side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(AppDimens.radiusButton),
           ),
           textStyle: AppTextStyles.button.copyWith(
             color: AppColors.textPrimary,

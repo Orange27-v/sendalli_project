@@ -7,6 +7,8 @@ import '../../../../core/models/user_profile.dart';
 import '../../../../core/storage/session_manager.dart';
 import '../../../../widgets/delivery/delivery_widgets.dart';
 import '../../../../widgets/map/sendalli_map_view.dart';
+import '../../../../widgets/dashboard_app_bar.dart';
+import 'rider_delivery_detail_screen.dart';
 import '../../../onboarding/screens/welcome_screen.dart';
 import '../common/notifications_screen.dart';
 import '../common/profile_screen.dart';
@@ -62,7 +64,13 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
-        appBar: _hasActiveDelivery ? _buildActiveDeliveryAppBar() : null,
+        appBar: _hasActiveDelivery
+            ? _buildActiveDeliveryAppBar()
+            : DashboardAppBar(
+                user: widget.user,
+                title: 'Hello ${widget.user.firstName}',
+                subtitle: widget.user.corridor ?? 'Warri — Effurun Corridor',
+              ),
         body: SafeArea(
           top: !_hasActiveDelivery,
           child: _hasActiveDelivery
@@ -134,7 +142,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
     );
   }
 
-  /// Main Map View with top Online toggle overlay and bottom card (Screen 1)
+  /// Main Map View with separate standalone corridor toggler and slide-up requests modal
   Widget _buildMapHomeView() {
     return Stack(
       children: [
@@ -146,164 +154,162 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           ),
         ),
 
-        // 2. Top Header Overlay ("Hello John" & "Online" toggle)
+        // 2. Standalone Floating Toggler Container (Online / Offline Corridor Broadcast)
         Positioned(
           top: 14,
           left: AppDimens.screenPaddingH,
           right: AppDimens.screenPaddingH,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  borderRadius: BorderRadius.circular(8),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => ProfileScreen(user: widget.user)),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: AppColors.primaryLight,
-                        child: Text(
-                          widget.user.firstName.isNotEmpty ? widget.user.firstName[0] : 'R',
-                          style: AppTextStyles.caption.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.primaryDark,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Hello ${widget.user.firstName}',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                    ],
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(AppDimens.radiusButton),
+                border: Border.all(
+                  color: _isOnline ? AppColors.primary : AppColors.border,
+                  width: 1.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
                   ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      _isOnline ? 'Online' : 'Offline',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: _isOnline ? AppColors.primary : AppColors.textMuted,
-                      ),
+                ],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 9,
+                    height: 9,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _isOnline ? AppColors.primary : AppColors.textMuted,
                     ),
-                    const SizedBox(width: 4),
-                    Transform.scale(
-                      scale: 0.8,
-                      child: Switch.adaptive(
-                        value: _isOnline,
-                        activeThumbColor: AppColors.primary,
-                        activeTrackColor: AppColors.primaryLight,
-                        onChanged: (val) {
-                          setState(() => _isOnline = val);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                val
-                                    ? 'Online: Listening for corridor parcel requests.'
-                                    : 'Offline: Broadcast paused.',
-                              ),
-                              duration: const Duration(seconds: 2),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    _isOnline ? 'Online' : 'Offline',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: _isOnline ? AppColors.primary : AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    _isOnline ? '• Broadcasting' : '• Paused',
+                    style: AppTextStyles.caption.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textMuted,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Transform.scale(
+                    scale: 0.82,
+                    child: Switch.adaptive(
+                      value: _isOnline,
+                      activeThumbColor: AppColors.primary,
+                      activeTrackColor: AppColors.primaryLight,
+                      onChanged: (val) {
+                        setState(() => _isOnline = val);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              val
+                                  ? 'Online: Listening for corridor parcel requests.'
+                                  : 'Offline: Broadcast paused.',
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => NotificationsScreen(user: widget.user)),
+                            duration: const Duration(seconds: 2),
+                          ),
                         );
                       },
-                      child: Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.all(4),
-                            child: Icon(FeatherIcons.bell, size: 18, color: AppColors.textPrimary),
-                          ),
-                          Positioned(
-                            top: 2,
-                            right: 2,
-                            child: Container(
-                              width: 7,
-                              height: 7,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xFFEF4444),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
-                    const SizedBox(width: 4),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => SettingsScreen(user: widget.user)),
-                        );
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.all(4),
-                        child: Icon(FeatherIcons.settings, size: 18, color: AppColors.textPrimary),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
 
-        // 3. Bottom Sheet Overlay (Incoming Delivery or Corridor Status Card)
+        // 3. Bottom Modal Overlay (Slide-Up Incoming Request Sheet or Offline Corridor Card)
         Positioned(
-          left: AppDimens.screenPaddingH,
-          right: AppDimens.screenPaddingH,
-          bottom: AppDimens.screenPaddingV,
+          left: _isOnline ? 0 : AppDimens.screenPaddingH,
+          right: _isOnline ? 0 : AppDimens.screenPaddingH,
+          bottom: _isOnline ? 0 : AppDimens.screenPaddingV,
           child: _isOnline
-              ? _buildIncomingDeliveryCard()
+              ? _buildIncomingRequestsSheet()
               : _buildOfflineCorridorCard(),
         ),
       ],
     );
   }
 
-  /// Incoming Delivery Card matching Screen 1 bottom sheet
-  Widget _buildIncomingDeliveryCard() {
+  /// Slide-up bottom modal sheet for incoming delivery requests.
+  /// Tapping the request item card opens up the full detailed information page.
+  Widget _buildIncomingRequestsSheet() {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.12),
+            blurRadius: 18,
+            offset: const Offset(0, -4),
+          ),
+        ],
+        border: Border(
+          top: BorderSide(color: AppColors.border, width: AppDimens.borderWidth),
+          left: BorderSide(color: AppColors.border, width: AppDimens.borderWidth),
+          right: BorderSide(color: AppColors.border, width: AppDimens.borderWidth),
+        ),
       ),
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header: Package Delivery & Date
+          // Drag Handle
+          Center(
+            child: Container(
+              width: 42,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: AppColors.borderMedium,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+
+          // Header: Package Delivery & Date & Live Badge
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Package Delivery',
-                style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w700),
+              Row(
+                children: [
+                  Text(
+                    'Package Delivery',
+                    style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryLight,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      '1 Available',
+                      style: AppTextStyles.caption.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primaryDark,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Text(
                 _dateText,
@@ -311,23 +317,57 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
-
-          // Route card
-          DeliveryRouteCard(
-            pickupTitle: _pickupTitle,
-            pickupSubtitle: _pickupSubtitle,
-            dropoffTitle: _dropoffTitle,
-            dropoffSubtitle: _dropoffSubtitle,
-          ),
           const SizedBox(height: 10),
 
-          // Package ID & Delivery fee
-          DeliveryPackageCard(
-            packageId: _orderId,
-            deliveryFee: _deliveryFee,
+          // Tappable Request Item Card -> Opens Detailed Information Page
+          InkWell(
+            borderRadius: BorderRadius.circular(AppDimens.radius),
+            onTap: _openDeliveryDetailPage,
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.background,
+                borderRadius: BorderRadius.circular(AppDimens.radius),
+                border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  // Route preview card
+                  DeliveryRouteCard(
+                    pickupTitle: _pickupTitle,
+                    pickupSubtitle: _pickupSubtitle,
+                    dropoffTitle: _dropoffTitle,
+                    dropoffSubtitle: _dropoffSubtitle,
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Package ID & Delivery fee
+                  DeliveryPackageCard(
+                    packageId: _orderId,
+                    deliveryFee: _deliveryFee,
+                  ),
+                  const SizedBox(height: 6),
+
+                  // Tap indicator banner
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Tap to inspect route & parcel details',
+                        style: AppTextStyles.caption.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      const Icon(FeatherIcons.arrowRight, size: 13, color: AppColors.primary),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
 
           // Notes
           DeliveryNoteTile(
@@ -351,18 +391,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           // Action Buttons: Accept Delivery & Cancel
           DeliveryActionGroup(
             primaryLabel: 'Accept Delivery',
-            onPrimary: () {
-              setState(() {
-                _hasActiveDelivery = true;
-                _deliveryStatus = 'Pickup';
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Accepted delivery for $_orderId! Navigating to corridor route.'),
-                  backgroundColor: AppColors.primary,
-                ),
-              );
-            },
+            onPrimary: _acceptDelivery,
             secondaryLabel: 'Cancel',
             onSecondary: () {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -371,6 +400,48 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
             },
           ),
         ],
+      ),
+    );
+  }
+
+  void _openDeliveryDetailPage() async {
+    final accepted = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => RiderDeliveryDetailScreen(
+          orderId: _orderId,
+          referenceId: _referenceId,
+          dateText: _dateText,
+          pickupTitle: _pickupTitle,
+          pickupSubtitle: _pickupSubtitle,
+          dropoffTitle: _dropoffTitle,
+          dropoffSubtitle: _dropoffSubtitle,
+          packageItem: 'Food • Jollof Rice, meat and moi moi',
+          deliveryFee: _deliveryFee,
+          customerName: _customerName,
+          customerNote: _customerNote,
+          handoverCode: _handoverCode,
+          corridorName: widget.user.corridor ?? 'Warri — Effurun Corridor',
+          onAccept: () {
+            _acceptDelivery();
+          },
+        ),
+      ),
+    );
+
+    if (accepted == true && !_hasActiveDelivery) {
+      _acceptDelivery();
+    }
+  }
+
+  void _acceptDelivery() {
+    setState(() {
+      _hasActiveDelivery = true;
+      _deliveryStatus = 'Pickup';
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Accepted delivery for $_orderId! Navigating to corridor route.'),
+        backgroundColor: AppColors.primary,
       ),
     );
   }
@@ -586,7 +657,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
               minimumSize: const Size.fromHeight(44),
               foregroundColor: AppColors.textSecondary,
               side: const BorderSide(color: AppColors.borderMedium),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
             ),
           ),
           const SizedBox(height: 14),
@@ -898,7 +969,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
               minimumSize: const Size.fromHeight(50),
               backgroundColor: AppColors.primary,
               foregroundColor: AppColors.textInverse,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
             ),
           ),
           const SizedBox(height: 24),
@@ -1127,7 +1198,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                   label: const Text('Submit Score Dispute / Appeal'),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size.fromHeight(40),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
                   ),
                 ),
               ],
@@ -1143,7 +1214,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(48),
               side: const BorderSide(color: AppColors.danger),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
             ),
           ),
           const SizedBox(height: 20),
