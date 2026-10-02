@@ -45,6 +45,10 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
 
   int _deliveriesFilterIndex = 0; // 0: Pending, 1: Accepted, 2: Completed
 
+  // Roadside Delivery Confirmation Picture state (Rider snaps and sends confirmation picture)
+  bool _confirmationPhotoSnapped = false;
+  String? _confirmationPhotoTimestamp;
+
   // Direct initializers to guarantee non-null safety during hot-reloads and gestures
   final List<RiderDeliveryItem> _pendingDeliveries = [
     RiderDeliveryItem(
@@ -766,6 +770,25 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
     }
   }
 
+  void _snapDeliveryConfirmationPhoto() {
+    setState(() {
+      _confirmationPhotoSnapped = true;
+      final now = DateTime.now();
+      final minuteStr = now.minute.toString().padLeft(2, '0');
+      _confirmationPhotoTimestamp = 'Captured & Sent • ${now.hour}:$minuteStr (GPS: Roadside Handoff)';
+      if (_activeDeliveryItem != null) {
+        _activeDeliveryItem!.hasConfirmationPhoto = true;
+        _activeDeliveryItem!.confirmationPhotoAsset = 'assets/images/parcel_sample.png';
+      }
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Roadside delivery confirmation picture snapped and transmitted!'),
+        backgroundColor: AppColors.primary,
+      ),
+    );
+  }
+
   void _acceptDelivery() {
     if (_pendingDeliveries.isNotEmpty) {
       _acceptSpecificDelivery(_pendingDeliveries.first);
@@ -787,6 +810,8 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       _activeDeliveryItem = item;
       _hasActiveDelivery = true;
       _deliveryStatus = 'Pickup';
+      _confirmationPhotoSnapped = false;
+      _confirmationPhotoTimestamp = null;
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -917,8 +942,11 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           // Package Summary
           DeliveryPackageCard(
             packageId: _orderId,
-            packageItem: 'Food • Jollof Rice, meat and moi moi',
+            packageItem: _activeDeliveryItem?.packageItem ?? 'Food • Jollof Rice, meat and moi moi',
             deliveryFee: _deliveryFee,
+            packageValue: _activeDeliveryItem?.packageValue ?? '₦ 5,000.00',
+            weightCategory: _activeDeliveryItem?.weightCategory ?? 'Small Parcel (< 1kg)',
+            photoAsset: _activeDeliveryItem?.photoAsset ?? 'assets/images/parcel_sample.png',
           ),
           const SizedBox(height: 10),
 
@@ -944,6 +972,158 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           ),
           const SizedBox(height: 10),
 
+          // Roadside Delivery Confirmation Picture Card (Rider snaps and sends confirmation picture)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.only(bottom: 12),
+            decoration: BoxDecoration(
+              color: _confirmationPhotoSnapped ? const Color(0xFFF0FDF4) : AppColors.surface,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: _confirmationPhotoSnapped ? const Color(0xFFBBF7D0) : AppColors.border,
+                width: AppDimens.borderWidth,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.02),
+                  blurRadius: 4,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: _confirmationPhotoSnapped ? const Color(0xFF16A34A) : AppColors.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        _confirmationPhotoSnapped ? FeatherIcons.check : FeatherIcons.camera,
+                        size: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _confirmationPhotoSnapped
+                                ? 'Confirmation Picture Captured & Sent'
+                                : 'Roadside Delivery Confirmation Picture',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: _confirmationPhotoSnapped ? const Color(0xFF166534) : AppColors.textPrimary,
+                            ),
+                          ),
+                          Text(
+                            _confirmationPhotoSnapped
+                                ? (_confirmationPhotoTimestamp ?? 'Proof of roadside delivery captured')
+                                : 'Snap parcel handover photo before verifying receiver PIN.',
+                            style: AppTextStyles.caption.copyWith(
+                              fontSize: 11,
+                              color: _confirmationPhotoSnapped ? const Color(0xFF15803D) : AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    OutlinedButton.icon(
+                      key: const Key('rider_snap_confirmation_btn'),
+                      onPressed: _snapDeliveryConfirmationPhoto,
+                      icon: Icon(
+                        _confirmationPhotoSnapped ? FeatherIcons.refreshCw : FeatherIcons.camera,
+                        size: 13,
+                      ),
+                      label: Text(_confirmationPhotoSnapped ? 'Retake' : 'Snap Photo'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: _confirmationPhotoSnapped ? const Color(0xFF16A34A) : AppColors.primary,
+                        side: BorderSide(
+                          color: _confirmationPhotoSnapped ? const Color(0xFF16A34A) : AppColors.primary,
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        minimumSize: const Size(60, 32),
+                      ),
+                    ),
+                  ],
+                ),
+                if (_confirmationPhotoSnapped) ...[
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: const Color(0xFFDCFCE7)),
+                    ),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: Image.asset(
+                            'assets/images/parcel_sample.png',
+                            width: 44,
+                            height: 44,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              width: 44,
+                              height: 44,
+                              color: AppColors.primaryLight,
+                              child: const Icon(FeatherIcons.package, color: AppColors.primary, size: 20),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Roadside Handover Proof Verified',
+                                style: AppTextStyles.caption.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xFF166534),
+                                ),
+                              ),
+                              Text(
+                                'Geo-stamped: Roadside Drop-off • Escrow Ready',
+                                style: AppTextStyles.caption.copyWith(
+                                  fontSize: 10.5,
+                                  color: AppColors.textMuted,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFDCFCE7),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            'SENT',
+                            style: AppTextStyles.caption.copyWith(
+                              color: const Color(0xFF15803D),
+                              fontWeight: FontWeight.w800,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
           // Step Verification: QR Code Scanner & PIN Verification
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),

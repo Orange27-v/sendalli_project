@@ -15,6 +15,7 @@ class DeliveryPackageCard extends StatelessWidget {
   final String? weightCategory;
   final String? paymentStatus;
   final String? secondaryNote;
+  final String? photoAsset;
   final EdgeInsetsGeometry margin;
 
   const DeliveryPackageCard({
@@ -26,6 +27,7 @@ class DeliveryPackageCard extends StatelessWidget {
     this.weightCategory,
     this.paymentStatus,
     this.secondaryNote,
+    this.photoAsset,
     this.margin = const EdgeInsets.symmetric(vertical: 8),
   });
 
@@ -85,6 +87,61 @@ class DeliveryPackageCard extends StatelessWidget {
           const SizedBox(height: 10),
           const Divider(color: AppColors.border, height: 1),
           const SizedBox(height: 10),
+
+          // Sender Uploaded Item Photo Preview
+          if (photoAsset != null && photoAsset!.isNotEmpty) ...[
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceSubtle,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+              ),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image.asset(
+                      photoAsset!,
+                      width: 44,
+                      height: 44,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        width: 44,
+                        height: 44,
+                        color: AppColors.primaryLight,
+                        child: const Icon(FeatherIcons.package, color: AppColors.primary, size: 20),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Sender Dispatch Photo Attached',
+                          style: AppTextStyles.caption.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        Text(
+                          'Inspect parcel before roadside pickup confirmation',
+                          style: AppTextStyles.caption.copyWith(
+                            color: AppColors.textMuted,
+                            fontSize: 10.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(FeatherIcons.checkCircle, size: 14, color: Color(0xFF16A34A)),
+                ],
+              ),
+            ),
+          ],
 
           // Declared Value & Escrow Protection Row
           if (packageValue != null && packageValue!.isNotEmpty) ...[

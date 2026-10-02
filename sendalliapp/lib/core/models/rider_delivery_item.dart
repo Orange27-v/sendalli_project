@@ -33,6 +33,8 @@ class RiderDeliveryItem {
   final String customerPhone;
   final String weightCategory;
   final String paymentStatus;
+  bool hasConfirmationPhoto;
+  String? confirmationPhotoAsset;
 
   RiderDeliveryItem({
     required this.orderId,
@@ -57,5 +59,7 @@ class RiderDeliveryItem {
     this.customerPhone = '+234 803 000 1234',
     this.weightCategory = 'Small Parcel (< 1kg)',
     this.paymentStatus = 'Escrow Secured (Sendalli Guarantee)',
+    this.hasConfirmationPhoto = false,
+    this.confirmationPhotoAsset,
   });
 }

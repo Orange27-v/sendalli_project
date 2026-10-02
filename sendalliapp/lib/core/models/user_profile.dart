@@ -17,7 +17,7 @@ class UserProfile {
   final String? corridor;
   final String? unionPark;
   final String? landmark;
-  final bool isVerified;
+  final bool? _isVerified;
 
   // Business Sender verification fields (CAC registration certificate)
   final String? cacNumber;
@@ -25,7 +25,10 @@ class UserProfile {
   final String? tinNumber;
   final String? bankName;
   final String? accountNumber;
-  final bool isBusinessVerified;
+  final bool? _isBusinessVerified;
+
+  bool get isVerified => _isVerified ?? false;
+  bool get isBusinessVerified => _isBusinessVerified ?? false;
 
   const UserProfile({
     required this.id,
@@ -41,26 +44,27 @@ class UserProfile {
     this.corridor,
     this.unionPark,
     this.landmark,
-    this.isVerified = false,
+    bool isVerified = false,
     this.cacNumber,
     this.businessCertificateName,
     this.tinNumber,
     this.bankName,
     this.accountNumber,
-    this.isBusinessVerified = false,
-  });
+    bool isBusinessVerified = false,
+  })  : _isVerified = isVerified,
+        _isBusinessVerified = isBusinessVerified;
 
   /// Factory constructor for unauthenticated roadside guest receivers
   factory UserProfile.guestReceiver({String? corridor, String? landmark}) {
-    return UserProfile(
+    return const UserProfile(
       id: 'GUEST-RECEIVER',
       firstName: 'Roadside',
       lastName: 'Receiver',
       phone: '',
       role: UserRole.receiver,
       pin: '',
-      corridor: corridor ?? 'Refinery Road — Jakpa',
-      landmark: landmark ?? 'Roadside Handoff',
+      corridor: 'Refinery Road — Jakpa',
+      landmark: 'Roadside Handoff',
       isVerified: false,
     );
   }

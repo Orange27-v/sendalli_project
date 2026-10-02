@@ -84,7 +84,7 @@ class SenderHomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             // Business Verification Status or Apply Banner
-            if (user.isBusinessVerified)
+            if (user.isBusinessVerified == true)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 decoration: BoxDecoration(
