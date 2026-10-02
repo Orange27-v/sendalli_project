@@ -143,17 +143,18 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
               ),
               const SizedBox(height: 28),
 
-              // Contextual Quick Onboard Button (Vibrant Green matching design guide)
+              // Contextual Quick Onboard Button (Sendalli Default Lime)
               ElevatedButton.icon(
                 onPressed: _proceedToRegistration,
-                icon: const Icon(FeatherIcons.arrowRight, size: 16),
+                icon: const Icon(FeatherIcons.arrowRight, size: 16, color: AppColors.textPrimary),
                 label: Text('Quick Onboard as $_roleTitle'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.brandGreen,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.textPrimary,
                   elevation: 0,
                   minimumSize: const Size.fromHeight(50),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                 ),
               ),
               const SizedBox(height: 10),
@@ -192,10 +193,10 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.brandGreenLight : AppColors.surface,
+          color: isSelected ? AppColors.primaryLight : AppColors.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? AppColors.brandGreen : const Color(0xFFE2E8F0),
+            color: isSelected ? AppColors.primaryDark : const Color(0xFFE2E8F0),
             width: isSelected ? 1.8 : 1.2,
           ),
         ),
@@ -206,16 +207,16 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.surface : AppColors.surfaceSubtle,
+                color: isSelected ? AppColors.primary : AppColors.surfaceSubtle,
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: isSelected ? AppColors.brandGreen : AppColors.border,
+                  color: isSelected ? AppColors.primaryDark : AppColors.border,
                   width: 1.0,
                 ),
               ),
               child: Icon(
                 icon,
-                color: isSelected ? AppColors.brandGreenDark : AppColors.textSecondary,
+                color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
                 size: 20,
               ),
             ),
@@ -241,7 +242,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                           color: isSelected ? AppColors.surface : AppColors.surfaceSubtle,
                           borderRadius: BorderRadius.circular(4),
                           border: Border.all(
-                            color: isSelected ? AppColors.brandGreen : AppColors.border,
+                            color: isSelected ? AppColors.primaryDark : AppColors.border,
                             width: 0.8,
                           ),
                         ),
@@ -250,7 +251,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                           style: AppTextStyles.caption.copyWith(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
-                            color: isSelected ? AppColors.brandGreenDark : AppColors.textSecondary,
+                            color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
                           ),
                         ),
                       ),
@@ -270,7 +271,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
             ),
             const SizedBox(width: 12),
 
-            // Radio Circle Selector (matching Screen 2 of design guide)
+            // Radio Circle Selector
             Padding(
               padding: const EdgeInsets.only(top: 2.0),
               child: Container(
@@ -278,9 +279,9 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                 height: 20,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isSelected ? AppColors.brandGreen : Colors.transparent,
+                  color: isSelected ? AppColors.primaryDark : Colors.transparent,
                   border: Border.all(
-                    color: isSelected ? AppColors.brandGreen : const Color(0xFFCBD5E1),
+                    color: isSelected ? AppColors.primaryDark : const Color(0xFFCBD5E1),
                     width: 1.5,
                   ),
                 ),

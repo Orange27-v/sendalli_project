@@ -28,24 +28,24 @@ class WelcomeScreen extends StatelessWidget {
         SystemNavigator.pop();
       },
       child: Scaffold(
-        backgroundColor: AppColors.brandGreen,
+        backgroundColor: AppColors.primary,
         body: SafeArea(
           bottom: false,
           child: Column(
           children: [
             // ==========================================
-            // TOP GREEN HERO SECTION (matching Screen 3 of design guide)
+            // TOP HERO SECTION (Sendalli Default Vibrant Lime)
             // ==========================================
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
               child: Column(
                 children: [
-                  // App Brand Title & Subtitle in White
+                  // App Brand Title & Subtitle in dark slate text
                   Text(
                     'SENDALLI',
                     style: AppTextStyles.h1.copyWith(
                       letterSpacing: 2.2,
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.w800,
                       fontSize: 24,
                     ),
@@ -54,21 +54,22 @@ class WelcomeScreen extends StatelessWidget {
                   Text(
                     'Corridor Parcel Logistics • Warri & Effurun',
                     style: AppTextStyles.caption.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white.withValues(alpha: 0.9),
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary.withValues(alpha: 0.85),
                       fontSize: 13,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
 
-                  // Hero Graphic in soft circle
+                  // Hero Graphic in soft circle container
                   Container(
                     width: 140,
                     height: 110,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.16),
+                      color: Colors.white.withValues(alpha: 0.45),
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.08), width: 1.0),
                     ),
                     padding: const EdgeInsets.all(12),
                     child: Center(
@@ -84,15 +85,15 @@ class WelcomeScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: AppColors.textPrimary.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
                       'Move items rapidly across transit routes in 10 minutes',
                       style: AppTextStyles.caption.copyWith(
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                         fontSize: 11,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
@@ -162,9 +163,9 @@ class WelcomeScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.brandGreenLight,
+        color: AppColors.primaryLight,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.brandGreen.withValues(alpha: 0.35), width: 1.2),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.6), width: 1.2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,12 +177,12 @@ class WelcomeScreen extends StatelessWidget {
                 height: 44,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.brandGreen,
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(
                   FeatherIcons.package,
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   size: 20,
                 ),
               ),
@@ -200,7 +201,7 @@ class WelcomeScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: AppColors.brandGreen,
+                            color: AppColors.textPrimary,
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
@@ -208,7 +209,7 @@ class WelcomeScreen extends StatelessWidget {
                             style: AppTextStyles.caption.copyWith(
                               fontSize: 9,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white,
+                              color: AppColors.primary,
                             ),
                           ),
                         ),
@@ -237,11 +238,11 @@ class WelcomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => const TrackParcelScreen()),
                     );
                   },
-                  icon: const Icon(FeatherIcons.search, size: 15),
+                  icon: const Icon(FeatherIcons.search, size: 15, color: AppColors.textPrimary),
                   label: const Text('Track by ID'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.brandGreen,
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.textPrimary,
                     elevation: 0,
                     minimumSize: const Size.fromHeight(44),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -261,16 +262,16 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(FeatherIcons.mapPin, size: 15),
+                  icon: const Icon(FeatherIcons.mapPin, size: 15, color: AppColors.textPrimary),
                   label: const Text('Receiver Portal'),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size.fromHeight(44),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    side: const BorderSide(color: AppColors.brandGreen, width: 1.2),
+                    side: const BorderSide(color: AppColors.primaryDark, width: 1.2),
                     textStyle: AppTextStyles.button.copyWith(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.brandGreenDark,
+                      color: AppColors.textPrimary,
                     ),
                   ),
                 ),
@@ -307,7 +308,7 @@ class WelcomeScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // Primary action to navigate to spread-out Role Gateway Screen (Vibrant Green)
+        // Primary action to navigate to spread-out Role Gateway Screen (Default Lime)
         ElevatedButton(
           onPressed: () {
             Navigator.of(context).push(
@@ -316,8 +317,8 @@ class WelcomeScreen extends StatelessWidget {
           },
           style: ElevatedButton.styleFrom(
             minimumSize: const Size.fromHeight(50),
-            backgroundColor: AppColors.brandGreen,
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.textPrimary,
             elevation: 0,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
@@ -326,10 +327,10 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               Text(
                 'Choose Role to Enter',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.textPrimary),
               ),
               SizedBox(width: 8),
-              Icon(FeatherIcons.arrowRight, size: 17),
+              Icon(FeatherIcons.arrowRight, size: 17, color: AppColors.textPrimary),
             ],
           ),
         ),

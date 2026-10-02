@@ -5,14 +5,16 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  // Primary brand colors (Vibrant Lime #A6EB2E & Delivery Green #00B050)
+  // Primary brand colors (Default Sendalli Vibrant Lime #A6EB2E)
   static const Color primary = Color(0xFFA6EB2E);
   static const Color primaryDark = Color(0xFF6E9E1E);
   static const Color primaryLight = Color(0xFFF1FCD6);
   static const Color primaryAccent = Color(0xFFB8F547);
-  static const Color brandGreen = Color(0xFF00B050);
-  static const Color brandGreenDark = Color(0xFF00913F);
-  static const Color brandGreenLight = Color(0xFFE8F8EE);
+
+  // Default brand colors standardized to default Sendalli palette (avoiding deep green)
+  static const Color brandGreen = Color(0xFFA6EB2E);
+  static const Color brandGreenDark = Color(0xFF6E9E1E);
+  static const Color brandGreenLight = Color(0xFFF1FCD6);
 
   // Neutral background & surface colors (Nelo clean spec: kGrey100 & kGrey200)
   static const Color background = Color(0xFFF5F5F5);
