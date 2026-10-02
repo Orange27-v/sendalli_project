@@ -253,11 +253,11 @@ class _BusinessSenderRegistrationScreenState extends State<BusinessSenderRegistr
             TextButton.icon(
               key: const Key('quick_fill_business_btn'),
               onPressed: _fillSampleBusinessData,
-              icon: const Icon(FeatherIcons.zap, size: 14, color: AppColors.primary),
+              icon: const Icon(FeatherIcons.zap, size: 14, color: Colors.white),
               label: Text(
                 'Sample Data',
                 style: AppTextStyles.caption.copyWith(
-                  color: AppColors.primary,
+                  color: Colors.white,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -701,38 +701,43 @@ class _BusinessSenderRegistrationScreenState extends State<BusinessSenderRegistr
             )
           else
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton.icon(
-                  key: const Key('upload_cac_certificate_btn'),
-                  onPressed: _simulateCertificatePick,
-                  icon: const Icon(FeatherIcons.upload, size: 14),
-                  label: const Text('Select File'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.textInverse,
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    key: const Key('upload_cac_certificate_btn'),
+                    onPressed: _simulateCertificatePick,
+                    icon: const Icon(FeatherIcons.upload, size: 14),
+                    label: const Text('Select File'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.textInverse,
+                      minimumSize: const Size(0, 42),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10),
-                OutlinedButton.icon(
-                  key: const Key('sample_cac_certificate_btn'),
-                  onPressed: () {
-                    setState(() {
-                      _certificateFileName = 'CAC_RC1849204_Incorporation_Cert.pdf';
-                      _certificateFileSize = '1.8 MB • Certified Corporate Copy';
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Sample CAC Certificate attached!'),
-                        backgroundColor: Color(0xFF16A34A),
-                      ),
-                    );
-                  },
-                  icon: const Icon(FeatherIcons.fileText, size: 14),
-                  label: const Text('Use Sample CAC'),
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    key: const Key('sample_cac_certificate_btn'),
+                    onPressed: () {
+                      setState(() {
+                        _certificateFileName = 'CAC_RC1849204_Incorporation_Cert.pdf';
+                        _certificateFileSize = '1.8 MB • Certified Corporate Copy';
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Sample CAC Certificate attached!'),
+                          backgroundColor: Color(0xFF16A34A),
+                        ),
+                      );
+                    },
+                    icon: const Icon(FeatherIcons.fileText, size: 14),
+                    label: const Text('Use Sample CAC'),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: const Size(0, 42),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    ),
                   ),
                 ),
               ],
