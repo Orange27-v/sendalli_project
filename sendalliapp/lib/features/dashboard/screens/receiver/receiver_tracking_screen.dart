@@ -302,7 +302,7 @@ class ReceiverTrackingScreen extends StatelessWidget {
                   builder: (ctx) => AlertDialog(
                     title: const Text('Divert to Drop Hub?'),
                     content: const Text(
-                      'Cannot meet rider at the roadside? Divert this delivery to partner hub:\n\n• City Care Pharmacy Hub (Jakpa Junction)\n• 48 hours safe custody\n• Standard ₦500 holding fee payable on pickup with your PIN.',
+                      'Cannot meet rider at the roadside? Divert this delivery to partner hub:\n\n• City Care Pharmacy Hub (Jakpa Junction)\n• 48 hours safe custody\n• Standard ₦500 holding fee payable on pickup with your PIN (+₦500 if parcel sleeps over overnight).',
                     ),
                     actions: [
                       TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),

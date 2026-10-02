@@ -96,11 +96,11 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       customerName: 'Sarah Amadi',
       customerPhone: '+234 803 000 1234',
       corridor: 'Refinery Road — Jakpa',
-      intakeTime: 'Held for 1 hr • Intake: 1:30 PM',
+      intakeTime: 'Held for 1 night • Intake: Yesterday 6:30 PM',
       storageLocation: 'Shelf A-3',
-      custodyFee: '₦ 500.00',
+      overnightNights: 1, // Attracts extra ₦500 sleepover fee -> Total ₦1,000.00
       releasePin: '849201',
-      reason: 'Roadside timer expired',
+      reason: 'Roadside timer expired • Unclaimed overnight',
       packageValue: '₦ 8,500.00',
       pickupTitle: 'Enerhen Central Pharmacy',
       dropoffTitle: 'Refinery Road Junction',
@@ -115,9 +115,9 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       customerName: 'Mr. Festus',
       customerPhone: '+234 805 777 8899',
       corridor: 'Effurun Roundabout Corridor',
-      intakeTime: 'Held for 45 mins • Intake: 2:00 PM',
+      intakeTime: 'Held for 45 mins • Intake: Today 2:00 PM',
       storageLocation: 'Locker B-1',
-      custodyFee: '₦ 500.00',
+      overnightNights: 0,
       releasePin: '331205',
       reason: 'Direct hub drop-off request',
       packageValue: '₦ 12,000.00',
@@ -239,10 +239,15 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
         item.status = HubParcelStatus.delivered;
         _heldPackages.removeWhere((p) => p.trackingId == item.trackingId);
         _deliveredParcels.insert(0, item);
+        _custodyEarnings += item.totalHoldingFee;
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('PIN verified. Package ${item.trackingId} released to ${item.customerName}.'),
+          content: Text(
+            item.hasSleptOver
+                ? 'Package ${item.trackingId} released! Earned ${item.formattedTotalFee} (₦500 base + ₦500 sleepover fee credited).'
+                : 'Package ${item.trackingId} released! Custody fee (₦500) credited to wallet.',
+          ),
           backgroundColor: AppColors.primary,
         ),
       );
@@ -326,12 +331,79 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text('Custody Payout', style: AppTextStyles.caption.copyWith(color: AppColors.textMuted)),
-                                  Text(item.custodyFee, style: AppTextStyles.h3.copyWith(color: AppColors.primary, fontSize: 16)),
+                                  Text(
+                                    item.hasSleptOver ? 'Custody Payout (Sleepover)' : 'Custody Payout',
+                                    style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+                                  ),
+                                  Text(
+                                    item.formattedTotalFee,
+                                    style: AppTextStyles.h3.copyWith(
+                                      color: item.hasSleptOver ? const Color(0xFFD97706) : AppColors.primary,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],
                           ),
+                          if (item.hasSleptOver) ...[
+                            const SizedBox(height: 10),
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFFBEB),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: const Color(0xFFFDE68A)),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(FeatherIcons.moon, size: 14, color: Color(0xFFD97706)),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        'Overnight Sleepover Applied (${item.overnightNights} Night)',
+                                        style: AppTextStyles.caption.copyWith(
+                                          color: const Color(0xFFB45309),
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('Base Hub Custody Fee:', style: AppTextStyles.caption),
+                                      Text('₦ 500.00', style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w600)),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('Overnight Sleepover Fee (+₦500/night):', style: AppTextStyles.caption),
+                                      Text('+${item.formattedSleepoverFee}', style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w700, color: const Color(0xFFD97706))),
+                                    ],
+                                  ),
+                                  const Divider(height: 12),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('Total Custody Fee Payable:', style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w800)),
+                                      Text(item.formattedTotalFee, style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w800, color: AppColors.primaryDark)),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Note: Parcels staying overnight in hub custody attract an extra ₦500 per night sleepover fee.',
+                                    style: AppTextStyles.caption.copyWith(fontSize: 10.5, color: const Color(0xFF78350F), fontStyle: FontStyle.italic),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                           const SizedBox(height: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -344,12 +416,17 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
                               children: [
                                 const Icon(FeatherIcons.shield, size: 13, color: Color(0xFF16A34A)),
                                 const SizedBox(width: 6),
-                                Text(
-                                  'Sendalli Escrow Protected • ₦500 Custody Guarantee',
-                                  style: AppTextStyles.caption.copyWith(
-                                    color: const Color(0xFF166534),
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 11,
+                                Flexible(
+                                  child: Text(
+                                    item.hasSleptOver
+                                        ? 'Sendalli Escrow Protected • ₦500 Base + ₦500 Sleepover'
+                                        : 'Sendalli Escrow Protected • ₦500 Custody Guarantee',
+                                    style: AppTextStyles.caption.copyWith(
+                                      color: const Color(0xFF166534),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 11,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
@@ -1250,22 +1327,52 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
                       ),
                     ],
                   ),
-                  if (item.storageLocation != null)
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        item.storageLocation!,
-                        style: AppTextStyles.caption.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 11,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (item.hasSleptOver)
+                        Container(
+                          margin: const EdgeInsets.only(right: 6),
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFEF3C7),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: const Color(0xFFFDE68A)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(FeatherIcons.moon, size: 11, color: Color(0xFFD97706)),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Sleepover (+₦500)',
+                                style: AppTextStyles.caption.copyWith(
+                                  color: const Color(0xFF92400E),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 10.5,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
+                      if (item.storageLocation != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.08),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            item.storageLocation!,
+                            style: AppTextStyles.caption.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ],
               ),
               const SizedBox(height: 8),
@@ -1281,9 +1388,11 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
               ),
               const SizedBox(height: 2),
               Text(
-                '${item.intakeTime} • ₦500 Fee Payable on PIN Release',
+                item.hasSleptOver
+                    ? '${item.intakeTime} • ${item.formattedTotalFee} (₦500 base + ₦500 sleepover)'
+                    : '${item.intakeTime} • ₦500 Fee Payable on PIN Release',
                 style: AppTextStyles.caption.copyWith(
-                  color: AppColors.primary,
+                  color: item.hasSleptOver ? const Color(0xFFB45309) : AppColors.primary,
                   fontWeight: FontWeight.w700,
                 ),
               ),

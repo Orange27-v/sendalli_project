@@ -8,6 +8,7 @@ import '../../../../widgets/dashboard_app_bar.dart';
 import '../../../../widgets/verification/verification_widgets.dart';
 import '../../../../widgets/map/sendalli_map_view.dart';
 import '../common/profile_screen.dart';
+import '../../../onboarding/screens/business_sender_registration_screen.dart';
 import 'sender_checkout_screen.dart';
 import 'sender_order_tracking_screen.dart';
 
@@ -81,6 +82,90 @@ class SenderHomeScreen extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 12),
+            // Business Verification Status or Apply Banner
+            if (user.isBusinessVerified)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF0FDF4),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFFBBF7D0)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(FeatherIcons.checkCircle, size: 16, color: Color(0xFF16A34A)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Verified Commercial Business • CAC: ${user.cacNumber ?? "Active"}',
+                        style: AppTextStyles.caption.copyWith(
+                          color: const Color(0xFF166534),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF0FDF4),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: const Color(0xFFBBF7D0)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(FeatherIcons.award, size: 20, color: Color(0xFF16A34A)),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Applying as a Registered Business?',
+                            style: AppTextStyles.caption.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: const Color(0xFF166534),
+                            ),
+                          ),
+                          Text(
+                            'File full application & upload CAC certificate',
+                            style: AppTextStyles.caption.copyWith(
+                              fontSize: 11,
+                              color: const Color(0xFF15803D),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    TextButton(
+                      key: const Key('home_business_apply_btn'),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => BusinessSenderRegistrationScreen(currentUser: user),
+                          ),
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Text(
+                        'Apply →',
+                        style: AppTextStyles.caption.copyWith(
+                          color: const Color(0xFF166534),
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             const SizedBox(height: 14),
             // Escrow & Wallet Quick Stat Bar
             Container(

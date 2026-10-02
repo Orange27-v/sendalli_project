@@ -19,6 +19,14 @@ class UserProfile {
   final String? landmark;
   final bool isVerified;
 
+  // Business Sender verification fields (CAC registration certificate)
+  final String? cacNumber;
+  final String? businessCertificateName;
+  final String? tinNumber;
+  final String? bankName;
+  final String? accountNumber;
+  final bool isBusinessVerified;
+
   const UserProfile({
     required this.id,
     required this.firstName,
@@ -34,6 +42,12 @@ class UserProfile {
     this.unionPark,
     this.landmark,
     this.isVerified = false,
+    this.cacNumber,
+    this.businessCertificateName,
+    this.tinNumber,
+    this.bankName,
+    this.accountNumber,
+    this.isBusinessVerified = false,
   });
 
   /// Factory constructor for unauthenticated roadside guest receivers
@@ -68,6 +82,12 @@ class UserProfile {
     String? unionPark,
     String? landmark,
     bool? isVerified,
+    String? cacNumber,
+    String? businessCertificateName,
+    String? tinNumber,
+    String? bankName,
+    String? accountNumber,
+    bool? isBusinessVerified,
   }) {
     return UserProfile(
       id: id ?? this.id,
@@ -84,6 +104,12 @@ class UserProfile {
       unionPark: unionPark ?? this.unionPark,
       landmark: landmark ?? this.landmark,
       isVerified: isVerified ?? this.isVerified,
+      cacNumber: cacNumber ?? this.cacNumber,
+      businessCertificateName: businessCertificateName ?? this.businessCertificateName,
+      tinNumber: tinNumber ?? this.tinNumber,
+      bankName: bankName ?? this.bankName,
+      accountNumber: accountNumber ?? this.accountNumber,
+      isBusinessVerified: isBusinessVerified ?? this.isBusinessVerified,
     );
   }
 
@@ -103,6 +129,12 @@ class UserProfile {
       'unionPark': unionPark,
       'landmark': landmark,
       'isVerified': isVerified,
+      'cacNumber': cacNumber,
+      'businessCertificateName': businessCertificateName,
+      'tinNumber': tinNumber,
+      'bankName': bankName,
+      'accountNumber': accountNumber,
+      'isBusinessVerified': isBusinessVerified,
     };
   }
 
@@ -122,6 +154,12 @@ class UserProfile {
       unionPark: json['unionPark'] as String?,
       landmark: json['landmark'] as String?,
       isVerified: (json['isVerified'] as bool?) ?? false,
+      cacNumber: json['cacNumber'] as String?,
+      businessCertificateName: json['businessCertificateName'] as String?,
+      tinNumber: json['tinNumber'] as String?,
+      bankName: json['bankName'] as String?,
+      accountNumber: json['accountNumber'] as String?,
+      isBusinessVerified: (json['isBusinessVerified'] as bool?) ?? false,
     );
   }
 }
