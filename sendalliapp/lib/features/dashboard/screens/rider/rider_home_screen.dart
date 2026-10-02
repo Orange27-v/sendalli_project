@@ -45,64 +45,59 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
 
   int _deliveriesFilterIndex = 0; // 0: Pending, 1: Accepted, 2: Completed
 
-  late List<RiderDeliveryItem> _pendingDeliveries;
-  late List<RiderDeliveryItem> _acceptedDeliveries;
+  // Direct initializers to guarantee non-null safety during hot-reloads and gestures
+  final List<RiderDeliveryItem> _pendingDeliveries = [
+    RiderDeliveryItem(
+      orderId: '#BE12345',
+      referenceId: '#123456789',
+      dateText: '12th of November, 2024',
+      pickupTitle: '9ja kitchen (Pickup Location)',
+      pickupSubtitle: 'Lagos avenue, Ring road',
+      dropoffTitle: 'John Deo (Drop-off Location)',
+      dropoffSubtitle: '114, Ojuelegba, Lagos state',
+      packageItem: 'Food • Jollof Rice, meat and moi moi',
+      deliveryFee: '₦ 260.00',
+      customerName: 'John Deo',
+      customerNote: 'Ring the bell when you get to the gate',
+      handoverCode: '1234',
+      status: DeliveryItemStatus.pending,
+    ),
+    RiderDeliveryItem(
+      orderId: '#BE12389',
+      referenceId: '#556677889',
+      dateText: 'Today • 3:10 PM',
+      pickupTitle: 'Enerhen Pharmacy Hub (Pickup Location)',
+      pickupSubtitle: '12 Enerhen Junction, Warri',
+      dropoffTitle: 'Jakpa Roadside Mart (Drop-off Location)',
+      dropoffSubtitle: 'Total Station, Jakpa Road',
+      packageItem: 'Pharmacy • Prescription box',
+      deliveryFee: '₦ 400.00',
+      customerName: 'Amina Bello',
+      customerNote: 'Fragile medicine. Keep upright.',
+      handoverCode: '4321',
+      status: DeliveryItemStatus.pending,
+    ),
+  ];
+
+  final List<RiderDeliveryItem> _acceptedDeliveries = [
+    RiderDeliveryItem(
+      orderId: '#BE12330',
+      referenceId: '#998877665',
+      dateText: 'Today • 1:15 PM',
+      pickupTitle: 'Market Stall 14 (Pickup Location)',
+      pickupSubtitle: 'Main Market Roadside, Warri',
+      dropoffTitle: 'Effurun Roundabout (Drop-off Location)',
+      dropoffSubtitle: 'Shop 4, Express Corner',
+      packageItem: 'Textiles • Ankara fabric pack',
+      deliveryFee: '₦ 500.00',
+      customerName: 'Chief Emeka',
+      customerNote: 'Meet at the roundabout bus stop',
+      handoverCode: '8899',
+      status: DeliveryItemStatus.accepted,
+    ),
+  ];
+
   RiderDeliveryItem? _activeDeliveryItem;
-
-  @override
-  void initState() {
-    super.initState();
-    _pendingDeliveries = [
-      RiderDeliveryItem(
-        orderId: '#BE12345',
-        referenceId: '#123456789',
-        dateText: '12th of November, 2024',
-        pickupTitle: '9ja kitchen (Pickup Location)',
-        pickupSubtitle: 'Lagos avenue, Ring road',
-        dropoffTitle: 'John Deo (Drop-off Location)',
-        dropoffSubtitle: '114, Ojuelegba, Lagos state',
-        packageItem: 'Food • Jollof Rice, meat and moi moi',
-        deliveryFee: '₦ 260.00',
-        customerName: 'John Deo',
-        customerNote: 'Ring the bell when you get to the gate',
-        handoverCode: '1234',
-        status: DeliveryItemStatus.pending,
-      ),
-      RiderDeliveryItem(
-        orderId: '#BE12389',
-        referenceId: '#556677889',
-        dateText: 'Today • 3:10 PM',
-        pickupTitle: 'Enerhen Pharmacy Hub (Pickup Location)',
-        pickupSubtitle: '12 Enerhen Junction, Warri',
-        dropoffTitle: 'Jakpa Roadside Mart (Drop-off Location)',
-        dropoffSubtitle: 'Total Station, Jakpa Road',
-        packageItem: 'Pharmacy • Prescription box',
-        deliveryFee: '₦ 400.00',
-        customerName: 'Amina Bello',
-        customerNote: 'Fragile medicine. Keep upright.',
-        handoverCode: '4321',
-        status: DeliveryItemStatus.pending,
-      ),
-    ];
-
-    _acceptedDeliveries = [
-      RiderDeliveryItem(
-        orderId: '#BE12330',
-        referenceId: '#998877665',
-        dateText: 'Today • 1:15 PM',
-        pickupTitle: 'Market Stall 14 (Pickup Location)',
-        pickupSubtitle: 'Main Market Roadside, Warri',
-        dropoffTitle: 'Effurun Roundabout (Drop-off Location)',
-        dropoffSubtitle: 'Shop 4, Express Corner',
-        packageItem: 'Textiles • Ankara fabric pack',
-        deliveryFee: '₦ 500.00',
-        customerName: 'Chief Emeka',
-        customerNote: 'Meet at the roundabout bus stop',
-        handoverCode: '8899',
-        status: DeliveryItemStatus.accepted,
-      ),
-    ];
-  }
 
   // Active delivery properties derived dynamically from active delivery item or fallback
   String get _orderId => _activeDeliveryItem?.orderId ?? '#BE12345';
