@@ -37,6 +37,7 @@ class RiderSetupScreen extends StatefulWidget {
 class _RiderSetupScreenState extends State<RiderSetupScreen> {
   final _plateController = TextEditingController();
   final _parkController = TextEditingController();
+  final _emailController = TextEditingController();
   String _selectedCorridor = CorridorConstants.pilotCorridors.first;
   bool _selfieCaptured = true; // Default simulated capture for quick onboarding
   bool _isLoading = false;
@@ -44,6 +45,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
   void _randomize() {
     setState(() {
       _plateController.text = FormSampleData.randomPlateNumber();
+      _emailController.text = FormSampleData.randomEmail(widget.firstName);
       _selectedCorridor = FormSampleData.randomCorridor();
       _parkController.text = FormSampleData.randomPark();
       _selfieCaptured = true;
@@ -54,6 +56,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
   void dispose() {
     _plateController.dispose();
     _parkController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -84,6 +87,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
       phone: widget.phoneNumber,
       role: UserRole.rider,
       pin: widget.pin,
+      email: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : null,
       trustScore: 80, // Autonomous baseline score
       vehiclePlate: plate,
       corridor: _selectedCorridor,
@@ -275,6 +279,16 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
                       hintText: 'e.g. Refinery Junction Unit Park',
                       textCapitalization: TextCapitalization.words,
                       prefixIcon: FeatherIcons.users,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Email Address
+                    CustomTextField(
+                      controller: _emailController,
+                      labelText: 'Email Address (for Payout Statements)',
+                      hintText: 'e.g. rider@gmail.com',
+                      keyboardType: TextInputType.emailAddress,
+                      prefixIcon: FeatherIcons.mail,
                     ),
                   ],
                 ),

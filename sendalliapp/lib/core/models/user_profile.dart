@@ -11,6 +11,7 @@ class UserProfile {
   final int trustScore;
 
   // Role-specific progressive fields
+  final String? email;
   final String? shopName;
   final String? vehiclePlate;
   final String? corridor;
@@ -26,6 +27,7 @@ class UserProfile {
     required this.role,
     required this.pin,
     this.trustScore = 80,
+    this.email,
     this.shopName,
     this.vehiclePlate,
     this.corridor,
@@ -59,6 +61,7 @@ class UserProfile {
     UserRole? role,
     String? pin,
     int? trustScore,
+    String? email,
     String? shopName,
     String? vehiclePlate,
     String? corridor,
@@ -74,6 +77,7 @@ class UserProfile {
       role: role ?? this.role,
       pin: pin ?? this.pin,
       trustScore: trustScore ?? this.trustScore,
+      email: email ?? this.email,
       shopName: shopName ?? this.shopName,
       vehiclePlate: vehiclePlate ?? this.vehiclePlate,
       corridor: corridor ?? this.corridor,
@@ -92,6 +96,7 @@ class UserProfile {
       'role': role.name,
       'pin': pin,
       'trustScore': trustScore,
+      'email': email,
       'shopName': shopName,
       'vehiclePlate': vehiclePlate,
       'corridor': corridor,
@@ -110,6 +115,7 @@ class UserProfile {
       role: UserRole.values.byName(json['role'] as String),
       pin: json['pin'] as String,
       trustScore: (json['trustScore'] as int?) ?? 80,
+      email: json['email'] as String?,
       shopName: json['shopName'] as String?,
       vehiclePlate: json['vehiclePlate'] as String?,
       corridor: json['corridor'] as String?,

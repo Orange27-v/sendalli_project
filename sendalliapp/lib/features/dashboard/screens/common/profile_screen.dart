@@ -110,6 +110,20 @@ class ProfileScreen extends StatelessWidget {
                       user.phone.isNotEmpty ? user.phone : 'Roadside Guest Access',
                       style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
                     ),
+                    if (user.email != null && user.email!.isNotEmpty) ...[
+                      const SizedBox(height: 3),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(FeatherIcons.mail, size: 12, color: AppColors.textMuted),
+                          const SizedBox(width: 5),
+                          Text(
+                            user.email!,
+                            style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                          ),
+                        ],
+                      ),
+                    ],
                     const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

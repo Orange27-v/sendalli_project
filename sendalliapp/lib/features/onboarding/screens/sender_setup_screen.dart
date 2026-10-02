@@ -36,6 +36,7 @@ class SenderSetupScreen extends StatefulWidget {
 
 class _SenderSetupScreenState extends State<SenderSetupScreen> {
   final _shopNameController = TextEditingController();
+  final _emailController = TextEditingController();
   String _selectedCorridor = CorridorConstants.pilotCorridors.first;
   String _selectedCategory = 'Food & Groceries';
   bool _isLoading = false;
@@ -50,6 +51,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
   void _randomize() {
     setState(() {
       _shopNameController.text = FormSampleData.randomSenderShop();
+      _emailController.text = FormSampleData.randomEmail(widget.firstName);
       _selectedCorridor = FormSampleData.randomCorridor();
     });
   }
@@ -57,6 +59,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
   @override
   void dispose() {
     _shopNameController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -80,6 +83,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
       phone: widget.phoneNumber,
       role: UserRole.sender,
       pin: widget.pin,
+      email: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : null,
       shopName: shopName.isNotEmpty ? shopName : '${widget.firstName}\'s Shop',
       corridor: _selectedCorridor,
       isVerified: true,
@@ -223,6 +227,15 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
                         textCapitalization: TextCapitalization.words,
                         prefixIcon: FeatherIcons.shoppingBag,
                         onChanged: (_) => setState(() {}),
+                      ),
+                      const SizedBox(height: 16),
+
+                      CustomTextField(
+                        controller: _emailController,
+                        labelText: 'Email Address (for Receipts & Tracking)',
+                        hintText: 'e.g. sender@gmail.com',
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: FeatherIcons.mail,
                       ),
                       const SizedBox(height: 16),
 

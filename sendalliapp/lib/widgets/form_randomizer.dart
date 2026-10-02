@@ -126,6 +126,13 @@ class FormSampleData {
     return '$prefix$rest';
   }
 
+  static String randomEmail([String? name]) {
+    final clean = (name != null && name.isNotEmpty)
+        ? name.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '')
+        : 'user${_random.nextInt(900) + 100}';
+    return '$clean${_random.nextInt(90) + 10}@gmail.com';
+  }
+
   static String randomPlateNumber() => _pick(plateNumbers);
   static String randomCorridor() => _pick(CorridorConstants.pilotCorridors);
   static String randomPark() => _pick(parkNames);

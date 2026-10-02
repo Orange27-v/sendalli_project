@@ -37,6 +37,7 @@ class HubSetupScreen extends StatefulWidget {
 class _HubSetupScreenState extends State<HubSetupScreen> {
   final _storeNameController = TextEditingController();
   final _landmarkController = TextEditingController();
+  final _emailController = TextEditingController();
   String _selectedCorridor = CorridorConstants.pilotCorridors.first;
   String _selectedCapacity = '20-50 Parcels';
   bool _isLoading = false;
@@ -50,6 +51,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
   void _randomize() {
     setState(() {
       _storeNameController.text = FormSampleData.randomHubStore();
+      _emailController.text = FormSampleData.randomEmail(widget.firstName);
       _landmarkController.text = FormSampleData.randomLandmark();
       _selectedCorridor = FormSampleData.randomCorridor();
     });
@@ -59,6 +61,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
   void dispose() {
     _storeNameController.dispose();
     _landmarkController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -89,6 +92,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
       phone: widget.phoneNumber,
       role: UserRole.hub,
       pin: widget.pin,
+      email: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : null,
       shopName: store,
       corridor: _selectedCorridor,
       landmark: _landmarkController.text.trim().isNotEmpty
@@ -259,6 +263,15 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
                         hintText: 'e.g. PTI Road, opposite First Gate',
                         textCapitalization: TextCapitalization.words,
                         prefixIcon: FeatherIcons.mapPin,
+                      ),
+                      const SizedBox(height: 16),
+
+                      CustomTextField(
+                        controller: _emailController,
+                        labelText: 'Email Address (for Invoices & Holding Fees)',
+                        hintText: 'e.g. hub@gmail.com',
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: FeatherIcons.mail,
                       ),
                       const SizedBox(height: 16),
 
