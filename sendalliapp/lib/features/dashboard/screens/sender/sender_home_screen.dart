@@ -4,8 +4,13 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/models/user_profile.dart';
-import '../../../../core/storage/session_manager.dart';
-import '../../../onboarding/screens/welcome_screen.dart';
+import '../../../../widgets/custom_app_bar.dart';
+import '../../../../widgets/map/sendalli_map_view.dart';
+import '../common/notifications_screen.dart';
+import '../common/profile_screen.dart';
+import '../common/settings_screen.dart';
+import 'sender_checkout_screen.dart';
+import 'sender_order_tracking_screen.dart';
 
 /// Sender / Merchant Home Dashboard.
 class SenderHomeScreen extends StatelessWidget {
@@ -22,18 +27,42 @@ class SenderHomeScreen extends StatelessWidget {
         SystemNavigator.pop();
       },
       child: Scaffold(
-        appBar: AppBar(
-          scrolledUnderElevation: 0,
-          title: Text('Sendalli Merchant', style: AppTextStyles.h3.copyWith(color: AppColors.textInverse)),
+        appBar: CustomAppBar(
+          showLeading: false,
+          title: 'Sendalli Merchant',
           actions: [
+            Stack(
+              alignment: Alignment.topRight,
+              children: [
+                IconButton(
+                  icon: const Icon(FeatherIcons.bell, size: 20, color: AppColors.textInverse),
+                  tooltip: 'Notifications',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => NotificationsScreen(user: user)),
+                    );
+                  },
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEF4444),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             IconButton(
-              icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textInverse),
-              onPressed: () async {
-                await SessionManager.logout();
-                if (!context.mounted) return;
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-                  (route) => false,
+              icon: const Icon(FeatherIcons.settings, size: 20, color: AppColors.textInverse),
+              tooltip: 'Settings',
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => SettingsScreen(user: user)),
                 );
               },
             ),
@@ -42,73 +71,364 @@ class SenderHomeScreen extends StatelessWidget {
         body: SafeArea(
           top: false,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
+            padding: AppDimens.screenInsets,
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => ProfileScreen(user: user)),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(AppDimens.cardPaddingLarge),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLight,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.2),
+                    width: AppDimens.borderWidth,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 26,
+                      backgroundColor: AppColors.primary,
+                      child: Text(
+                        user.firstName.isNotEmpty ? user.firstName[0] : 'S',
+                        style: AppTextStyles.h2.copyWith(color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Welcome back,', style: AppTextStyles.bodySmall),
+                          Text(user.shopName ?? user.fullName, style: AppTextStyles.h3),
+                          Text('Merchant • Corridor Active', style: AppTextStyles.caption),
+                        ],
+                      ),
+                    ),
+                    const Icon(FeatherIcons.chevronRight, size: 20, color: AppColors.primary),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 14),
+            // Escrow & Wallet Quick Stat Bar
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryLight,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    children: [
+                      Text('₦ 4,800.00', style: AppTextStyles.h3.copyWith(color: AppColors.primary)),
+                      const SizedBox(height: 2),
+                      Text('In Escrow', style: AppTextStyles.caption.copyWith(color: AppColors.textMuted, fontSize: 11)),
+                    ],
+                  ),
+                  Container(height: 30, width: 1, color: AppColors.border),
+                  Column(
+                    children: [
+                      Text('1 Active', style: AppTextStyles.h3),
+                      const SizedBox(height: 2),
+                      Text('In Transit', style: AppTextStyles.caption.copyWith(color: AppColors.textMuted, fontSize: 11)),
+                    ],
+                  ),
+                  Container(height: 30, width: 1, color: AppColors.border),
+                  Column(
+                    children: [
+                      Text('14', style: AppTextStyles.h3),
+                      const SizedBox(height: 2),
+                      Text('Completed', style: AppTextStyles.caption.copyWith(color: AppColors.textMuted, fontSize: 11)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 18),
+
+            // Primary CTA: Send a New Parcel
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => SenderCheckoutScreen(user: user),
+                  ),
+                );
+              },
+              icon: const Icon(FeatherIcons.plus, size: 18, color: AppColors.textInverse),
+              label: const Text('Send a New Parcel'),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size.fromHeight(50),
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.textInverse,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Drop Hub Application Banner (per Warri Transit-Logistics Business Model V3.md)
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0FDF4),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: AppDimens.borderWidth),
               ),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 26,
-                    backgroundColor: AppColors.primary,
-                    child: Text(
-                      user.firstName.isNotEmpty ? user.firstName[0] : 'S',
-                      style: AppTextStyles.h2.copyWith(color: Colors.white),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withValues(alpha: 0.15),
+                      shape: BoxShape.circle,
                     ),
+                    child: const Icon(FeatherIcons.home, size: 20, color: AppColors.primary),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 14),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Welcome back,', style: AppTextStyles.bodySmall),
-                        Text(user.shopName ?? user.fullName, style: AppTextStyles.h3),
-                        Text('Merchant • Corridor Active', style: AppTextStyles.caption),
+                        Text(
+                          'Turn Your Shop into a Drop Hub',
+                          style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Earn ₦500 per parcel held for customers on your corridor.',
+                          style: AppTextStyles.caption.copyWith(fontSize: 11, color: AppColors.textSecondary),
+                        ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text('Apply as Drop Hub Partner'),
+                          content: const Text(
+                            'Turn your existing store or pharmacy into a verified Sendalli Drop Hub:\n\n• Earn ₦500 for every parcel kept in custody\n• Gain extra daily foot traffic from corridor pickups\n• Operating hours: 8:00 AM - 7:00 PM\n• Instant wallet payouts',
+                          ),
+                          actions: [
+                            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close')),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(ctx);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Drop Hub Partner application submitted for corridor review.'),
+                                    backgroundColor: AppColors.primary,
+                                  ),
+                                );
+                              },
+                              child: const Text('Apply Now'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                    ),
+                    child: const Text('Apply', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12)),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Live Corridor Map
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Corridor Route Activity', style: AppTextStyles.h3),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF0FDF4),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: AppDimens.borderWidth),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        'Corridor Live',
+                        style: AppTextStyles.caption.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: const SendalliMapView(
+                height: 165,
+                corridorName: 'Active Corridor: Warri — Effurun',
+                showLiveRider: true,
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Active Deliveries with Card
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Active Deliveries', style: AppTextStyles.h3),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryLight,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    '1 Live',
+                    style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w700, color: AppColors.primary),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Interactive Active Parcel Card
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => SenderOrderTrackingScreen(
+                      orderId: '#SND-WAR-8492',
+                      merchantName: user.shopName ?? 'Amaka Kitchen & Grills',
+                      pickupAddress: 'Warri Central Kitchen (Pickup Location)',
+                      dropoffAddress: 'Effurun Market Plaza, Shop 14B',
+                      totalAmount: '₦ 1,850.00',
+                      deliveryOption: 'Priority (< 15 mins)',
+                    ),
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('#SND-WAR-8492', style: AppTextStyles.h3.copyWith(fontSize: 15)),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: AppColors.warning.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            'IN TRANSIT',
+                            style: AppTextStyles.caption.copyWith(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 10,
+                              color: AppColors.warning,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Icon(FeatherIcons.navigation, size: 14, color: AppColors.primary),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text('Refinery Road — Jakpa Junction Stop', style: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.w600)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        const Icon(FeatherIcons.clock, size: 14, color: AppColors.textMuted),
+                        const SizedBox(width: 8),
+                        Text('ETA: ~12 mins away', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                        const Spacer(),
+                        Text(
+                          'Release PIN: 849 201',
+                          style: AppTextStyles.caption.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Protection Reassurance
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceSubtle,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+              ),
+              child: Row(
+                children: [
+                  const Icon(FeatherIcons.shield, size: 16, color: AppColors.primary),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      '100% Escrow Guarantee • Max ₦20,000 loss coverage • 30-min dispute window.',
+                      style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary, fontSize: 11),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Send Parcel flow will open here.')),
-                );
-              },
-              icon: const Icon(FeatherIcons.plus, size: 18, color: AppColors.textInverse),
-              label: const Text('Send a New Parcel'),
-            ),
-            const SizedBox(height: 28),
-            Text('Active Deliveries', style: AppTextStyles.h3),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: Center(
-                child: Column(
-                  children: [
-                    const Icon(FeatherIcons.package, size: 40, color: AppColors.textMuted),
-                    const SizedBox(height: 12),
-                    Text('No parcels currently in transit', style: AppTextStyles.bodyMedium),
-                    const SizedBox(height: 4),
-                    Text('Tap above to send along a keke corridor.', style: AppTextStyles.caption),
-                  ],
-                ),
-              ),
-            ),
+            const SizedBox(height: 16),
           ],
         ),
       ),

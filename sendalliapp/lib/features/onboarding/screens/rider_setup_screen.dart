@@ -7,8 +7,10 @@ import '../../../core/models/user_profile.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
 import '../../../core/navigation/app_navigator.dart';
+import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/form_randomizer.dart';
+import '../../../widgets/map/sendalli_map_view.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
 import '../../dashboard/screens/rider/rider_home_screen.dart';
@@ -118,12 +120,8 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
         AppNavigator.safePop(context);
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(FeatherIcons.arrowLeft),
-            onPressed: () => AppNavigator.safePop(context),
-          ),
-          title: const Text('Rider Setup'),
+        appBar: CustomAppBar(
+          title: 'Rider Setup',
           actions: [
             RandomizeButton(onRandomize: _randomize),
           ],
@@ -135,92 +133,167 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Your Vehicle & Route', style: AppTextStyles.h1),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
-                'Add your vehicle details and your usual route to get delivery jobs.',
+                'Add your tricycle details and regular route to receive parcel delivery jobs along your corridor.',
                 style: AppTextStyles.bodyMedium,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
 
-              // Driver Photo Preview (Onboarding-8 / Onboarding-9)
-              Center(
-                child: Column(
+              // Driver Card with Baseline Trust
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                ),
+                child: Row(
                   children: [
                     Stack(
                       children: [
                         CircleAvatar(
-                          radius: 46,
-                          backgroundColor: AppColors.surfaceSubtle,
-                          child: Icon(
-                            _selfieCaptured ? FeatherIcons.checkCircle : FeatherIcons.user,
-                            size: 40,
-                            color: _selfieCaptured ? AppColors.deepGreen : AppColors.textPrimary,
+                          radius: 28,
+                          backgroundColor: AppColors.primaryLight,
+                          child: Text(
+                            widget.firstName.isNotEmpty ? widget.firstName[0].toUpperCase() : 'R',
+                            style: AppTextStyles.h2.copyWith(color: AppColors.primaryDark),
                           ),
                         ),
                         Positioned(
                           bottom: 0,
                           right: 0,
                           child: Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: const BoxDecoration(
-                              color: AppColors.primary,
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: _selfieCaptured ? AppColors.primary : AppColors.textMuted,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(FeatherIcons.camera, color: AppColors.textInverse, size: 14),
+                            child: Icon(
+                              _selfieCaptured ? FeatherIcons.check : FeatherIcons.camera,
+                              color: AppColors.textInverse,
+                              size: 10,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    Text('Driver Profile Photo (Active)', style: AppTextStyles.caption),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${widget.firstName} ${widget.lastName}', style: AppTextStyles.h3),
+                          const SizedBox(height: 2),
+                          Text('Commercial Corridor Operator', style: AppTextStyles.caption),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: AppColors.eliteGoldLight,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.eliteGold.withValues(alpha: 0.3)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(FeatherIcons.shield, size: 12, color: AppColors.eliteGold),
+                          const SizedBox(width: 4),
+                          Text(
+                            '80% Trust',
+                            style: AppTextStyles.caption.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.eliteGold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 18),
+
+              // Corridor Route Map Preview
+              Text('Corridor Route Coverage', style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700)),
+              const SizedBox(height: 8),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: SendalliMapView(
+                  height: 130,
+                  corridorName: _selectedCorridor,
+                  showLiveRider: true,
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Form Inputs Card
+              Container(
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                ),
+                child: Column(
+                  children: [
+                    // Plate Number
+                    CustomTextField(
+                      controller: _plateController,
+                      labelText: 'Tricycle Plate Number',
+                      hintText: 'e.g. WRA-492-XA',
+                      textCapitalization: TextCapitalization.characters,
+                      prefixIcon: FeatherIcons.hash,
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Corridor Dropdown
+                    CustomDropdownField<String>(
+                      labelText: 'Primary Corridor',
+                      value: _selectedCorridor,
+                      prefixIcon: FeatherIcons.navigation,
+                      items: CorridorConstants.pilotCorridors.map((c) {
+                        return DropdownMenuItem(value: c, child: Text(c, style: AppTextStyles.bodyMedium));
+                      }).toList(),
+                      onChanged: (val) {
+                        if (val != null) setState(() => _selectedCorridor = val);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Union Park Name
+                    CustomTextField(
+                      controller: _parkController,
+                      labelText: 'Home Keke Park / Chairman',
+                      hintText: 'e.g. Refinery Junction Unit Park',
+                      textCapitalization: TextCapitalization.words,
+                      prefixIcon: FeatherIcons.users,
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 28),
 
-              // Plate Number
-              CustomTextField(
-                controller: _plateController,
-                labelText: 'Tricycle Plate Number',
-                hintText: 'e.g. WRA-492-XA',
-                textCapitalization: TextCapitalization.characters,
-                prefixIcon: FeatherIcons.hash,
-              ),
-              const SizedBox(height: 18),
-
-              // Corridor Dropdown
-              CustomDropdownField<String>(
-                labelText: 'Primary Corridor',
-                value: _selectedCorridor,
-                prefixIcon: FeatherIcons.navigation,
-                items: CorridorConstants.pilotCorridors.map((c) {
-                  return DropdownMenuItem(value: c, child: Text(c, style: AppTextStyles.bodyMedium));
-                }).toList(),
-                onChanged: (val) {
-                  if (val != null) setState(() => _selectedCorridor = val);
-                },
-              ),
-              const SizedBox(height: 18),
-
-              // Union Park Name
-              CustomTextField(
-                controller: _parkController,
-                labelText: 'Home Keke Park / Chairman',
-                hintText: 'e.g. Refinery Junction Unit Park',
-                textCapitalization: TextCapitalization.words,
-                prefixIcon: FeatherIcons.users,
-              ),
-              const SizedBox(height: 36),
-
-              ElevatedButton(
-                onPressed: _isLoading ? null : _completeSetup,
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse),
-                      )
-                    : const Text('Complete & Start Earning'),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _completeSetup,
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse),
+                        )
+                      : const Text('Complete & Start Earning'),
+                ),
               ),
               const SizedBox(height: 16),
             ],

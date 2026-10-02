@@ -6,8 +6,11 @@ import '../../../core/models/user_profile.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
 import '../../../core/navigation/app_navigator.dart';
+import '../../../core/constants/corridor_constants.dart';
+import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/form_randomizer.dart';
+import '../../../widgets/map/sendalli_map_view.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
 import '../../dashboard/screens/sender/sender_home_screen.dart';
@@ -33,10 +36,22 @@ class SenderSetupScreen extends StatefulWidget {
 
 class _SenderSetupScreenState extends State<SenderSetupScreen> {
   final _shopNameController = TextEditingController();
+  String _selectedCorridor = CorridorConstants.pilotCorridors.first;
+  String _selectedCategory = 'Food & Groceries';
   bool _isLoading = false;
 
+  final List<String> _categories = [
+    'Food & Groceries',
+    'Fashion & Retail',
+    'Electronics',
+    'Documents',
+  ];
+
   void _randomize() {
-    _shopNameController.text = FormSampleData.randomMerchantShop();
+    setState(() {
+      _shopNameController.text = FormSampleData.randomMerchantShop();
+      _selectedCorridor = FormSampleData.randomCorridor();
+    });
   }
 
   @override
@@ -66,6 +81,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
       role: UserRole.sender,
       pin: widget.pin,
       shopName: shopName.isNotEmpty ? shopName : '${widget.firstName}\'s Shop',
+      corridor: _selectedCorridor,
       isVerified: true,
     );
 
@@ -96,53 +112,188 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
         AppNavigator.safePop(context);
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(FeatherIcons.arrowLeft),
-            onPressed: () => AppNavigator.safePop(context),
-          ),
-          title: const Text('Merchant Profile'),
+        appBar: CustomAppBar(
+          title: 'Merchant Profile',
           actions: [
             RandomizeButton(onRandomize: _randomize),
           ],
         ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Business Details', style: AppTextStyles.h1),
-              const SizedBox(height: 8),
-              Text(
-                'Tell us your shop name so riders know where to pick up.',
-                style: AppTextStyles.bodyMedium,
-              ),
-              const SizedBox(height: 32),
-              CustomTextField(
-                controller: _shopNameController,
-                labelText: 'Shop / Business Name',
-                hintText: 'e.g. Warri Glow Boutique',
-                textCapitalization: TextCapitalization.words,
-                prefixIcon: FeatherIcons.shoppingBag,
-              ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: _isLoading ? null : _completeSetup,
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse),
-                      )
-                    : const Text('Complete & Start Sending'),
-              ),
-              const SizedBox(height: 12),
-            ],
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Business Details', style: AppTextStyles.h1),
+                const SizedBox(height: 6),
+                Text(
+                  'Tell us your shop name and dispatch corridor so keke riders know where to pick up.',
+                  style: AppTextStyles.bodyMedium,
+                ),
+                const SizedBox(height: 20),
+
+                // Merchant Header Preview Card
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                  ),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 26,
+                        backgroundColor: AppColors.primaryLight,
+                        child: const Icon(FeatherIcons.shoppingBag, color: AppColors.primaryDark, size: 22),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _shopNameController.text.isNotEmpty
+                                  ? _shopNameController.text
+                                  : "${widget.firstName}'s Store",
+                              style: AppTextStyles.h3,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'Verified Commercial Sender',
+                              style: AppTextStyles.caption.copyWith(color: AppColors.primaryDark),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryLight,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          'PIONEER',
+                          style: AppTextStyles.caption.copyWith(
+                            color: AppColors.primaryDark,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 18),
+
+                // Corridor Route Map Preview
+                Text('Primary Corridor Dispatch Base', style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: SendalliMapView(
+                    height: 125,
+                    corridorName: _selectedCorridor,
+                    showLiveRider: false,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Form Details Card
+                Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomTextField(
+                        controller: _shopNameController,
+                        labelText: 'Shop / Business Name',
+                        hintText: 'e.g. Warri Central Kitchen',
+                        textCapitalization: TextCapitalization.words,
+                        prefixIcon: FeatherIcons.shoppingBag,
+                        onChanged: (_) => setState(() {}),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Corridor Dropdown
+                      CustomDropdownField<String>(
+                        labelText: 'Primary Corridor Base',
+                        value: _selectedCorridor,
+                        prefixIcon: FeatherIcons.navigation,
+                        items: CorridorConstants.pilotCorridors.map((c) {
+                          return DropdownMenuItem(value: c, child: Text(c, style: AppTextStyles.bodyMedium));
+                        }).toList(),
+                        onChanged: (val) {
+                          if (val != null) setState(() => _selectedCorridor = val);
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Category Selector Chips
+                      Text('Business Category', style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: _categories.map((cat) {
+                          final isSelected = _selectedCategory == cat;
+                          return ChoiceChip(
+                            label: Text(cat),
+                            selected: isSelected,
+                            onSelected: (selected) {
+                              if (selected) setState(() => _selectedCategory = cat);
+                            },
+                            selectedColor: AppColors.primary,
+                            backgroundColor: AppColors.surfaceSubtle,
+                            labelStyle: AppTextStyles.caption.copyWith(
+                              color: isSelected ? AppColors.textInverse : AppColors.textPrimary,
+                              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(
+                                color: isSelected ? AppColors.primary : AppColors.border,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 28),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _completeSetup,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse),
+                          )
+                        : const Text('Complete & Start Sending'),
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

@@ -122,11 +122,11 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
             padding: const EdgeInsets.only(right: 18.0),
             child: InkWell(
               onTap: _finishWalkthrough,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(8),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: AppColors.borderMedium, width: 1.0),
                 ),
                 child: Text(
@@ -186,7 +186,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
                     foregroundColor: AppColors.textInverse,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   child: Text(
@@ -205,7 +205,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: AppColors.border, width: 1.0),
                 ),
                 child: Row(
@@ -266,7 +266,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.deepGreenLight,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
               border: Border.all(color: AppColors.deepGreen.withValues(alpha: 0.25), width: 1.0),
             ),
             child: Text(
@@ -310,7 +310,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: AppColors.surface,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(8),
               border: Border.all(color: AppColors.border, width: 1.0),
             ),
             child: Row(

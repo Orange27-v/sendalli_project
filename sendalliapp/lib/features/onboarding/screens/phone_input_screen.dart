@@ -4,6 +4,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/navigation/app_navigator.dart';
+import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/form_randomizer.dart';
 import 'otp_verification_screen.dart';
 
@@ -120,14 +121,8 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.surface,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
-            onPressed: () => AppNavigator.safePop(context),
-          ),
-          title: Text(
-            widget.isReturningLogin ? 'Sign In' : 'Phone Number',
-          ),
+        appBar: CustomAppBar(
+          title: widget.isReturningLogin ? 'Sign In' : 'Phone Number',
           actions: [
             RandomizeButton(label: 'Fill Sample', onRandomize: _randomize),
           ],

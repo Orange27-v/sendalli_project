@@ -41,7 +41,7 @@ class ProfileCompletedDialog extends StatelessWidget {
     return PopScope(
       canPop: false,
       child: Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         backgroundColor: AppColors.surface,
         insetPadding: const EdgeInsets.symmetric(horizontal: 24),
         child: Padding(

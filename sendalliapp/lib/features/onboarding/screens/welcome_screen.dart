@@ -78,7 +78,7 @@ class WelcomeScreen extends StatelessWidget {
                         height: 124,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(22),
+                          borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: AppColors.border, width: 1.0),
                         ),
                         padding: const EdgeInsets.all(14),
@@ -96,7 +96,7 @@ class WelcomeScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                         decoration: BoxDecoration(
                           color: AppColors.deepGreenLight,
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: AppColors.deepGreen.withValues(alpha: 0.25), width: 1.0),
                         ),
                         child: Text(
@@ -123,17 +123,11 @@ class WelcomeScreen extends StatelessWidget {
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 10,
-                      offset: Offset(0, -2),
-                    ),
-                  ],
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                  border: Border(top: BorderSide(color: AppColors.border)),
                 ),
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 14.0),
                     child: Column(
@@ -205,7 +199,7 @@ class WelcomeScreen extends StatelessWidget {
             backgroundColor: AppColors.primary,
             foregroundColor: AppColors.textInverse,
             elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -232,7 +226,7 @@ class WelcomeScreen extends StatelessWidget {
           },
           style: OutlinedButton.styleFrom(
             minimumSize: const Size.fromHeight(48),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
             foregroundColor: AppColors.textPrimary,
           ),
@@ -274,7 +268,7 @@ class WelcomeScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: AppColors.border, width: 1.0),
       ),
       child: Column(

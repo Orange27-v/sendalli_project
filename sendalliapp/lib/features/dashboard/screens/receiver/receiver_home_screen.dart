@@ -5,10 +5,14 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/models/user_profile.dart';
 import '../../../../core/navigation/app_navigator.dart';
-import '../../../../core/storage/session_manager.dart';
+import '../../../../widgets/custom_app_bar.dart';
 import '../../../../widgets/custom_text_field.dart';
 import '../../../../widgets/form_randomizer.dart';
+import '../../../../widgets/map/sendalli_map_view.dart';
 import '../../../../widgets/settings_kit.dart';
+import '../common/notifications_screen.dart';
+import '../common/profile_screen.dart';
+import '../common/settings_screen.dart';
 
 /// Clean, simplified, and well-organized Receiver Tracking & Portal Screen.
 /// Built with Nelo quiet aesthetics, zero elevation, and hairline borders.
@@ -65,42 +69,54 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
-        appBar: AppBar(
-          scrolledUnderElevation: 0,
+        appBar: CustomAppBar(
           centerTitle: false,
-          leading: IconButton(
-            icon: const Icon(FeatherIcons.arrowLeft, size: 20, color: AppColors.textInverse),
-            onPressed: _safeExit,
-          ),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Package Tracker',
-                style: AppTextStyles.h3.copyWith(fontSize: 18, color: AppColors.textInverse),
-              ),
-              Text(
-                _isGuest ? 'Roadside Guest Access • No login' : widget.user.fullName,
-                style: AppTextStyles.caption.copyWith(color: AppColors.textInverse.withValues(alpha: 0.8)),
-              ),
-            ],
-          ),
+          onLeadingPressed: _safeExit,
+          title: 'Package Tracker',
+          subtitle: _isGuest ? 'Roadside Guest Access • No login' : widget.user.fullName,
           actions: [
+            Stack(
+              alignment: Alignment.topRight,
+              children: [
+                IconButton(
+                  icon: const Icon(FeatherIcons.bell, size: 20, color: AppColors.textInverse),
+                  tooltip: 'Notifications',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => NotificationsScreen(user: widget.user)),
+                    );
+                  },
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEF4444),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             IconButton(
-              icon: Icon(
-                _isGuest ? FeatherIcons.x : FeatherIcons.logOut,
-                size: 20,
-                color: AppColors.textInverse,
-              ),
-              tooltip: _isGuest ? 'Close Tracker' : 'Log out',
-              onPressed: () async {
-                if (_isGuest) {
-                  AppNavigator.safePop(context);
-                  return;
-                }
-                await SessionManager.logout();
-                if (!context.mounted) return;
-                AppNavigator.returnToWelcome(context);
+              icon: const Icon(FeatherIcons.user, size: 20, color: AppColors.textInverse),
+              tooltip: 'Profile',
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => ProfileScreen(user: widget.user)),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(FeatherIcons.settings, size: 20, color: AppColors.textInverse),
+              tooltip: 'Settings',
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => SettingsScreen(user: widget.user)),
+                );
               },
             ),
           ],
@@ -108,7 +124,7 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
         body: SafeArea(
           top: false,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+            padding: AppDimens.screenInsets,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -137,8 +153,8 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +196,7 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(60, 48),
                   padding: const EdgeInsets.symmetric(horizontal: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
                 child: const Text('Track'),
               ),
@@ -199,8 +215,8 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,6 +310,20 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
             ),
           ),
 
+          // Live Corridor Map
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: SendalliMapView(
+                height: 130,
+                corridorName: corridor,
+                showLiveRider: true,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
           // Delivery Illustration
           Center(
             child: Padding(
@@ -311,8 +341,8 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
             padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16.0),
             decoration: BoxDecoration(
               color: AppColors.surfaceSubtle,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.border),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -406,8 +436,8 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -416,7 +446,7 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(FeatherIcons.home, size: 20, color: AppColors.primaryDark),
           ),

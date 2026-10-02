@@ -51,7 +51,7 @@ class PermissionDialog extends StatelessWidget {
         Navigator.of(context).pop(false);
       },
       child: Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         backgroundColor: AppColors.surface,
         insetPadding: const EdgeInsets.symmetric(horizontal: 24),
         child: Padding(

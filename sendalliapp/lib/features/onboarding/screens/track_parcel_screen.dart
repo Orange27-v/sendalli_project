@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
 import '../../../core/navigation/app_navigator.dart';
 import '../../../core/storage/session_manager.dart';
+import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/form_randomizer.dart';
+import '../../../widgets/map/sendalli_map_view.dart';
 import '../../dashboard/screens/receiver/receiver_home_screen.dart';
 import '../../dashboard/screens/receiver/receiver_tracking_screen.dart';
 
@@ -86,13 +87,8 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.surface,
-        appBar: AppBar(
-          scrolledUnderElevation: 0,
-          leading: IconButton(
-            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
-            onPressed: () => AppNavigator.safePop(context),
-          ),
-          title: const Text('Track Parcel'),
+        appBar: CustomAppBar(
+          title: 'Track Parcel',
           actions: [
             RandomizeButton(label: 'Sample ID', onRandomize: _randomize),
           ],
@@ -103,17 +99,22 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Hero Artwork for Receiver Context
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: SvgPicture.asset(
-                    'assets/svg/delivery-location.svg',
-                    height: 150,
-                  ),
+              // Live Corridor Network Map Preview Card
+              Container(
+                height: 160,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.border, width: 1),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: const SendalliMapView(
+                  height: 160,
+                  corridorName: 'Warri-Effurun Express Corridor',
+                  showLiveRider: true,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
 
               Row(
                 children: [
@@ -122,7 +123,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                     decoration: BoxDecoration(
-                      color: AppColors.success.withValues(alpha: 0.12),
+                      color: AppColors.primaryLight,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
@@ -130,7 +131,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                       style: AppTextStyles.caption.copyWith(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.success,
+                        color: AppColors.primary,
                       ),
                     ),
                   ),
@@ -141,7 +142,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                 'Type the tracking number from your SMS or from the sender.',
                 style: AppTextStyles.bodyMedium,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
 
               // Square High-Visibility Input Box
               Text(
@@ -163,7 +164,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
                   border: Border.all(
                     color: _errorMessage != null
                         ? AppColors.danger
-                        : (_isFocused ? AppColors.deepGreen : AppColors.borderMedium),
+                        : (_isFocused ? AppColors.primary : AppColors.borderMedium),
                     width: _isFocused ? 1.6 : 1.4,
                   ),
                 ),

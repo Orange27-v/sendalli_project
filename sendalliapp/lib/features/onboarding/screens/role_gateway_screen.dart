@@ -5,6 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/navigation/app_navigator.dart';
+import '../../../widgets/custom_app_bar.dart';
 import 'name_input_screen.dart';
 import 'phone_input_screen.dart';
 
@@ -74,12 +75,8 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.surface,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
-            onPressed: () => AppNavigator.safePop(context),
-          ),
-          title: const Text('Choose Role'),
+        appBar: const CustomAppBar(
+          title: 'Choose Role',
         ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -147,7 +144,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                   foregroundColor: AppColors.textInverse,
                   elevation: 0,
                   minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                 ),
               ),
@@ -158,7 +155,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
                 onPressed: _proceedToLogin,
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size.fromHeight(48),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
                   foregroundColor: AppColors.textPrimary,
                 ),
@@ -183,13 +180,13 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
 
     return InkWell(
       onTap: () => setState(() => _selectedRole = role),
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(8),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.surface : AppColors.surface,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isSelected ? AppColors.deepGreen : const Color(0xFFE2E8F0),
             width: isSelected ? 1.8 : 1.2,
@@ -203,7 +200,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
               height: 44,
               decoration: BoxDecoration(
                 color: isSelected ? AppColors.deepGreenLight : AppColors.surfaceSubtle,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: isSelected ? AppColors.deepGreen.withValues(alpha: 0.3) : AppColors.border,
                   width: 1.0,

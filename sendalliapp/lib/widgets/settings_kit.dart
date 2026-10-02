@@ -11,7 +11,7 @@ import '../core/constants/app_text_styles.dart';
 /// - Hairline dividers inset to align with the text column.
 /// - Minimalist, modern, and readable components for high road-condition legibility.
 
-const double kDefaultCardRadius = 16.0;
+const double kDefaultCardRadius = 12.0;
 const double _maxValueWidth = 140.0;
 
 /// Tinted circular or squircle icon container.
@@ -39,7 +39,7 @@ class IconTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: tone.withValues(alpha: 0.12),
         shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-        borderRadius: isCircle ? null : BorderRadius.circular(10),
+        borderRadius: isCircle ? null : BorderRadius.circular(8),
       ),
       child: Icon(icon, size: iconSize, color: tone),
     );
@@ -71,7 +71,7 @@ class StatusBadge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: backgroundColor ?? color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
         text,
@@ -121,7 +121,7 @@ class ProfileHeaderCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(kDefaultCardRadius),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
       ),
       child: Column(
         children: [
@@ -276,7 +276,7 @@ class SettingsGroup extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(kDefaultCardRadius),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
           ),
           clipBehavior: Clip.antiAlias,
           child: Column(

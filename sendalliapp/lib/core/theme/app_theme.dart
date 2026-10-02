@@ -4,6 +4,42 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_text_styles.dart';
 
 // ============================================================================
+// DESIGN TOKENS — Centralized dimensions for easy global tuning.
+// Change any value here to instantly update the entire app.
+// ============================================================================
+class AppDimens {
+  AppDimens._();
+
+  // --- Corner Radius ---
+  static const double radiusSmall = 4.0;   // Badges, tags, tiny chips
+  static const double radius = 12.0;        // Default: cards, inputs, dialogs
+  static const double radiusLarge = 12.0;   // Sheets, modals (same as default for flat look)
+
+  // --- Border Width ---
+  static const double borderWidth = 0.5;       // Hairline card/container borders
+  static const double borderWidthMedium = 1.0; // Input fields, focused outlines
+  static const double borderWidthThick = 1.5;  // Active/focus accent outlines
+
+  // --- Screen Padding (distance from phone edge to content) ---
+  static const double screenPaddingH = 14.0;  // Horizontal margin from device edge
+  static const double screenPaddingV = 12.0;  // Vertical margin from top/bottom
+
+  // --- Card / Container Inner Padding ---
+  static const double cardPadding = 14.0;     // Default inner padding for cards
+  static const double cardPaddingLarge = 18.0; // Larger cards, feature panels
+
+  // --- Reusable EdgeInsets shortcuts ---
+  static const EdgeInsets screenInsets = EdgeInsets.symmetric(
+    horizontal: screenPaddingH,
+    vertical: screenPaddingV,
+  );
+
+  static const EdgeInsets screenInsetsH = EdgeInsets.symmetric(
+    horizontal: screenPaddingH,
+  );
+}
+
+// ============================================================================
 // THEME COLOR PALETTE
 // Defined directly in this file for easy, centralized color customization.
 // Edit any color value below to instantly update the entire application.
@@ -85,6 +121,14 @@ class AppColors {
   static const Color border = Color(0xFFE2E8F0); // Subtle divider / card border
   static const Color borderMedium = Color(0xFFCBD5E1); // Input field border
   static const Color borderFocus = Color(0xFF009944); // #009944 subtle focus ring
+
+  /// Convenience: default hairline border used on most containers.
+  static BorderSide get hairlineBorder =>
+      BorderSide(color: border, width: AppDimens.borderWidth);
+
+  /// Convenience: medium-weight border for inputs.
+  static BorderSide get mediumBorder =>
+      BorderSide(color: borderMedium, width: AppDimens.borderWidthMedium);
 
   // --- Status & Feedback Colors ---
   static const Color success = Color(0xFF15803D); // Deep green success
@@ -219,7 +263,7 @@ class AppTheme {
           elevation: 0,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
           ),
           textStyle: AppTextStyles.button.copyWith(
             color: AppColors.textInverse,
@@ -235,7 +279,7 @@ class AppTheme {
           elevation: 0,
           side: const BorderSide(color: AppColors.borderMedium, width: 1.2),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
           ),
           textStyle: AppTextStyles.button.copyWith(
             color: AppColors.textPrimary,
@@ -249,20 +293,20 @@ class AppTheme {
         filled: true,
         fillColor: AppColors.surface,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderRadius: BorderRadius.circular(AppDimens.radius),
+          borderSide: BorderSide(color: AppColors.border, width: AppDimens.borderWidth),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderRadius: BorderRadius.circular(AppDimens.radius),
+          borderSide: BorderSide(color: AppColors.border, width: AppDimens.borderWidth),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.deepGreen, width: 1.5),
+          borderRadius: BorderRadius.circular(AppDimens.radius),
+          borderSide: BorderSide(color: AppColors.deepGreen, width: AppDimens.borderWidthThick),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.danger),
+          borderRadius: BorderRadius.circular(AppDimens.radius),
+          borderSide: BorderSide(color: AppColors.danger, width: AppDimens.borderWidthMedium),
         ),
         hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
       ),
@@ -270,21 +314,21 @@ class AppTheme {
         color: AppColors.surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.border),
+          borderRadius: BorderRadius.circular(AppDimens.radius),
+          side: BorderSide(color: AppColors.border, width: AppDimens.borderWidth),
         ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: AppColors.surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppDimens.radius),
         ),
       ),
-      dividerTheme: const DividerThemeData(
+      dividerTheme: DividerThemeData(
         color: AppColors.border,
         space: 1,
-        thickness: 1,
+        thickness: AppDimens.borderWidth,
       ),
     );
   }

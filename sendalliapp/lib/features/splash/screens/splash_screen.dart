@@ -112,7 +112,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 height: 96,
                 decoration: BoxDecoration(
                   color: AppColors.deepGreenLight,
-                  borderRadius: BorderRadius.circular(28),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(
                   FeatherIcons.package,

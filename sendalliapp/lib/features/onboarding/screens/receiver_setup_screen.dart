@@ -7,7 +7,9 @@ import '../../../core/models/user_profile.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
 import '../../../core/navigation/app_navigator.dart';
+import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/form_randomizer.dart';
+import '../../../widgets/map/sendalli_map_view.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
 import '../../../widgets/settings_kit.dart';
@@ -100,12 +102,8 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(FeatherIcons.arrowLeft),
-            onPressed: () => AppNavigator.safePop(context),
-          ),
-          title: const Text('Receiver Setup'),
+        appBar: CustomAppBar(
+          title: 'Receiver Setup',
           actions: [
             RandomizeButton(onRandomize: _randomize),
           ],
@@ -200,6 +198,24 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
                   ),
                 ],
               ),
+              const SizedBox(height: 18),
+
+              // Roadside Stop Map Preview
+              Text('Roadside Corridor Map', style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700)),
+              const SizedBox(height: 8),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: SendalliMapView(
+                  height: 130,
+                  corridorName: '$_selectedCorridor • $_selectedLandmark',
+                  showLiveRider: true,
+                ),
+              ),
               const SizedBox(height: 24),
 
               // Group 2: Notifications & Alerts
@@ -224,7 +240,7 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(kDefaultCardRadius),
-                  border: Border.all(color: AppColors.border),
+                  border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,

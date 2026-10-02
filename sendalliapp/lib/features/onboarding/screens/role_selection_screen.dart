@@ -4,6 +4,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/navigation/app_navigator.dart';
+import '../../../widgets/custom_app_bar.dart';
 import 'sender_setup_screen.dart';
 import 'rider_setup_screen.dart';
 import 'hub_setup_screen.dart';
@@ -84,12 +85,8 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
         AppNavigator.safePop(context);
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
-            onPressed: () => AppNavigator.safePop(context),
-          ),
-          title: const Text('Account Setup'),
+        appBar: const CustomAppBar(
+          title: 'Account Setup',
         ),
       body: SafeArea(
         child: Padding(
@@ -159,13 +156,13 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
 
     return InkWell(
       onTap: () => setState(() => _selectedRole = role),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(8),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.surface : AppColors.surface,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isSelected ? AppColors.deepGreen : AppColors.border,
             width: isSelected ? 1.8 : 1,
@@ -178,7 +175,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
               height: 50,
               decoration: BoxDecoration(
                 color: isSelected ? AppColors.deepGreenLight : AppColors.surfaceSubtle,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
                 icon,

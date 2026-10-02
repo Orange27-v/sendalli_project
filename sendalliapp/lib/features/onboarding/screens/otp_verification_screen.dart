@@ -5,6 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/navigation/app_navigator.dart';
 import '../../../core/storage/session_manager.dart';
+import '../../../widgets/custom_app_bar.dart';
 import '../../dashboard/screens/screens.dart';
 import '../../../core/models/user_role.dart';
 import 'pin_setup_screen.dart';
@@ -143,12 +144,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         AppNavigator.safePop(context);
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
-            onPressed: () => AppNavigator.safePop(context),
-          ),
-          title: const Text('Verify OTP'),
+        appBar: const CustomAppBar(
+          title: 'Verify OTP',
         ),
       body: SafeArea(
         child: Padding(
@@ -182,7 +179,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         counterText: '',
                         contentPadding: EdgeInsets.zero,
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(color: AppColors.deepGreen, width: 2),
                         ),
                       ),

@@ -259,15 +259,15 @@ class CustomDropdownField<T> extends StatelessWidget {
             filled: true,
             fillColor: AppColors.surface,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: AppColors.border, width: 1.0),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: AppColors.border, width: 1.0),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: AppColors.deepGreen, width: 1.5),
             ),
             isDense: true,
