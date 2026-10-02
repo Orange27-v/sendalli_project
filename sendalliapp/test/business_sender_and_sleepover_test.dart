@@ -5,9 +5,9 @@ import 'package:sendalliapp/core/models/hub_parcel_item.dart';
 import 'package:sendalliapp/core/models/user_profile.dart';
 import 'package:sendalliapp/core/models/user_role.dart';
 import 'package:sendalliapp/features/dashboard/screens/hub/hub_home_screen.dart';
-import 'package:sendalliapp/features/dashboard/screens/sender/sender_home_screen.dart';
 import 'package:sendalliapp/features/onboarding/screens/business_sender_registration_screen.dart';
 import 'package:sendalliapp/features/onboarding/screens/sender_setup_screen.dart';
+import 'package:sendalliapp/features/onboarding/screens/hub_setup_screen.dart';
 
 void main() {
   group('Sleepover Custody Fee Tests (+₦500 overnight)', () {
@@ -121,8 +121,8 @@ void main() {
     });
   });
 
-  group('Business Sender Registration Form Tests (Dedicated Screen & CAC Upload)', () {
-    testWidgets('SenderSetupScreen provides direct link to BusinessSenderRegistrationScreen', (tester) async {
+  group('Hub Center Business Registration Tests (Dedicated Screen & CAC Upload)', () {
+    testWidgets('SenderSetupScreen does not show business registration banner, allowing simple dispatch setup', (tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -139,22 +139,44 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Verify business application banner exists on setup screen
-      expect(find.text('Applying as a Registered Business?'), findsOneWidget);
-      final applyBtn = find.byKey(const Key('apply_as_business_sender_btn'));
+      // Senders do not register as a business
+      expect(find.text('Applying as a Registered Business?'), findsNothing);
+      expect(find.byKey(const Key('apply_as_business_sender_btn')), findsNothing);
+    });
+
+    testWidgets('HubSetupScreen provides direct link to HubCenterRegistrationScreen', (tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: HubSetupScreen(
+            phoneNumber: '+234 803 111 2233',
+            firstName: 'Tari',
+            lastName: 'Ebi',
+            pin: '1234',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Verify business application banner exists on Hub setup screen
+      expect(find.text('Hub Center Business Registration'), findsOneWidget);
+      final applyBtn = find.byKey(const Key('apply_as_hub_center_btn'));
       expect(applyBtn, findsOneWidget);
 
       await tester.ensureVisible(applyBtn);
       await tester.tap(applyBtn);
       await tester.pumpAndSettle();
 
-      // Verify we arrived on the dedicated Business Sender Application screen
-      expect(find.text('Business Sender Application'), findsOneWidget);
+      // Verify we arrived on the dedicated Hub Center Application screen
+      expect(find.text('Hub Center Application'), findsOneWidget);
       expect(find.text('1. REGISTERED BUSINESS IDENTITY'), findsOneWidget);
       expect(find.text('3. CAC REGISTRATION CERTIFICATE (MANDATORY)'), findsOneWidget);
     });
 
-    testWidgets('BusinessSenderRegistrationScreen validates required fields and CAC certificate upload', (tester) async {
+    testWidgets('HubCenterRegistrationScreen validates required fields and CAC certificate upload', (tester) async {
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -214,7 +236,7 @@ void main() {
       expect(find.byKey(const Key('remove_certificate_btn')), findsOneWidget);
     });
 
-    testWidgets('Quick sample fill and submission on BusinessSenderRegistrationScreen succeeds', (tester) async {
+    testWidgets('Quick sample fill and submission on HubCenterRegistrationScreen succeeds', (tester) async {
       SharedPreferences.setMockInitialValues({});
       tester.view.physicalSize = const Size(1080, 2400);
       tester.view.devicePixelRatio = 1.0;
@@ -247,8 +269,6 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
 
-
-
       // Handle permission dialog if presented
       final enableNotifFinder = find.text('Enable Notifications');
       if (enableNotifFinder.evaluate().isNotEmpty) {
@@ -261,16 +281,16 @@ void main() {
 
       // Profile completed modal appears
       expect(find.text('Profile Completed!'), findsOneWidget);
-      expect(find.textContaining('Business Application Submitted!'), findsOneWidget);
+      expect(find.textContaining('Hub Application Submitted!'), findsOneWidget);
     });
 
-    testWidgets('SenderHomeScreen displays CAC verified status badge for verified businesses', (tester) async {
-      const verifiedBizUser = UserProfile(
-        id: 'BIZ-USER-01',
+    testWidgets('HubHomeScreen displays CAC verified status badge for verified hub partners', (tester) async {
+      const verifiedHubUser = UserProfile(
+        id: 'HUB-BIZ-01',
         firstName: 'Chief',
         lastName: 'Obi',
         phone: '+234 803 555 1234',
-        role: UserRole.sender,
+        role: UserRole.hub,
         pin: '1234',
         shopName: 'Warri Central Mercantile Ltd',
         cacNumber: 'RC-1849204',
@@ -279,12 +299,12 @@ void main() {
 
       await tester.pumpWidget(
         const MaterialApp(
-          home: SenderHomeScreen(user: verifiedBizUser),
+          home: HubHomeScreen(user: verifiedHubUser),
         ),
       );
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('Verified Commercial Business • CAC: RC-1849204'), findsOneWidget);
+      expect(find.textContaining('Verified Commercial Drop Hub • CAC: RC-1849204'), findsOneWidget);
     });
   });
 }

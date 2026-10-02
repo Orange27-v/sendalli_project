@@ -14,7 +14,6 @@ import '../../../widgets/map/sendalli_map_view.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
 import '../../dashboard/screens/sender/sender_home_screen.dart';
-import 'business_sender_registration_screen.dart';
 
 /// Branch A: Sender Setup Screen.
 class SenderSetupScreen extends StatefulWidget {
@@ -184,79 +183,6 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
                           style: AppTextStyles.caption.copyWith(
                             color: AppColors.primaryDark,
                             fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 14),
-
-                // Commercial Business Sender Application Card (Separate Dedicated Screen)
-                Container(
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF0FDF4),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: const Color(0xFFBBF7D0), width: 1.2),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFDCFCE7),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(FeatherIcons.award, size: 16, color: Color(0xFF16A34A)),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              'Applying as a Registered Business?',
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                fontWeight: FontWeight.w800,
-                                color: const Color(0xFF166534),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Senders applying to become verified commercial partners must file a complete registration form and upload their CAC business registration certificate on a dedicated form.',
-                        style: AppTextStyles.caption.copyWith(
-                          color: const Color(0xFF15803D),
-                          height: 1.35,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          key: const Key('apply_as_business_sender_btn'),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => BusinessSenderRegistrationScreen(
-                                  phoneNumber: widget.phoneNumber,
-                                  firstName: widget.firstName,
-                                  lastName: widget.lastName,
-                                  pin: widget.pin,
-                                ),
-                              ),
-                            );
-                          },
-                          icon: const Icon(FeatherIcons.fileText, size: 14),
-                          label: const Text('File Business Form & Upload CAC →'),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: const Color(0xFF166534),
-                            side: const BorderSide(color: Color(0xFF16A34A)),
-                            backgroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 10),
                           ),
                         ),
                       ),

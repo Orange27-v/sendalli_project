@@ -11,18 +11,18 @@ import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/permission_dialog.dart';
 import '../../../widgets/profile_completed_dialog.dart';
-import '../../dashboard/screens/sender/sender_home_screen.dart';
+import '../../dashboard/screens/hub/hub_home_screen.dart';
 
 /// Dedicated separate screen for commercial senders applying to become verified businesses,
 /// requiring complete business details and uploading a CAC business registration certificate.
-class BusinessSenderRegistrationScreen extends StatefulWidget {
+class HubCenterRegistrationScreen extends StatefulWidget {
   final String? phoneNumber;
   final String? firstName;
   final String? lastName;
   final String? pin;
   final UserProfile? currentUser;
 
-  const BusinessSenderRegistrationScreen({
+  const HubCenterRegistrationScreen({
     super.key,
     this.phoneNumber,
     this.firstName,
@@ -32,10 +32,12 @@ class BusinessSenderRegistrationScreen extends StatefulWidget {
   });
 
   @override
-  State<BusinessSenderRegistrationScreen> createState() => _BusinessSenderRegistrationScreenState();
+  State<HubCenterRegistrationScreen> createState() => _HubCenterRegistrationScreenState();
 }
 
-class _BusinessSenderRegistrationScreenState extends State<BusinessSenderRegistrationScreen> {
+class _HubCenterRegistrationScreenState extends State<HubCenterRegistrationScreen> {
+
+
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _companyNameController;
@@ -197,7 +199,7 @@ class _BusinessSenderRegistrationScreenState extends State<BusinessSenderRegistr
       firstName: fName,
       lastName: lName,
       phone: phone,
-      role: UserRole.sender,
+      role: UserRole.hub,
       pin: pin,
       email: _emailController.text.trim().isNotEmpty ? _emailController.text.trim() : null,
       shopName: _companyNameController.text.trim(),
@@ -218,10 +220,10 @@ class _BusinessSenderRegistrationScreenState extends State<BusinessSenderRegistr
 
     ProfileCompletedDialog.show(
       context: context,
-      subtitle: 'Business Application Submitted! Your CAC certificate is verified and your commercial sender account is ready.',
+      subtitle: 'Hub Application Submitted! Your CAC certificate is verified and your commercial custody hub center is ready.',
       onContinue: () {
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => SenderHomeScreen(user: updatedProfile)),
+          MaterialPageRoute(builder: (_) => HubHomeScreen(user: updatedProfile)),
           (route) => false,
         );
       },
@@ -248,7 +250,7 @@ class _BusinessSenderRegistrationScreenState extends State<BusinessSenderRegistr
       },
       child: Scaffold(
         appBar: CustomAppBar(
-          title: 'Business Sender Application',
+          title: 'Hub Center Application',
           actions: [
             TextButton.icon(
               key: const Key('quick_fill_business_btn'),
@@ -297,7 +299,7 @@ class _BusinessSenderRegistrationScreenState extends State<BusinessSenderRegistr
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Commercial Sender Verification',
+                                'Commercial Drop Hub Center Verification',
                                 style: AppTextStyles.bodyMedium.copyWith(
                                   fontWeight: FontWeight.w800,
                                   color: const Color(0xFF166534),
@@ -305,7 +307,7 @@ class _BusinessSenderRegistrationScreenState extends State<BusinessSenderRegistr
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Senders with registered businesses must complete this full verification and upload their CAC business registration certificate.',
+                                'Drop Hub Centers serving as physical parcel custody points must complete this full verification and upload their CAC business registration certificate.',
                                 style: AppTextStyles.caption.copyWith(
                                   color: const Color(0xFF15803D),
                                   height: 1.35,
@@ -540,7 +542,7 @@ class _BusinessSenderRegistrationScreenState extends State<BusinessSenderRegistr
                               height: 22,
                               child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse),
                             )
-                          : const Text('Submit Application & Verify Business'),
+                          : const Text('Submit Application & Verify Hub Center'),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -747,3 +749,6 @@ class _BusinessSenderRegistrationScreenState extends State<BusinessSenderRegistr
     );
   }
 }
+
+/// Backwards-compatibility alias for tests and existing references
+typedef BusinessSenderRegistrationScreen = HubCenterRegistrationScreen;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'business_sender_registration_screen.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
@@ -196,6 +197,79 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
                           style: AppTextStyles.caption.copyWith(
                             color: AppColors.eliteGold,
                             fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 14),
+
+                // Commercial Hub Center Registration Card
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF0FDF4),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: const Color(0xFFBBF7D0), width: 1.2),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFDCFCE7),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(FeatherIcons.award, size: 16, color: Color(0xFF16A34A)),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Hub Center Business Registration',
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: const Color(0xFF166534),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'Hub centers serving as physical parcel custody points must complete full business registration and upload their CAC certificate.',
+                        style: AppTextStyles.caption.copyWith(
+                          color: const Color(0xFF15803D),
+                          height: 1.35,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          key: const Key('apply_as_hub_center_btn'),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => HubCenterRegistrationScreen(
+                                  phoneNumber: widget.phoneNumber,
+                                  firstName: widget.firstName,
+                                  lastName: widget.lastName,
+                                  pin: widget.pin,
+                                ),
+                              ),
+                            );
+                          },
+                          icon: const Icon(FeatherIcons.fileText, size: 14),
+                          label: const Text('File Hub Form & Upload CAC →'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: const Color(0xFF166534),
+                            side: const BorderSide(color: Color(0xFF16A34A)),
+                            backgroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                           ),
                         ),
                       ),

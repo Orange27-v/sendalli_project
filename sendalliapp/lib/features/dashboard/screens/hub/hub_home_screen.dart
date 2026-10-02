@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:feather_icons/feather_icons.dart';
+import '../../../onboarding/screens/business_sender_registration_screen.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/models/user_profile.dart';
@@ -852,6 +853,89 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 12),
+                if (user.isBusinessVerified == true)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF0FDF4),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: const Color(0xFFBBF7D0)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(FeatherIcons.checkCircle, size: 16, color: Color(0xFF16A34A)),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Verified Commercial Drop Hub • CAC: ${user.cacNumber ?? "Active"}',
+                            style: AppTextStyles.caption.copyWith(
+                              color: const Color(0xFF166534),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF0FDF4),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: const Color(0xFFBBF7D0)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(FeatherIcons.award, size: 20, color: Color(0xFF16A34A)),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Hub Business Verification',
+                                style: AppTextStyles.caption.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  color: const Color(0xFF166534),
+                                ),
+                              ),
+                              Text(
+                                'Upload CAC registration certificate',
+                                style: AppTextStyles.caption.copyWith(
+                                  fontSize: 11,
+                                  color: const Color(0xFF15803D),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        TextButton(
+                          key: const Key('home_hub_apply_btn'),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => HubCenterRegistrationScreen(currentUser: user),
+                              ),
+                            );
+                          },
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: Text(
+                            'Upload CAC →',
+                            style: AppTextStyles.caption.copyWith(
+                              color: const Color(0xFF166534),
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 const SizedBox(height: 18),
 
                 // Custody Fee Ledger Bar
