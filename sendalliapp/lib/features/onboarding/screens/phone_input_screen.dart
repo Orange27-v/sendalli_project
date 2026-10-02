@@ -3,6 +3,7 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
+import '../../../core/navigation/app_navigator.dart';
 import '../../../widgets/form_randomizer.dart';
 import 'otp_verification_screen.dart';
 
@@ -111,18 +112,27 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
       fieldBorderColor = AppColors.borderMedium;
     }
 
-    return Scaffold(
-      backgroundColor: AppColors.surface,
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text(
-          widget.isReturningLogin ? 'Sign In' : 'Step 2 of 4',
-          style: AppTextStyles.caption.copyWith(fontSize: 13),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        AppNavigator.safePop(context);
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.surface,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
+            onPressed: () => AppNavigator.safePop(context),
+          ),
+          title: Text(
+            widget.isReturningLogin ? 'Sign In' : 'Step 2 of 4',
+            style: AppTextStyles.caption.copyWith(fontSize: 13),
+          ),
+          actions: [
+            RandomizeButton(label: 'Fill Sample', onRandomize: _randomize),
+          ],
         ),
-        actions: [
-          RandomizeButton(label: 'Fill Sample', onRandomize: _randomize),
-        ],
-      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 16.0),
@@ -345,7 +355,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
           ),
         ),
       ),
-    );
+    ),);
   }
 
   /// Clean, square sample prefix chip

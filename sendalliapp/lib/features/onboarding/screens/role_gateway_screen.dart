@@ -4,6 +4,7 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
+import '../../../core/navigation/app_navigator.dart';
 import 'name_input_screen.dart';
 import 'phone_input_screen.dart';
 
@@ -65,18 +66,27 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.surface,
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text(
-          'Choose Role',
-          style: AppTextStyles.caption.copyWith(
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        AppNavigator.safePop(context);
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.surface,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
+            onPressed: () => AppNavigator.safePop(context),
+          ),
+          title: Text(
+            'Choose Role',
+            style: AppTextStyles.caption.copyWith(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 12.0),
@@ -163,7 +173,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
           ),
         ),
       ),
-    );
+    ),);
   }
 
   Widget _buildRoleOptionCard({

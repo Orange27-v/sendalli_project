@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/navigation/app_navigator.dart';
 import '../../../core/storage/session_manager.dart';
 import '../../dashboard/screens/sender_home_screen.dart';
 import '../../dashboard/screens/rider_home_screen.dart';
@@ -138,11 +139,20 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text('Step 3 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
-      ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        AppNavigator.safePop(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
+            onPressed: () => AppNavigator.safePop(context),
+          ),
+          title: Text('Step 3 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+        ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -231,6 +241,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           ),
         ),
       ),
-    );
+    ),);
   }
 }

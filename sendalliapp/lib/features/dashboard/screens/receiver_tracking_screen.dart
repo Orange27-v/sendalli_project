@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
+import '../../../core/navigation/app_navigator.dart';
 import '../../../core/storage/session_manager.dart';
 
 /// Friction-free guest tracking screen for parcel recipients.
@@ -10,29 +11,37 @@ class ReceiverTrackingScreen extends StatelessWidget {
 
   const ReceiverTrackingScreen({super.key, required this.trackingId});
 
+  void _handleExit(BuildContext context) async {
+    await SessionManager.clearTrackingId();
+    if (!context.mounted) return;
+    AppNavigator.safePop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Live Parcel Tracker', style: AppTextStyles.h3),
-        leading: IconButton(
-          icon: const Icon(FeatherIcons.x, size: 20),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              await SessionManager.clearTrackingId();
-              if (!context.mounted) return;
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              'Exit',
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.danger),
-            ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        _handleExit(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Live Parcel Tracker', style: AppTextStyles.h3),
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.x, size: 20),
+            onPressed: () => _handleExit(context),
           ),
-        ],
-      ),
+          actions: [
+            TextButton(
+              onPressed: () => _handleExit(context),
+              child: Text(
+                'Exit',
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.danger),
+              ),
+            ),
+          ],
+        ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -189,6 +198,6 @@ class ReceiverTrackingScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),);
   }
 }

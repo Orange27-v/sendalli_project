@@ -38,42 +38,45 @@ class ProfileCompletedDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      backgroundColor: AppColors.surface,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: const BoxDecoration(
-                color: AppColors.primaryLight,
-                shape: BoxShape.circle,
+    return PopScope(
+      canPop: false,
+      child: Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        backgroundColor: AppColors.surface,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: const BoxDecoration(
+                  color: AppColors.primaryLight,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  FeatherIcons.checkCircle,
+                  size: 40,
+                  color: AppColors.primaryDark,
+                ),
               ),
-              child: const Icon(
-                FeatherIcons.checkCircle,
-                size: 40,
-                color: AppColors.primaryDark,
+              const SizedBox(height: 20),
+              Text(title, style: AppTextStyles.h2, textAlign: TextAlign.center),
+              const SizedBox(height: 10),
+              Text(
+                subtitle,
+                style: AppTextStyles.bodyMedium,
+                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(height: 20),
-            Text(title, style: AppTextStyles.h2, textAlign: TextAlign.center),
-            const SizedBox(height: 10),
-            Text(
-              subtitle,
-              style: AppTextStyles.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 28),
-            ElevatedButton(
-              onPressed: onContinue,
-              child: Text(buttonText),
-            ),
-          ],
+              const SizedBox(height: 28),
+              ElevatedButton(
+                onPressed: onContinue,
+                child: Text(buttonText),
+              ),
+            ],
+          ),
         ),
       ),
     );

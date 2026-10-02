@@ -194,4 +194,27 @@ void main() {
     expect(find.text('ROUTE-POOLED TRANSIT'), findsOneWidget);
     expect(find.text('Tricycle Drivers Earn on Passenger Routes'), findsOneWidget);
   });
+
+  testWidgets('AppNavigator.safePop navigates to WelcomeScreen when route cannot pop', (WidgetTester tester) async {
+    // When a screen is pushed as sole root (canPop is false), back navigation must not exit into blank screen
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightTheme,
+        home: const TrackParcelScreen(),
+      ),
+    );
+
+    expect(find.text('Track Your Parcel'), findsOneWidget);
+
+    // Tap back leading button
+    final backBtn = find.byType(IconButton).first;
+    expect(backBtn, findsOneWidget);
+    await tester.tap(backBtn);
+    await tester.pumpAndSettle();
+
+    // Instead of popping to blank canvas, it safely returns to WelcomeScreen
+    expect(find.text('SENDALLI'), findsOneWidget);
+    expect(find.text('Receiving a Parcel?'), findsOneWidget);
+  });
 }
+

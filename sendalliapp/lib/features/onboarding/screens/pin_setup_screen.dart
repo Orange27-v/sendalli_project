@@ -3,6 +3,7 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
+import '../../../core/navigation/app_navigator.dart';
 import '../../../widgets/form_randomizer.dart';
 import 'role_selection_screen.dart';
 import 'sender_setup_screen.dart';
@@ -143,14 +144,41 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text('Step 4 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
-        actions: [
-          RandomizeButton(label: 'Fill 1234', onRandomize: _quickFill),
-        ],
-      ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        if (_isConfirming) {
+          setState(() {
+            _isConfirming = false;
+            _enteredPin = '';
+            _errorMessage = null;
+          });
+        } else {
+          AppNavigator.safePop(context);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
+            onPressed: () {
+              if (_isConfirming) {
+                setState(() {
+                  _isConfirming = false;
+                  _enteredPin = '';
+                  _errorMessage = null;
+                });
+              } else {
+                AppNavigator.safePop(context);
+              }
+            },
+          ),
+          title: Text('Step 4 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          actions: [
+            RandomizeButton(label: 'Fill 1234', onRandomize: _quickFill),
+          ],
+        ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 16.0),
@@ -209,7 +237,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
           ),
         ),
       ),
-    );
+    ),);
   }
 
   Widget _buildKeypad() {

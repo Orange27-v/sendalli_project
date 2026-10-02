@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
+import '../../../core/navigation/app_navigator.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/form_randomizer.dart';
 import 'phone_input_screen.dart';
@@ -63,14 +64,23 @@ class _NameInputScreenState extends State<NameInputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text('Step 1 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
-        actions: [
-          RandomizeButton(onRandomize: _randomize),
-        ],
-      ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        AppNavigator.safePop(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
+            onPressed: () => AppNavigator.safePop(context),
+          ),
+          title: Text('Step 1 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          actions: [
+            RandomizeButton(onRandomize: _randomize),
+          ],
+        ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -109,6 +119,6 @@ class _NameInputScreenState extends State<NameInputScreen> {
           ),
         ),
       ),
-    );
+    ),);
   }
 }

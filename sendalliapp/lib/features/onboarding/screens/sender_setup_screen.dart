@@ -5,6 +5,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
 import '../../../core/models/user_role.dart';
 import '../../../core/storage/session_manager.dart';
+import '../../../core/navigation/app_navigator.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/permission_dialog.dart';
@@ -88,14 +89,23 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text('Merchant Profile', style: AppTextStyles.caption.copyWith(fontSize: 13)),
-        actions: [
-          RandomizeButton(onRandomize: _randomize),
-        ],
-      ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        AppNavigator.safePop(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.arrowLeft),
+            onPressed: () => AppNavigator.safePop(context),
+          ),
+          title: Text('Merchant Profile', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          actions: [
+            RandomizeButton(onRandomize: _randomize),
+          ],
+        ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -132,6 +142,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
@@ -21,8 +22,14 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        SystemNavigator.pop();
+      },
+      child: Scaffold(
+        appBar: AppBar(
         title: Text('Rider Corridor Hub', style: AppTextStyles.h3),
         actions: [
           IconButton(
@@ -235,6 +242,6 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           ],
         ),
       ),
-    );
+    ),);
   }
 }

@@ -3,6 +3,7 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_role.dart';
+import '../../../core/navigation/app_navigator.dart';
 import 'sender_setup_screen.dart';
 import 'rider_setup_screen.dart';
 import 'hub_setup_screen.dart';
@@ -76,11 +77,20 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text('Account Setup', style: AppTextStyles.caption.copyWith(fontSize: 13)),
-      ),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        AppNavigator.safePop(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
+            onPressed: () => AppNavigator.safePop(context),
+          ),
+          title: Text('Account Setup', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+        ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -136,7 +146,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
           ),
         ),
       ),
-    );
+    ),);
   }
 
   Widget _buildRoleCard({

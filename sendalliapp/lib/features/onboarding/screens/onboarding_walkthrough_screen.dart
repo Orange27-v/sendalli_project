@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
-import 'welcome_screen.dart';
+import '../../../core/navigation/app_navigator.dart';
 
 /// Full-featured, multi-screen Onboarding Walkthrough.
 /// Each business model context is separated into its own full, dedicated screen:
@@ -56,10 +56,12 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
     ),
   ];
 
+  void _safeExit() {
+    AppNavigator.safePop(context);
+  }
+
   void _finishWalkthrough() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-    );
+    _safeExit();
   }
 
   void _onNext() {
@@ -78,28 +80,42 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.brandGreen,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        automaticallyImplyLeading: false,
-        leading: _currentPage > 0
-            ? IconButton(
-                icon: const Icon(FeatherIcons.arrowLeft, size: 20, color: Colors.white),
-                onPressed: _onPrev,
-              )
-            : null,
-        title: Text(
-          'SENDALLI',
-          style: AppTextStyles.h2.copyWith(
-            fontSize: 18,
-            letterSpacing: 2.0,
-            color: Colors.white,
-            fontWeight: FontWeight.w800,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        if (_currentPage > 0) {
+          _onPrev();
+        } else {
+          _safeExit();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.brandGreen,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.arrowLeft, size: 20, color: Colors.white),
+            onPressed: () {
+              if (_currentPage > 0) {
+                _onPrev();
+              } else {
+                _safeExit();
+              }
+            },
           ),
-        ),
+          title: Text(
+            'SENDALLI',
+            style: AppTextStyles.h2.copyWith(
+              fontSize: 18,
+              letterSpacing: 2.0,
+              color: Colors.white,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 18.0),
@@ -208,7 +224,7 @@ class _OnboardingWalkthroughScreenState extends State<OnboardingWalkthroughScree
           ),
         ),
       ),
-    );
+    ),);
   }
 
   Widget _buildSlide(_WalkthroughSlideData slide, {Key? key}) {

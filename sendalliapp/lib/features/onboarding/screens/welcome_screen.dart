@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
@@ -20,11 +21,17 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.brandGreen,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        SystemNavigator.pop();
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.brandGreen,
+        body: SafeArea(
+          bottom: false,
+          child: Column(
           children: [
             // ==========================================
             // TOP GREEN HERO SECTION (matching Screen 3 of design guide)
@@ -147,7 +154,7 @@ class WelcomeScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),);
   }
 
   /// Clean, spacious receiver entry card

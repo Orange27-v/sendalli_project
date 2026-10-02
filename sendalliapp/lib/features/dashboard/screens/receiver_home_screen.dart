@@ -4,11 +4,11 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
+import '../../../core/navigation/app_navigator.dart';
 import '../../../core/storage/session_manager.dart';
 import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/form_randomizer.dart';
 import '../../../widgets/settings_kit.dart';
-import '../../onboarding/screens/welcome_screen.dart';
 
 /// Clean, simplified, and well-organized Receiver Tracking & Portal Screen.
 /// Built with Nelo quiet aesthetics, zero elevation, and hairline borders.
@@ -47,67 +47,83 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
     }
   }
 
+  void _safeExit() {
+    if (_isGuest) {
+      AppNavigator.safePop(context);
+    } else {
+      AppNavigator.exitApp();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: false,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Package Tracker',
-              style: AppTextStyles.h3.copyWith(fontSize: 18),
-            ),
-            Text(
-              _isGuest ? 'Roadside Guest Access • No login' : widget.user.fullName,
-              style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        _safeExit();
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: false,
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
+            onPressed: _safeExit,
+          ),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Package Tracker',
+                style: AppTextStyles.h3.copyWith(fontSize: 18),
+              ),
+              Text(
+                _isGuest ? 'Roadside Guest Access • No login' : widget.user.fullName,
+                style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                _isGuest ? FeatherIcons.x : FeatherIcons.logOut,
+                size: 20,
+                color: AppColors.textSecondary,
+              ),
+              tooltip: _isGuest ? 'Close Tracker' : 'Log out',
+              onPressed: () async {
+                if (_isGuest) {
+                  AppNavigator.safePop(context);
+                  return;
+                }
+                await SessionManager.logout();
+                if (!context.mounted) return;
+                AppNavigator.returnToWelcome(context);
+              },
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              _isGuest ? FeatherIcons.x : FeatherIcons.logOut,
-              size: 20,
-              color: AppColors.textSecondary,
-            ),
-            tooltip: _isGuest ? 'Close Tracker' : 'Log out',
-            onPressed: () async {
-              if (_isGuest) {
-                Navigator.of(context).pop();
-                return;
-              }
-              await SessionManager.logout();
-              if (!context.mounted) return;
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-                (route) => false,
-              );
-            },
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 1. Search / Track By ID Bar
+              _buildTrackingSearchBar(),
+              const SizedBox(height: 20),
+
+              // 2. Active Parcel Card (Hero card)
+              _buildActiveParcelCard(),
+              const SizedBox(height: 18),
+
+              // 3. Roadside Drop Hub Diversion Card
+              _buildHubDiversionCard(),
+              const SizedBox(height: 24),
+            ],
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 1. Search / Track By ID Bar
-            _buildTrackingSearchBar(),
-            const SizedBox(height: 20),
-
-            // 2. Active Parcel Card (Hero card)
-            _buildActiveParcelCard(),
-            const SizedBox(height: 18),
-
-            // 3. Roadside Drop Hub Diversion Card
-            _buildHubDiversionCard(),
-            const SizedBox(height: 24),
-          ],
         ),
       ),
     );

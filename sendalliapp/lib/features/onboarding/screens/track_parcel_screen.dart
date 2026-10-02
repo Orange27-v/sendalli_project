@@ -4,6 +4,7 @@ import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
 import '../../../core/models/user_profile.dart';
+import '../../../core/navigation/app_navigator.dart';
 import '../../../core/storage/session_manager.dart';
 import '../../../widgets/form_randomizer.dart';
 import '../../dashboard/screens/receiver_home_screen.dart';
@@ -77,21 +78,30 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
   Widget build(BuildContext context) {
     final hasText = _trackingController.text.isNotEmpty;
 
-    return Scaffold(
-      backgroundColor: AppColors.surface,
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text(
-          'Track Parcel',
-          style: AppTextStyles.caption.copyWith(
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        AppNavigator.safePop(context);
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.surface,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
+            onPressed: () => AppNavigator.safePop(context),
           ),
+          title: Text(
+            'Track Parcel',
+            style: AppTextStyles.caption.copyWith(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          actions: [
+            RandomizeButton(label: 'Sample ID', onRandomize: _randomize),
+          ],
         ),
-        actions: [
-          RandomizeButton(label: 'Sample ID', onRandomize: _randomize),
-        ],
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -265,7 +275,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
           ),
         ),
       ),
-    );
+    ),);
   }
 
   Widget _buildSampleChip(String sampleId) {
