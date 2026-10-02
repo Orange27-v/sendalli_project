@@ -8,3 +8,4 @@ export 'delivery_package_card.dart';
 export 'incoming_delivery_sheet.dart';
 export 'tracking_countdown_timer.dart';
 export 'propose_fare_sheet.dart';
+export 'parcel_photo_card.dart';

@@ -23,6 +23,14 @@ class HubParcelItem {
   final String? storageLocation;
   HubParcelStatus status;
 
+  // Detailed order properties
+  final String packageValue;
+  final String? photoAsset;
+  final String pickupTitle;
+  final String dropoffTitle;
+  final String weightCategory;
+  final String paymentStatus;
+
   HubParcelItem({
     required this.trackingId,
     required this.packageName,
@@ -39,5 +47,11 @@ class HubParcelItem {
     this.eta,
     this.storageLocation,
     this.status = HubParcelStatus.pendingDropoff,
+    this.packageValue = '₦ 8,500.00',
+    this.photoAsset,
+    this.pickupTitle = 'Refinery Road Pickup Hub',
+    this.dropoffTitle = 'Jakpa Roadside Delivery Stop',
+    this.weightCategory = '0.9 kg • Sealed Box',
+    this.paymentStatus = 'Escrow Secured',
   });
 }

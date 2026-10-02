@@ -6,7 +6,7 @@ import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/models/user_profile.dart';
 import '../../../../core/models/hub_parcel_item.dart';
 import '../../../../widgets/dashboard_app_bar.dart';
-import '../../../../widgets/delivery/delivery_code_banner.dart';
+import '../../../../widgets/delivery/delivery_widgets.dart';
 import '../../../../widgets/verification/verification_widgets.dart';
 import '../../../../widgets/map/sendalli_map_view.dart';
 import '../common/profile_screen.dart';
@@ -41,6 +41,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       releasePin: '902155',
       reason: 'Receiver delayed at Jakpa Stop (>60s timeout)',
       eta: '4 mins',
+      packageValue: '₦ 16,500.00',
+      pickupTitle: 'Deco Road Electronics Hub',
+      dropoffTitle: 'Jakpa Roadside Stop',
+      weightCategory: '1.2 kg • Bluetooth Box',
       status: HubParcelStatus.pendingDropoff,
     ),
     HubParcelItem(
@@ -56,6 +60,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       releasePin: '418022',
       reason: 'Designated Hub Drop-off (PTI Corridor)',
       eta: '8 mins',
+      packageValue: '₦ 5,000.00',
+      pickupTitle: 'High Court Chambers, Effurun',
+      dropoffTitle: 'PTI Gate Roadside Kiosk',
+      weightCategory: '0.3 kg • Sealed Envelope',
       status: HubParcelStatus.pendingDropoff,
     ),
     HubParcelItem(
@@ -71,6 +79,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       releasePin: '773411',
       reason: 'Receiver phone unreachable at roadside',
       eta: '12 mins',
+      packageValue: '₦ 24,000.00',
+      pickupTitle: 'Main Market Textile Row',
+      dropoffTitle: 'Airport Road Express Stop',
+      weightCategory: '1.8 kg • Lace Fabric Pack',
       status: HubParcelStatus.pendingDropoff,
     ),
   ];
@@ -89,6 +101,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       custodyFee: '₦ 500.00',
       releasePin: '849201',
       reason: 'Roadside timer expired',
+      packageValue: '₦ 8,500.00',
+      pickupTitle: 'Enerhen Central Pharmacy',
+      dropoffTitle: 'Refinery Road Junction',
+      weightCategory: '0.4 kg • Medicine Box',
       status: HubParcelStatus.heldInCustody,
     ),
     HubParcelItem(
@@ -104,6 +120,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       custodyFee: '₦ 500.00',
       releasePin: '331205',
       reason: 'Direct hub drop-off request',
+      packageValue: '₦ 12,000.00',
+      pickupTitle: 'Warri Spare Parts Depot',
+      dropoffTitle: 'Effurun Roundabout Stop',
+      weightCategory: '1.5 kg • Mechanical Spares',
       status: HubParcelStatus.heldInCustody,
     ),
   ];
@@ -122,6 +142,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       custodyFee: '₦ 500.00',
       releasePin: '820104',
       reason: 'Released via verified 6-digit PIN',
+      packageValue: '₦ 4,800.00',
+      pickupTitle: '9ja Kitchen',
+      dropoffTitle: 'Jakpa Roadside Stop',
+      weightCategory: '0.8 kg • Food Container',
       status: HubParcelStatus.delivered,
     ),
     HubParcelItem(
@@ -137,6 +161,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       custodyFee: '₦ 500.00',
       releasePin: '294088',
       reason: 'Released via verified QR Code',
+      packageValue: '₦ 9,500.00',
+      pickupTitle: 'Delta Glow Boutique',
+      dropoffTitle: 'Effurun Market Stop',
+      weightCategory: '0.6 kg • Cosmetics Box',
       status: HubParcelStatus.delivered,
     ),
     HubParcelItem(
@@ -152,6 +180,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       custodyFee: '₦ 500.00',
       releasePin: '711533',
       reason: 'Released via verified 6-digit PIN',
+      packageValue: '₦ 18,000.00',
+      pickupTitle: 'Warri Tool Mart',
+      dropoffTitle: 'Refinery Road Matrix Gate',
+      weightCategory: '2.1 kg • Hardware Box',
       status: HubParcelStatus.delivered,
     ),
     HubParcelItem(
@@ -167,6 +199,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
       custodyFee: '₦ 500.00',
       releasePin: '689012',
       reason: 'Released via verified 6-digit PIN',
+      packageValue: '₦ 7,200.00',
+      pickupTitle: 'Deco Bookshop',
+      dropoffTitle: 'Jakpa Road Bus Stop',
+      weightCategory: '1.4 kg • Books Pack',
       status: HubParcelStatus.delivered,
     ),
   ];
@@ -211,6 +247,261 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
         ),
       );
     }
+  }
+
+  void _showParcelDetails(HubParcelItem item) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.88,
+        ),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 6),
+              width: 36,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Parcel Order Details', style: AppTextStyles.h3),
+                  IconButton(
+                    icon: const Icon(FeatherIcons.x),
+                    onPressed: () => Navigator.pop(ctx),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(color: AppColors.border, height: 1),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Dispatch Photo
+                    ParcelPhotoCard(
+                      orderId: item.trackingId,
+                      packageItem: item.packageName,
+                      packageValue: item.packageValue,
+                      photoAsset: item.photoAsset,
+                      captureTime: 'Dispatch Photo • ${item.intakeTime}',
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Value and Custody Fee Box
+                    Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Declared Parcel Value', style: AppTextStyles.caption.copyWith(color: AppColors.textMuted)),
+                                  Text(item.packageValue, style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary, fontSize: 16)),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text('Custody Payout', style: AppTextStyles.caption.copyWith(color: AppColors.textMuted)),
+                                  Text(item.custodyFee, style: AppTextStyles.h3.copyWith(color: AppColors.primary, fontSize: 16)),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF0FDF4),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(FeatherIcons.shield, size: 13, color: Color(0xFF16A34A)),
+                                const SizedBox(width: 6),
+                                Text(
+                                  'Sendalli Escrow Protected • ₦500 Custody Guarantee',
+                                  style: AppTextStyles.caption.copyWith(
+                                    color: const Color(0xFF166534),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Route details
+                    DeliveryRouteCard(
+                      pickupTitle: item.pickupTitle,
+                      pickupSubtitle: item.corridor,
+                      dropoffTitle: item.dropoffTitle,
+                      dropoffSubtitle: 'Roadside Drop Hub Delivery Stop',
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Parties & Contact details
+                    Container(
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'PEOPLE & CONTACTS',
+                            style: AppTextStyles.caption.copyWith(
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textMuted,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Icon(FeatherIcons.truck, size: 14, color: AppColors.primary),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'Rider: ${item.riderName} (${item.riderPhone})',
+                                  style: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          Row(
+                            children: [
+                              const Icon(FeatherIcons.user, size: 14, color: Color(0xFF16A34A)),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'Customer: ${item.customerName} (${item.customerPhone})',
+                                  style: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Reason / Handover details
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.warning.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(FeatherIcons.info, size: 16, color: AppColors.warning),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Reason: ${item.reason} • Release PIN: ${item.releasePin}',
+                              style: AppTextStyles.caption.copyWith(
+                                color: const Color(0xFFB45309),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+
+                    // Primary Action Button
+                    if (item.status == HubParcelStatus.pendingDropoff)
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pop(ctx);
+                          _intakeSpecificPackage(item);
+                        },
+                        icon: const Icon(FeatherIcons.download, size: 16),
+                        label: const Text('Confirm Custody Intake (+₦500)'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(48),
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                        ),
+                      )
+                    else if (item.status == HubParcelStatus.heldInCustody)
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pop(ctx);
+                          _releaseSpecificPackage(item);
+                        },
+                        icon: const Icon(FeatherIcons.upload, size: 16),
+                        label: const Text('Release Package (Verify PIN)'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(48),
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                        ),
+                      )
+                    else
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFDCFCE7),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Package Released • +₦500 Credited',
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              color: const Color(0xFF166534),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _showIntakePackageSheet() {
@@ -761,7 +1052,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
 
     return Column(
       children: _pendingHubRequests.map((item) {
-        return Container(
+        return InkWell(
+          onTap: () => _showParcelDetails(item),
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
@@ -898,10 +1192,11 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
               ),
             ],
           ),
-        );
-      }).toList(),
-    );
-  }
+        ),
+      );
+    }).toList(),
+  );
+}
 
   Widget _buildHeldPackagesList() {
     if (_heldPackages.isEmpty) {
@@ -914,7 +1209,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
 
     return Column(
       children: _heldPackages.map((item) {
-        return Container(
+        return InkWell(
+          onTap: () => _showParcelDetails(item),
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
@@ -1022,10 +1320,11 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
               ),
             ],
           ),
-        );
-      }).toList(),
-    );
-  }
+        ),
+      );
+    }).toList(),
+  );
+}
 
   Widget _buildDeliveredHubList() {
     if (_deliveredParcels.isEmpty) {
@@ -1038,7 +1337,10 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
 
     return Column(
       children: _deliveredParcels.map((item) {
-        return Container(
+        return InkWell(
+          onTap: () => _showParcelDetails(item),
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
@@ -1130,10 +1432,11 @@ class _HubHomeScreenState extends State<HubHomeScreen> {
               ),
             ],
           ),
-        );
-      }).toList(),
-    );
-  }
+        ),
+      );
+    }).toList(),
+  );
+}
 
   Widget _buildEmptyState({
     required IconData icon,

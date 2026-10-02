@@ -74,7 +74,9 @@ void main() {
     expect(find.text('Request Information'), findsOneWidget);
     expect(find.text('9ja kitchen (Pickup Location)'), findsOneWidget);
     expect(find.text('John Deo (Drop-off Location)'), findsOneWidget);
-    expect(find.textContaining('Food • Jollof Rice, meat and moi moi'), findsOneWidget);
+    expect(find.textContaining('Food • Jollof Rice, meat and moi moi'), findsWidgets);
+    expect(find.text('Tap to inspect'), findsOneWidget);
+    expect(find.text('Parcel Photo'), findsOneWidget);
     expect(find.text('₦ 1,200'), findsOneWidget);
     expect(find.text('1-Minute Roadside Window'), findsOneWidget);
     expect(find.text('Accept Delivery'), findsOneWidget);

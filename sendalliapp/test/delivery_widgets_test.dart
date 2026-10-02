@@ -159,9 +159,11 @@ void main() {
     expect(find.text('Accept Delivery'), findsOneWidget);
     expect(find.text('Cancel'), findsOneWidget);
 
+    await tester.ensureVisible(find.text('Accept Delivery'));
     await tester.tap(find.text('Accept Delivery'));
     expect(accepted, isTrue);
 
+    await tester.ensureVisible(find.text('Cancel'));
     await tester.tap(find.text('Cancel'));
     expect(cancelled, isTrue);
   });

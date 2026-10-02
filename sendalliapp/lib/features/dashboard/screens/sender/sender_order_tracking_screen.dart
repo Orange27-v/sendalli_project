@@ -20,6 +20,12 @@ class SenderOrderTrackingScreen extends StatefulWidget {
   final String deliveryOption;
   final String? addressDetails;
   final String? noteToDriver;
+  final String? packageValue;
+  final String? photoAsset;
+  final String? weightCategory;
+  final String? itemDescription;
+  final String? customerName;
+  final String? customerPhone;
 
   const SenderOrderTrackingScreen({
     super.key,
@@ -31,6 +37,12 @@ class SenderOrderTrackingScreen extends StatefulWidget {
     required this.deliveryOption,
     this.addressDetails,
     this.noteToDriver,
+    this.packageValue = '₦ 6,500.00',
+    this.photoAsset = 'assets/images/parcel_sample.png',
+    this.weightCategory = 'Standard (< 5kg)',
+    this.itemDescription = 'Enclosed order dispatch with tamper-evident seal',
+    this.customerName = 'Amara Okafor',
+    this.customerPhone = '+234 812 345 6789',
   });
 
   @override
@@ -466,6 +478,78 @@ class _SenderOrderTrackingScreenState extends State<SenderOrderTrackingScreen> {
             ),
             const SizedBox(height: 16),
 
+            // Dispatch Parcel Photo & Order Inspection Card
+            ParcelPhotoCard(
+              orderId: widget.orderId,
+              packageItem: widget.itemDescription ?? 'Enclosed Order Dispatch',
+              packageValue: widget.packageValue ?? '₦ 6,500.00',
+              photoAsset: widget.photoAsset,
+            ),
+            const SizedBox(height: 16),
+
+            // Order Specifications & Financial Protection
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'ORDER SPECIFICATIONS',
+                        style: AppTextStyles.caption.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.8,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF16A34A).withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(FeatherIcons.shield, size: 11, color: Color(0xFF16A34A)),
+                            const SizedBox(width: 4),
+                            Text(
+                              'Escrow Secured',
+                              style: AppTextStyles.caption.copyWith(
+                                color: const Color(0xFF16A34A),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 10.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Divider(height: 18),
+                  _buildSpecRow('Declared Item Value', widget.packageValue ?? '₦ 6,500.00', isBold: true),
+                  const SizedBox(height: 8),
+                  _buildSpecRow('Weight Category', widget.weightCategory ?? 'Standard (< 5kg)'),
+                  const SizedBox(height: 8),
+                  _buildSpecRow('Delivery Fee Paid', widget.totalAmount, isBold: true),
+                  const SizedBox(height: 8),
+                  _buildSpecRow('Recipient Contact', '${widget.customerName} (${widget.customerPhone})'),
+                  if (widget.noteToDriver != null && widget.noteToDriver!.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    _buildSpecRow('Rider Notes', widget.noteToDriver!),
+                  ],
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+
             // Handover Verification (QR Code & PIN)
             Container(
               padding: const EdgeInsets.all(16),
@@ -564,6 +648,28 @@ class _SenderOrderTrackingScreenState extends State<SenderOrderTrackingScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSpecRow(String label, String value, {bool isBold = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+        ),
+        Flexible(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: AppTextStyles.bodySmall.copyWith(
+              fontWeight: isBold ? FontWeight.w700 : FontWeight.w500,
+              color: isBold ? AppColors.textPrimary : AppColors.textSecondary,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

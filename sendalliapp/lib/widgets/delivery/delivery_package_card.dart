@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:feather_icons/feather_icons.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 
 /// Reusable package details card for rider delivery workflows.
 ///
-/// Cleanly presents Package ID, package item category, and delivery fee.
+/// Cleanly presents Package ID, declared package value, item category,
+/// weight specifications, escrow security protection, and delivery fee.
 class DeliveryPackageCard extends StatelessWidget {
   final String packageId;
   final String? packageItem;
   final String deliveryFee;
+  final String? packageValue;
+  final String? weightCategory;
+  final String? paymentStatus;
   final String? secondaryNote;
   final EdgeInsetsGeometry margin;
 
@@ -17,6 +22,9 @@ class DeliveryPackageCard extends StatelessWidget {
     required this.packageId,
     this.packageItem,
     required this.deliveryFee,
+    this.packageValue,
+    this.weightCategory,
+    this.paymentStatus,
     this.secondaryNote,
     this.margin = const EdgeInsets.symmetric(vertical: 8),
   });
@@ -28,60 +36,158 @@ class DeliveryPackageCard extends StatelessWidget {
       margin: margin,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surfaceSubtle,
-        borderRadius: BorderRadius.circular(8),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.border, width: AppDimens.borderWidth),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Package Id $packageId',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Delivery Fee',
-                  style: AppTextStyles.caption.copyWith(
-                    color: AppColors.textMuted,
-                  ),
-                ),
-                if (packageItem != null && packageItem!.isNotEmpty) ...[
-                  const SizedBox(height: 4),
+          // Header Row: Package ID & Delivery Fee
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    'Package Item: $packageItem',
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
+                    'Package Id $packageId',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary,
                     ),
                   ),
-                ],
-                if (secondaryNote != null && secondaryNote!.isNotEmpty) ...[
                   const SizedBox(height: 2),
                   Text(
-                    secondaryNote!,
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textMuted,
+                    'Delivery Payout Fee',
+                    style: AppTextStyles.caption.copyWith(color: AppColors.textMuted, fontSize: 11),
+                  ),
+                ],
+              ),
+              Text(
+                deliveryFee,
+                style: AppTextStyles.h3.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primary,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          const Divider(color: AppColors.border, height: 1),
+          const SizedBox(height: 10),
+
+          // Declared Value & Escrow Protection Row
+          if (packageValue != null && packageValue!.isNotEmpty) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+              margin: const EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0FDF4),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xFFBBF7D0), width: 1.0),
+              ),
+              child: Row(
+                children: [
+                  const Icon(FeatherIcons.shield, size: 14, color: Color(0xFF16A34A)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Declared Item Value: ',
+                        style: AppTextStyles.caption.copyWith(
+                          color: const Color(0xFF166534),
+                          fontWeight: FontWeight.w600,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: packageValue!,
+                            style: AppTextStyles.caption.copyWith(
+                              color: const Color(0xFF166534),
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' • Escrow Protected',
+                            style: AppTextStyles.caption.copyWith(
+                              color: const Color(0xFF15803D),
+                              fontSize: 10.5,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
+              ),
+            ),
+          ],
+
+          // Package Item Details
+          if (packageItem != null && packageItem!.isNotEmpty) ...[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(FeatherIcons.package, size: 14, color: AppColors.textSecondary),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Contents / Description',
+                        style: AppTextStyles.caption.copyWith(color: AppColors.textMuted, fontSize: 10.5),
+                      ),
+                      Text(
+                        'Package Item: $packageItem',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ),
-          const SizedBox(width: 12),
-          Text(
-            deliveryFee,
-            style: AppTextStyles.bodyLarge.copyWith(
-              fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
+          ],
+
+          // Weight / Tier Details
+          if (weightCategory != null && weightCategory!.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                const Icon(FeatherIcons.box, size: 14, color: AppColors.textSecondary),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Weight / Size: $weightCategory',
+                    style: AppTextStyles.caption.copyWith(
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
+          ],
+
+          if (secondaryNote != null && secondaryNote!.isNotEmpty) ...[
+            const SizedBox(height: 4),
+            Text(
+              secondaryNote!,
+              style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+            ),
+          ],
         ],
       ),
     );

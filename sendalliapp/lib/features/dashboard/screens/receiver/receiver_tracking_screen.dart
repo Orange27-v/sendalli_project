@@ -13,8 +13,21 @@ import '../../../../widgets/verification/verification_widgets.dart';
 /// Friction-free guest tracking screen for parcel recipients.
 class ReceiverTrackingScreen extends StatelessWidget {
   final String trackingId;
+  final String? packageValue;
+  final String? photoAsset;
+  final String? itemDescription;
+  final String? pickupAddress;
+  final String? dropoffAddress;
 
-  const ReceiverTrackingScreen({super.key, required this.trackingId});
+  const ReceiverTrackingScreen({
+    super.key,
+    required this.trackingId,
+    this.packageValue = '₦ 5,500.00',
+    this.photoAsset = 'assets/images/parcel_sample.png',
+    this.itemDescription = 'Enclosed order parcel with tamper-evident seal',
+    this.pickupAddress = 'Effurun Market Gate, Warri',
+    this.dropoffAddress = 'Jakpa Junction (Roadside Stop)',
+  });
 
   void _handleExit(BuildContext context) async {
     await SessionManager.clearTrackingId();
@@ -135,6 +148,15 @@ class ReceiverTrackingScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
+
+            // Dispatch Parcel Photo & Order Inspection Card
+            ParcelPhotoCard(
+              orderId: trackingId,
+              packageItem: itemDescription ?? 'Enclosed Order Package',
+              packageValue: packageValue ?? '₦ 5,500.00',
+              photoAsset: photoAsset,
+            ),
+            const SizedBox(height: 18),
 
             // 6-Digit Release Code Box
             Container(
