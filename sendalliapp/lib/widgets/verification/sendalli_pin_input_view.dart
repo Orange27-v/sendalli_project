@@ -117,24 +117,46 @@ class _SendalliPinInputViewState extends State<SendalliPinInputView> {
                   final char = hasChar ? text[index] : '';
                   final isFocused = index == text.length;
 
+                  final boxWidth = widget.pinLength <= 4 ? 62.0 : 46.0;
+                  final boxHeight = widget.pinLength <= 4 ? 68.0 : 54.0;
+
                   return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: 44,
-                    height: 50,
+                    margin: EdgeInsets.symmetric(horizontal: widget.pinLength <= 4 ? 6 : 4),
+                    width: boxWidth,
+                    height: boxHeight,
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceSubtle,
-                      borderRadius: BorderRadius.circular(AppDimens.radiusSmall),
+                      color: hasChar
+                          ? const Color(0xFFF0FDF4)
+                          : (isFocused ? Colors.white : const Color(0xFFF8FAFC)),
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: _errorMessage.isNotEmpty
                             ? AppColors.danger
-                            : (isFocused ? AppColors.primary : AppColors.border),
-                        width: isFocused ? 2.0 : AppDimens.borderWidth,
+                            : (isFocused
+                                ? AppColors.primary
+                                : (hasChar ? AppColors.primaryDark : const Color(0xFFCBD5E1))),
+                        width: isFocused ? 2.2 : (hasChar ? 1.8 : 1.5),
                       ),
+                      boxShadow: [
+                        if (isFocused)
+                          BoxShadow(
+                            color: AppColors.primary.withValues(alpha: 0.16),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          )
+                        else
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.03),
+                            blurRadius: 4,
+                            offset: const Offset(0, 1),
+                          ),
+                      ],
                     ),
                     alignment: Alignment.center,
                     child: Text(
                       char,
-                      style: AppTextStyles.h2.copyWith(
+                      style: AppTextStyles.h1.copyWith(
+                        fontSize: widget.pinLength <= 4 ? 24 : 20,
                         fontWeight: FontWeight.w800,
                         color: AppColors.textPrimary,
                       ),

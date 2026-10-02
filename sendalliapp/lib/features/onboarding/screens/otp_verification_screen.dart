@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
@@ -33,7 +34,7 @@ class OtpVerificationScreen extends StatefulWidget {
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   final List<TextEditingController> _controllers = List.generate(4, (_) => TextEditingController());
-  final List<FocusNode> _focusNodes = List.generate(4, (_) => FocusNode());
+  late final List<FocusNode> _focusNodes;
   int _secondsRemaining = 60;
   Timer? _timer;
   bool _isVerifying = false;
@@ -42,6 +43,26 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   void initState() {
     super.initState();
     _startTimer();
+    _focusNodes = List.generate(4, (index) {
+      final node = FocusNode(
+        onKeyEvent: (node, event) {
+          if (event is KeyDownEvent &&
+              event.logicalKey == LogicalKeyboardKey.backspace &&
+              _controllers[index].text.isEmpty &&
+              index > 0) {
+            _controllers[index - 1].clear();
+            _focusNodes[index - 1].requestFocus();
+            setState(() {});
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        },
+      );
+      node.addListener(() {
+        if (mounted) setState(() {});
+      });
+      return node;
+    });
   }
 
   void _startTimer() {
@@ -71,9 +92,29 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   String get _currentOtp => _controllers.map((c) => c.text).join();
 
   void _onDigitChanged(int index, String value) {
+    if (value.length > 1) {
+      // Handles pasting full OTP (e.g. "1234")
+      final digits = value.replaceAll(RegExp(r'\D'), '');
+      for (int i = 0; i < 4 && i < digits.length; i++) {
+        _controllers[i].text = digits[i];
+      }
+      final nextIndex = digits.length.clamp(0, 3);
+      _focusNodes[nextIndex].requestFocus();
+      setState(() {});
+      if (_currentOtp.length == 4) {
+        _verifyOtp();
+      }
+      return;
+    }
+
     if (value.isNotEmpty && index < 3) {
       _focusNodes[index + 1].requestFocus();
+    } else if (value.isEmpty && index > 0) {
+      _focusNodes[index - 1].requestFocus();
     }
+
+    setState(() {});
+
     if (_currentOtp.length == 4) {
       _verifyOtp();
     }
@@ -161,29 +202,72 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
               const SizedBox(height: 36),
 
-              // 4-box OTP row
+              // Sizable, prominent 4-box OTP row with high-visibility architecture
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(4, (index) {
-                  return SizedBox(
-                    width: 58,
-                    height: 64,
-                    child: TextField(
-                      controller: _controllers[index],
-                      focusNode: _focusNodes[index],
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.center,
-                      maxLength: 1,
-                      style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary),
-                      decoration: InputDecoration(
-                        counterText: '',
-                        contentPadding: EdgeInsets.zero,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(color: AppColors.deepGreen, width: 2),
+                  final isFocused = _focusNodes[index].hasFocus;
+                  final hasText = _controllers[index].text.isNotEmpty;
+
+                  return GestureDetector(
+                    onTap: () => _focusNodes[index].requestFocus(),
+                    child: Container(
+                      width: 68,
+                      height: 72,
+                      margin: const EdgeInsets.symmetric(horizontal: 7),
+                      decoration: BoxDecoration(
+                        color: isFocused
+                            ? Colors.white
+                            : (hasText ? const Color(0xFFF0FDF4) : const Color(0xFFF8FAFC)),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: isFocused
+                              ? AppColors.primary
+                              : (hasText ? AppColors.primaryDark : const Color(0xFFCBD5E1)),
+                          width: isFocused ? 2.2 : (hasText ? 1.8 : 1.5),
                         ),
+                        boxShadow: [
+                          if (isFocused)
+                            BoxShadow(
+                              color: AppColors.primary.withValues(alpha: 0.18),
+                              blurRadius: 10,
+                              offset: const Offset(0, 3),
+                            )
+                          else
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.03),
+                              blurRadius: 4,
+                              offset: const Offset(0, 1),
+                            ),
+                        ],
                       ),
-                      onChanged: (val) => _onDigitChanged(index, val),
+                      alignment: Alignment.center,
+                      child: TextField(
+                        controller: _controllers[index],
+                        focusNode: _focusNodes[index],
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        textAlignVertical: TextAlignVertical.center,
+                        maxLength: 1,
+                        cursorColor: AppColors.primary,
+                        cursorHeight: 28,
+                        style: AppTextStyles.h1.copyWith(
+                          fontSize: 26,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
+                        ),
+                        decoration: const InputDecoration(
+                          counterText: '',
+                          contentPadding: EdgeInsets.zero,
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          fillColor: Colors.transparent,
+                          filled: false,
+                        ),
+                        onChanged: (val) => _onDigitChanged(index, val),
+                      ),
                     ),
                   );
                 }),
