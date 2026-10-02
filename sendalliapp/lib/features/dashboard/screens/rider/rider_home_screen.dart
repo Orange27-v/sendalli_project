@@ -77,6 +77,51 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       handoverCode: '4321',
       status: DeliveryItemStatus.pending,
     ),
+    RiderDeliveryItem(
+      orderId: '#BE12392',
+      referenceId: '#667788990',
+      dateText: 'Today • 3:45 PM',
+      pickupTitle: 'Deco Electronics Hub (Pickup Location)',
+      pickupSubtitle: 'Deco Road Junction, Warri',
+      dropoffTitle: 'PTI Gate Express Kiosk (Drop-off Location)',
+      dropoffSubtitle: 'Opposite PTI Main Gate',
+      packageItem: 'Gadgets • Powerbank & Fast Charger',
+      deliveryFee: '₦ 350.00',
+      customerName: 'Chidi Okafor',
+      customerNote: 'Handover at the gate shade',
+      handoverCode: '9012',
+      status: DeliveryItemStatus.pending,
+    ),
+    RiderDeliveryItem(
+      orderId: '#BE12405',
+      referenceId: '#778899001',
+      dateText: 'Today • 4:15 PM',
+      pickupTitle: 'Main Market Textile Depot (Pickup Location)',
+      pickupSubtitle: 'Market Roadside, Warri',
+      dropoffTitle: 'Airport Road Bus Stop (Drop-off Location)',
+      dropoffSubtitle: 'Airport Road Junction',
+      packageItem: 'Fashion • Custom Ankara fabric & sewing kit',
+      deliveryFee: '₦ 550.00',
+      customerName: 'Mrs. Oghenero',
+      customerNote: 'Call 2 mins before arrival',
+      handoverCode: '3456',
+      status: DeliveryItemStatus.pending,
+    ),
+    RiderDeliveryItem(
+      orderId: '#BE12418',
+      referenceId: '#889900112',
+      dateText: 'Today • 4:40 PM',
+      pickupTitle: 'Warri City Bakeries (Pickup Location)',
+      pickupSubtitle: 'Cemetery Road Junction',
+      dropoffTitle: 'Refinery Road Junction (Drop-off Location)',
+      dropoffSubtitle: 'Matrix Station Corridor',
+      packageItem: 'Confectionery • 2 Loaves & Snack Pack',
+      deliveryFee: '₦ 300.00',
+      customerName: 'David Ejiro',
+      customerNote: 'Quick roadside stop',
+      handoverCode: '7890',
+      status: DeliveryItemStatus.pending,
+    ),
   ];
 
   final List<RiderDeliveryItem> _acceptedDeliveries = [
@@ -94,6 +139,84 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       customerNote: 'Meet at the roundabout bus stop',
       handoverCode: '8899',
       status: DeliveryItemStatus.accepted,
+    ),
+  ];
+
+  final List<RiderDeliveryItem> _completedDeliveries = [
+    RiderDeliveryItem(
+      orderId: '#BE12325',
+      referenceId: '#991122334',
+      dateText: 'Today • 12:45 PM',
+      pickupTitle: '9ja Kitchen • Ring Road',
+      pickupSubtitle: '9ja Kitchen (Pickup Location)',
+      dropoffTitle: 'John Deo • Jakpa Junction Stop',
+      dropoffSubtitle: 'Jakpa Roadside Mart (Drop-off Location)',
+      packageItem: 'Food • Jollof Rice & grilled fish',
+      deliveryFee: '₦ 800.00',
+      customerName: 'John Deo',
+      customerNote: 'Roadside pickup complete',
+      handoverCode: '1234',
+      status: DeliveryItemStatus.completed,
+    ),
+    RiderDeliveryItem(
+      orderId: '#BE12318',
+      referenceId: '#882233445',
+      dateText: 'Today • 11:15 AM',
+      pickupTitle: 'Warri Central Chemist',
+      pickupSubtitle: 'Warri Central Chemist (Pickup Location)',
+      dropoffTitle: 'PTI Gate Roadside',
+      dropoffSubtitle: 'Opposite PTI Main Gate (Drop-off)',
+      packageItem: 'Health • First Aid & Vitamin supplies',
+      deliveryFee: '₦ 800.00',
+      customerName: 'Nurse Grace',
+      customerNote: 'Handed over safely',
+      handoverCode: '5678',
+      status: DeliveryItemStatus.completed,
+    ),
+    RiderDeliveryItem(
+      orderId: '#BE12310',
+      referenceId: '#773344556',
+      dateText: 'Today • 09:40 AM',
+      pickupTitle: 'Deco Road Provisions',
+      pickupSubtitle: 'Deco Road Junction',
+      dropoffTitle: 'Airport Road Express Stop',
+      dropoffSubtitle: 'Express Bus Turnoff',
+      packageItem: 'Grocery • Provisions & Beverage carton',
+      deliveryFee: '₦ 800.00',
+      customerName: 'Mr. Kenneth',
+      customerNote: 'Roadside stop verified',
+      handoverCode: '9012',
+      status: DeliveryItemStatus.completed,
+    ),
+    RiderDeliveryItem(
+      orderId: '#BE12304',
+      referenceId: '#664455667',
+      dateText: 'Today • 08:30 AM',
+      pickupTitle: 'Enerhen Auto Spares',
+      pickupSubtitle: 'Enerhen Junction Stop',
+      dropoffTitle: 'Refinery Road Turnoff',
+      dropoffSubtitle: 'Matrix Energy Gate',
+      packageItem: 'Mechanics • Spark plugs & brake fluid',
+      deliveryFee: '₦ 450.00',
+      customerName: 'Brother Jude',
+      customerNote: 'Delivered to mechanical workshop',
+      handoverCode: '3456',
+      status: DeliveryItemStatus.completed,
+    ),
+    RiderDeliveryItem(
+      orderId: '#BE12298',
+      referenceId: '#555566778',
+      dateText: 'Yesterday • 5:20 PM',
+      pickupTitle: 'Refinery Junction Bakery',
+      pickupSubtitle: 'Refinery Main Gate',
+      dropoffTitle: 'Effurun Roundabout Kiosk',
+      dropoffSubtitle: 'Roundabout Commercial Park',
+      packageItem: 'Bakery • 2 Loaves & Pastries Pack',
+      deliveryFee: '₦ 350.00',
+      customerName: 'Madam Clara',
+      customerNote: 'Verified via 4-digit code',
+      handoverCode: '7890',
+      status: DeliveryItemStatus.completed,
     ),
   ];
 
@@ -974,6 +1097,11 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
             label: 'Complete Order',
             onPressed: () {
               setState(() {
+                if (_activeDeliveryItem != null) {
+                  _activeDeliveryItem!.status = DeliveryItemStatus.completed;
+                  _completedDeliveries.insert(0, _activeDeliveryItem!);
+                  _acceptedDeliveries.removeWhere((item) => item.orderId == _activeDeliveryItem!.orderId);
+                }
                 _hasActiveDelivery = false;
                 _deliveryStatus = 'Pickup';
               });
@@ -1061,8 +1189,8 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                 _buildFilterTab(
                   key: const Key('deliveries_filter_completed'),
                   index: 2,
-                  label: 'Completed',
-                  count: 8,
+                  label: 'Delivered',
+                  count: _completedDeliveries.length,
                 ),
               ],
             ),
@@ -1517,38 +1645,33 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
   }
 
   Widget _buildCompletedTripsList() {
+    if (_completedDeliveries.isEmpty) {
+      return _buildEmptyState(
+        icon: FeatherIcons.checkCircle,
+        title: 'No Completed Deliveries Yet',
+        subtitle: 'Deliveries you complete along your corridor will show up here with full payout receipts.',
+      );
+    }
+
     return Column(
-      children: [
-        _buildTripCard(
-          orderId: '#BE12345',
-          pickup: '9ja Kitchen • Ring Road',
-          dropoff: 'John Deo • Jakpa Junction Stop',
-          fare: '₦ 800.00',
-          status: 'Delivered',
-          time: '12:45 PM',
-          isComplete: true,
-        ),
-        const SizedBox(height: 12),
-        _buildTripCard(
-          orderId: '#BE12344',
-          pickup: 'Warri Central Chemist',
-          dropoff: 'PTI Gate Roadside',
-          fare: '₦ 800.00',
-          status: 'Delivered',
-          time: '11:15 AM',
-          isComplete: true,
-        ),
-        const SizedBox(height: 12),
-        _buildTripCard(
-          orderId: '#BE12343',
-          pickup: 'Deco Road Provisions',
-          dropoff: 'Airport Road Express Stop',
-          fare: '₦ 800.00',
-          status: 'Delivered',
-          time: '09:40 AM',
-          isComplete: true,
-        ),
-      ],
+      children: _completedDeliveries.map((item) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: InkWell(
+            onTap: () => _openDeliveryDetailPage(item),
+            borderRadius: BorderRadius.circular(8),
+            child: _buildTripCard(
+              orderId: item.orderId,
+              pickup: item.pickupTitle,
+              dropoff: item.dropoffTitle,
+              fare: item.riderProposedFee ?? item.deliveryFee,
+              status: 'Delivered',
+              time: item.dateText,
+              isComplete: true,
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 

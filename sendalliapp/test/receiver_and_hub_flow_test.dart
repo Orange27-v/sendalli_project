@@ -80,7 +80,10 @@ void main() {
     // Verify corridor logistics map
     expect(find.byType(SendalliMapView), findsOneWidget);
     expect(find.text('Corridor Hub Logistics'), findsOneWidget);
-    expect(find.text('Packages In Holding (0)'), findsOneWidget);
+    expect(find.text('Packages In Holding (2)'), findsOneWidget);
+    expect(find.byKey(const Key('hub_filter_pending')), findsOneWidget);
+    expect(find.byKey(const Key('hub_filter_held')), findsOneWidget);
+    expect(find.byKey(const Key('hub_filter_delivered')), findsOneWidget);
   });
 
   testWidgets('TrackParcelScreen renders corridor map preview and sample quick fills', (WidgetTester tester) async {
