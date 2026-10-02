@@ -202,7 +202,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               ),
               const SizedBox(height: 36),
 
-              // Sizable, prominent 4-box OTP row with high-visibility architecture
+              // Clean, sleek 4-box OTP row aligned with Hub verification box design
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(4, (index) {
@@ -212,34 +212,18 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   return GestureDetector(
                     onTap: () => _focusNodes[index].requestFocus(),
                     child: Container(
-                      width: 68,
-                      height: 72,
-                      margin: const EdgeInsets.symmetric(horizontal: 7),
+                      width: 48,
+                      height: 52,
+                      margin: const EdgeInsets.symmetric(horizontal: 6),
                       decoration: BoxDecoration(
-                        color: isFocused
-                            ? Colors.white
-                            : (hasText ? const Color(0xFFF0FDF4) : const Color(0xFFF8FAFC)),
-                        borderRadius: BorderRadius.circular(14),
+                        color: isFocused ? Colors.white : AppColors.surfaceSubtle,
+                        borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: isFocused
                               ? AppColors.primary
-                              : (hasText ? AppColors.primaryDark : const Color(0xFFCBD5E1)),
-                          width: isFocused ? 2.2 : (hasText ? 1.8 : 1.5),
+                              : (hasText ? AppColors.primaryDark : AppColors.borderMedium),
+                          width: isFocused ? 1.5 : 1.0,
                         ),
-                        boxShadow: [
-                          if (isFocused)
-                            BoxShadow(
-                              color: AppColors.primary.withValues(alpha: 0.18),
-                              blurRadius: 10,
-                              offset: const Offset(0, 3),
-                            )
-                          else
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.03),
-                              blurRadius: 4,
-                              offset: const Offset(0, 1),
-                            ),
-                        ],
                       ),
                       alignment: Alignment.center,
                       child: TextField(
@@ -250,10 +234,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         textAlignVertical: TextAlignVertical.center,
                         maxLength: 1,
                         cursorColor: AppColors.primary,
-                        cursorHeight: 28,
-                        style: AppTextStyles.h1.copyWith(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w800,
+                        cursorHeight: 22,
+                        style: AppTextStyles.h2.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,
                         ),
                         decoration: const InputDecoration(

@@ -22,12 +22,12 @@ void main() {
     final textFields = find.byType(TextField);
     expect(textFields, findsNWidgets(4));
 
-    // Verify sizable container dimensions (68 x 72)
+    // Verify sleek container dimensions (48 x 52)
     final containers = tester.widgetList<Container>(
       find.descendant(of: find.byType(Row), matching: find.byType(Container)),
     );
     final otpBox = containers.firstWhere(
-      (c) => c.constraints?.maxWidth == 68 || (c.decoration is BoxDecoration && (c.decoration as BoxDecoration).borderRadius != null),
+      (c) => c.constraints?.maxWidth == 48 || (c.decoration is BoxDecoration && (c.decoration as BoxDecoration).borderRadius != null),
     );
     expect(otpBox, isNotNull);
 
