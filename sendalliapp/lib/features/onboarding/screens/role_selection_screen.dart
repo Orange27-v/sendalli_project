@@ -89,7 +89,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
             icon: const Icon(FeatherIcons.arrowLeft, size: 20),
             onPressed: () => AppNavigator.safePop(context),
           ),
-          title: Text('Account Setup', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          title: const Text('Account Setup'),
         ),
       body: SafeArea(
         child: Padding(

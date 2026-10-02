@@ -123,7 +123,7 @@ class _RiderSetupScreenState extends State<RiderSetupScreen> {
             icon: const Icon(FeatherIcons.arrowLeft),
             onPressed: () => AppNavigator.safePop(context),
           ),
-          title: Text('Rider Setup', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          title: const Text('Rider Setup'),
           actions: [
             RandomizeButton(onRandomize: _randomize),
           ],

@@ -31,10 +31,10 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           scrolledUnderElevation: 0,
-          title: Text('Rider Corridor Hub', style: AppTextStyles.h3),
+          title: Text('Rider Corridor Hub', style: AppTextStyles.h3.copyWith(color: AppColors.textInverse)),
           actions: [
             IconButton(
-              icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textSecondary),
+              icon: const Icon(FeatherIcons.logOut, size: 20, color: AppColors.textInverse),
               onPressed: () async {
                 await SessionManager.logout();
                 if (!context.mounted) return;

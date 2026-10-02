@@ -105,16 +105,7 @@ class _ReceiverSetupScreenState extends State<ReceiverSetupScreen> {
             icon: const Icon(FeatherIcons.arrowLeft),
             onPressed: () => AppNavigator.safePop(context),
           ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: Text(
-            'Receiver Setup',
-            style: AppTextStyles.caption.copyWith(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.5,
-            ),
-          ),
+          title: const Text('Receiver Setup'),
           actions: [
             RandomizeButton(onRandomize: _randomize),
           ],

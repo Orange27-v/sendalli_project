@@ -76,7 +76,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
             icon: const Icon(FeatherIcons.arrowLeft, size: 20),
             onPressed: () => AppNavigator.safePop(context),
           ),
-          title: Text('Step 1 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          title: const Text('Your Name'),
           actions: [
             RandomizeButton(onRandomize: _randomize),
           ],

@@ -201,20 +201,20 @@ class RandomizeButton extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: AppColors.surfaceSubtle,
+              color: Colors.white.withValues(alpha: 0.18),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.35)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(FeatherIcons.shuffle, size: 12, color: AppColors.textPrimary),
+                const Icon(FeatherIcons.shuffle, size: 12, color: Colors.white),
                 const SizedBox(width: 5),
                 Text(
                   label,
                   style: AppTextStyles.caption.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    color: Colors.white,
                   ),
                 ),
               ],

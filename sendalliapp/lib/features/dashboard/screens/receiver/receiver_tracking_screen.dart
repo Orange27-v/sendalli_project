@@ -28,9 +28,9 @@ class ReceiverTrackingScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           scrolledUnderElevation: 0,
-          title: Text('Live Parcel Tracker', style: AppTextStyles.h3),
+          title: Text('Live Parcel Tracker', style: AppTextStyles.h3.copyWith(color: AppColors.textInverse)),
           leading: IconButton(
-            icon: const Icon(FeatherIcons.x, size: 20),
+            icon: const Icon(FeatherIcons.x, size: 20, color: AppColors.textInverse),
             onPressed: () => _handleExit(context),
           ),
           actions: [
@@ -38,7 +38,7 @@ class ReceiverTrackingScreen extends StatelessWidget {
               onPressed: () => _handleExit(context),
               child: Text(
                 'Exit',
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.danger),
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textInverse, fontWeight: FontWeight.w600),
               ),
             ),
           ],

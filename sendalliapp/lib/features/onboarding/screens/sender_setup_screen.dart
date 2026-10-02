@@ -101,7 +101,7 @@ class _SenderSetupScreenState extends State<SenderSetupScreen> {
             icon: const Icon(FeatherIcons.arrowLeft),
             onPressed: () => AppNavigator.safePop(context),
           ),
-          title: Text('Merchant Profile', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          title: const Text('Merchant Profile'),
           actions: [
             RandomizeButton(onRandomize: _randomize),
           ],

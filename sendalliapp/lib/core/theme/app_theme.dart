@@ -11,38 +11,36 @@ import '../constants/app_text_styles.dart';
 class AppColors {
   AppColors._();
 
-  // --- Dominant Theme: Black & White ---
-  static const Color primary = Color(0xFF0F172A); // Dominant rich dark slate / black
-  static const Color primaryDark = Color(0xFF020617); // Deep pure black
-  static const Color primaryLight = Color(0xFFF1F5F9); // Crisp neutral light slate
-  static const Color primaryAccent = Color(0xFF1E293B);
-
-  // --- Accent Color: Calm Sage / Seafoam Teal (#509D8A) ---
-  // Subtle, elegant accent color matching the modern minimal brand aesthetic
-  static const Color deepGreen = Color(0xFF509D8A); // Primary brand accent (#509D8A)
-  static const Color deepGreenLight = Color(0xFFE8F4F1); // Soft sage tint for chips and badges
-  static const Color deepGreenMuted = Color(0xFF387A6C); // Supporting deep sage for text contrast
-  static const Color sageAccent = Color(0xFF509D8A); // Explicit #509D8A alias
-  static const Color sageLight = Color(0xFFE8F4F1);
-  static const Color sageMuted = Color(0xFF387A6C);
+  // --- Dominant Theme Brand Color: Vibrant Green (#009944) ---
+  // Canonical brand primary color as specified in the reference design
+  static const Color primary = Color(0xFF009944); // Dominant brand green (#009944)
+  static const Color primaryDark = Color(0xFF007A37); // Deep shade for pressed states & borders
+  static const Color primaryLight = Color(0xFFE6F5EC); // Crisp soft emerald tint
+  static const Color primaryAccent = Color(0xFF00B350); // Vibrant highlight green
 
   // Standardized green aliases for backwards compatibility
-  static const Color brandGreen = deepGreen;
-  static const Color brandGreenDark = deepGreenMuted;
-  static const Color brandGreenLight = deepGreenLight;
+  static const Color deepGreen = primary;
+  static const Color deepGreenLight = primaryLight;
+  static const Color deepGreenMuted = primaryDark;
+  static const Color sageAccent = primary;
+  static const Color sageLight = primaryLight;
+  static const Color sageMuted = primaryDark;
+  static const Color brandGreen = primary;
+  static const Color brandGreenDark = primaryDark;
+  static const Color brandGreenLight = primaryLight;
 
-  // --- Signature Sage Gradient Fades (#509D8A) ---
-  // Soft, airy top & bottom vignette fade as seen in the reference onboarding design
+  // --- Signature Green Gradient Fades (#009944) ---
+  // Soft, airy top & bottom vignette fade as seen in the onboarding design
   static const LinearGradient screenGradientFade = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      Color(0x38509D8A), // ~22% opacity soft sage at top edge
-      Color(0x0F509D8A), // ~6% opacity transition
+      Color(0x38009944), // ~22% opacity soft green at top edge
+      Color(0x0F009944), // ~6% opacity transition
       Colors.white,      // Pure crisp white in center focus area
       Colors.white,      // Pure crisp white
-      Color(0x0F509D8A), // ~6% opacity transition
-      Color(0x3D509D8A), // ~24% opacity soft sage at bottom edge
+      Color(0x0F009944), // ~6% opacity transition
+      Color(0x3D009944), // ~24% opacity soft green at bottom edge
     ],
     stops: [0.0, 0.20, 0.40, 0.65, 0.85, 1.0],
   );
@@ -52,8 +50,8 @@ class AppColors {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      Color(0x2E509D8A), // ~18% soft sage fade
-      Color(0x08509D8A),
+      Color(0x2E009944), // ~18% soft green fade
+      Color(0x08009944),
       Colors.white,
     ],
     stops: [0.0, 0.50, 1.0],
@@ -65,8 +63,8 @@ class AppColors {
     end: Alignment.bottomCenter,
     colors: [
       Colors.white,
-      Color(0x08509D8A),
-      Color(0x33509D8A), // ~20% soft sage fade
+      Color(0x08009944),
+      Color(0x33009944), // ~20% soft green fade
     ],
     stops: [0.0, 0.50, 1.0],
   );
@@ -81,12 +79,12 @@ class AppColors {
   static const Color textSecondary = Color(0xFF475569); // Slate body
   static const Color textMuted = Color(0xFF94A3B8); // Muted captions & hints
   static const Color textInverse = Colors.white; // Pure white text
-  static const Color textSage = Color(0xFF509D8A); // Headline accent text in #509D8A
+  static const Color textSage = Color(0xFF009944); // Headline accent text in #009944
 
   // --- Borders & Dividers ---
   static const Color border = Color(0xFFE2E8F0); // Subtle divider / card border
   static const Color borderMedium = Color(0xFFCBD5E1); // Input field border
-  static const Color borderFocus = Color(0xFF509D8A); // Sage #509D8A subtle focus ring
+  static const Color borderFocus = Color(0xFF009944); // #009944 subtle focus ring
 
   // --- Status & Feedback Colors ---
   static const Color success = Color(0xFF15803D); // Deep green success
@@ -187,17 +185,23 @@ class AppTheme {
         outlineVariant: AppColors.border,
       ),
       textTheme: _buildTextTheme(ThemeData.light().textTheme, AppColors.textPrimary),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.surface,
-        foregroundColor: AppColors.textPrimary,
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.textInverse,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(color: AppColors.textPrimary),
-        systemOverlayStyle: SystemUiOverlayStyle(
+        iconTheme: const IconThemeData(color: AppColors.textInverse),
+        actionsIconTheme: const IconThemeData(color: AppColors.textInverse),
+        titleTextStyle: GoogleFonts.plusJakartaSans(
+          color: AppColors.textInverse,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
+        systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark, // Android dark icons
-          statusBarBrightness: Brightness.light,     // iOS dark text/icons
+          statusBarIconBrightness: Brightness.light, // Android: white status bar icons on green
+          statusBarBrightness: Brightness.dark,      // iOS: white status bar icons on green
         ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -209,9 +213,9 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.textInverse,
-          disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.12),
-          disabledForegroundColor: AppColors.textMuted,
-          minimumSize: const Size.fromHeight(48),
+          disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.35),
+          disabledForegroundColor: AppColors.textInverse.withValues(alpha: 0.65),
+          minimumSize: const Size.fromHeight(50),
           elevation: 0,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
@@ -220,6 +224,7 @@ class AppTheme {
           textStyle: AppTextStyles.button.copyWith(
             color: AppColors.textInverse,
             fontWeight: FontWeight.w700,
+            fontSize: 16,
           ),
         ),
       ),

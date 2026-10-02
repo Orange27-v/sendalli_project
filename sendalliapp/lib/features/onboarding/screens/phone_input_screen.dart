@@ -126,8 +126,7 @@ class _PhoneInputScreenState extends State<PhoneInputScreen> {
             onPressed: () => AppNavigator.safePop(context),
           ),
           title: Text(
-            widget.isReturningLogin ? 'Sign In' : 'Step 2 of 4',
-            style: AppTextStyles.caption.copyWith(fontSize: 13),
+            widget.isReturningLogin ? 'Sign In' : 'Phone Number',
           ),
           actions: [
             RandomizeButton(label: 'Fill Sample', onRandomize: _randomize),

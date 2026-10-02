@@ -66,12 +66,10 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
           scrolledUnderElevation: 0,
           centerTitle: false,
           leading: IconButton(
-            icon: const Icon(FeatherIcons.arrowLeft, size: 20),
+            icon: const Icon(FeatherIcons.arrowLeft, size: 20, color: AppColors.textInverse),
             onPressed: _safeExit,
           ),
           title: Column(
@@ -79,11 +77,11 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
             children: [
               Text(
                 'Package Tracker',
-                style: AppTextStyles.h3.copyWith(fontSize: 18),
+                style: AppTextStyles.h3.copyWith(fontSize: 18, color: AppColors.textInverse),
               ),
               Text(
                 _isGuest ? 'Roadside Guest Access • No login' : widget.user.fullName,
-                style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.caption.copyWith(color: AppColors.textInverse.withValues(alpha: 0.8)),
               ),
             ],
           ),
@@ -92,7 +90,7 @@ class _ReceiverHomeScreenState extends State<ReceiverHomeScreen> {
               icon: Icon(
                 _isGuest ? FeatherIcons.x : FeatherIcons.logOut,
                 size: 20,
-                color: AppColors.textSecondary,
+                color: AppColors.textInverse,
               ),
               tooltip: _isGuest ? 'Close Tracker' : 'Log out',
               onPressed: () async {

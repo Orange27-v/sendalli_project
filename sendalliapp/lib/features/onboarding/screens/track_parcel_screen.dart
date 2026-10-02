@@ -92,13 +92,7 @@ class _TrackParcelScreenState extends State<TrackParcelScreen> {
             icon: const Icon(FeatherIcons.arrowLeft, size: 20),
             onPressed: () => AppNavigator.safePop(context),
           ),
-          title: Text(
-            'Track Parcel',
-            style: AppTextStyles.caption.copyWith(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          title: const Text('Track Parcel'),
           actions: [
             RandomizeButton(label: 'Sample ID', onRandomize: _randomize),
           ],

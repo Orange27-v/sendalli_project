@@ -161,7 +161,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
               }
             },
           ),
-          title: Text('Step 4 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          title: const Text('Security PIN'),
           actions: [
             RandomizeButton(label: 'Fill 1234', onRandomize: _quickFill),
           ],

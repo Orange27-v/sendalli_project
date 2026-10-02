@@ -79,13 +79,7 @@ class _RoleGatewayScreenState extends State<RoleGatewayScreen> {
             icon: const Icon(FeatherIcons.arrowLeft, size: 20),
             onPressed: () => AppNavigator.safePop(context),
           ),
-          title: Text(
-            'Choose Role',
-            style: AppTextStyles.caption.copyWith(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          title: const Text('Choose Role'),
         ),
       body: SafeArea(
         child: SingleChildScrollView(

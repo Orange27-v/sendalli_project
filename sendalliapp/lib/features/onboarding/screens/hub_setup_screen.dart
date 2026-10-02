@@ -114,7 +114,7 @@ class _HubSetupScreenState extends State<HubSetupScreen> {
             icon: const Icon(FeatherIcons.arrowLeft),
             onPressed: () => AppNavigator.safePop(context),
           ),
-          title: Text('Drop Hub Setup', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          title: const Text('Drop Hub Setup'),
           actions: [
             RandomizeButton(onRandomize: _randomize),
           ],

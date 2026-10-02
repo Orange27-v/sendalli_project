@@ -148,7 +148,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             icon: const Icon(FeatherIcons.arrowLeft, size: 20),
             onPressed: () => AppNavigator.safePop(context),
           ),
-          title: Text('Step 3 of 4', style: AppTextStyles.caption.copyWith(fontSize: 13)),
+          title: const Text('Verify OTP'),
         ),
       body: SafeArea(
         child: Padding(
@@ -231,7 +231,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         height: 20,
                         child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.textInverse),
                       )
-                    : const Text('Verify Code'),
+                    : const Text('Confirm'),
               ),
               const SizedBox(height: 12),
             ],
